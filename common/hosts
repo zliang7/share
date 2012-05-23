@@ -10,693 +10,972 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
-#SmartHosts START
+# my setting start
+203.208.47.4	accounts.youtube.com #THISISNOTE 
+203.208.47.4	apiblog.youtube.com #THISISNOTE 
+203.208.47.4	clients1.youtube.com #THISISNOTE 
+203.208.47.4	feeds.feedburner.com #THISISNOTE 
+203.208.47.4	gdata.youtube.com #THISISNOTE 
+203.208.47.4	help.youtube.com #THISISNOTE 
+203.208.47.4	i1.ytimg.com #THISISNOTE 
+203.208.47.4	i2.ytimg.com #THISISNOTE 
+203.208.47.4	i3.ytimg.com #THISISNOTE 
+203.208.47.4	i4.ytimg.com #THISISNOTE 
+203.208.47.4	insight.youtube.com #THISISNOTE 
+203.208.47.4	m.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v1.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v10.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v11.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v12.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v13.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v14.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v15.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v16.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v17.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v18.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v19.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v2.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v20.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v21.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v22.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v23.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v24.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v3.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v4.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v5.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v6.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v7.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v8.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	o-o.preferred.sjc07s15.v9.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	r1.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r10.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r11.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r12.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r13.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r14.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r15.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r16.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r17.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r18.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r19.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r2.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r20.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r21.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r22.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r23.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r24.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r3.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r4.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r5.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r6.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r7.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r8.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	r9.pek01s01.c.youtube.com #THISISNOTE 
+203.208.47.4	s.youtube.com #THISISNOTE 
+203.208.47.4	s.ytimg.com #THISISNOTE 
+203.208.47.4	s2.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v1.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v10.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v11.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v12.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v13.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v14.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v15.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v16.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v17.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v18.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v19.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v2.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v20.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v21.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v22.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v23.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v24.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v3.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v4.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v5.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v6.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v7.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v8.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache1.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache2.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache3.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache4.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache5.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache6.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache7.c.youtube.com #THISISNOTE 
+203.208.47.4	tc.v9.cache8.c.youtube.com #THISISNOTE 
+203.208.47.4	upload.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v1.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v10.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v11.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v12.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v13.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v14.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v15.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v16.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v17.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v18.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v19.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v2.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v20.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v21.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v22.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v23.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v24.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v3.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v4.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v5.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v6.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v7.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v8.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache1.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache2.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache3.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache4.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache5.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache6.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache7.c.youtube.com #THISISNOTE 
+203.208.47.4	v9.lscache8.c.youtube.com #THISISNOTE 
+203.208.47.4	www.youtube.com #THISISNOTE 
+203.208.47.4	youtube.com #THISISNOTE 
+#HostsAutoChanger4 END 
+127.0.0.1 activate.adobe.com
+127.0.0.1 practivate.adobe.com
+127.0.0.1 ereg.adobe.com
+127.0.0.1 activate.wip3.adobe.com
+127.0.0.1 wip3.adobe.com
+127.0.0.1 3dns-3.adobe.com
+127.0.0.1 3dns-2.adobe.com
+127.0.0.1 adobe-dns.adobe.com
+127.0.0.1 adobe-dns-2.adobe.com
+127.0.0.1 adobe-dns-3.adobe.com
+127.0.0.1 ereg.wip3.adobe.com
+127.0.0.1 activate-sea.adobe.com
+127.0.0.1 wwis-dubc1-vip60.adobe.com
+127.0.0.1 activate-sjc0.adobe.com
+#74.208.10.249 gs.apple.com
+#127.0.0.1 gs.apple.com
+#Google By FGQI	
+203.208.46.163	plus.url.google.com	
+203.208.46.163	0-focus-opensocial.googleusercontent.com	
+203.208.46.163	3hdrrlnlknhi77nrmsjnjr152ueo3soc-a-calendar-opensocial.googleusercontent.com	
+203.208.46.163	accounts.google.com	
+203.208.46.163	ajax.googleapis.com	
+203.208.46.163	android.l.google.com	
+203.208.46.163	a-oz-opensocial.googleusercontent.com	
+203.208.46.163	apis.google.com	
+203.208.46.163	appengine.google.com	
+203.208.46.163	bks0.books.google.com	
+203.208.46.163	bks1.books.google.com	
+203.208.46.163	bks2.books.google.com	
+203.208.46.163	bks3.books.google.com	
+203.208.46.163	bks4.books.google.com	
+203.208.46.163	bks5.books.google.com	
+203.208.46.163	bks6.books.google.com	
+203.208.46.163	bks7.books.google.com	
+203.208.46.163	bks8.books.google.com	
+203.208.46.163	bks9.books.google.com	
+203.208.46.163	blogsearch.google.cn	
+203.208.46.163	blogsearch.google.com.hk	
+203.208.46.163	books.google.com	
+203.208.46.163	browserchannel-docs.l.google.com	
+203.208.46.163	browserchannel-spreadsheets.l.google.com	
+203.208.46.163	browsersync.google.com	
+203.208.46.163	cache.pack.google.com	
+203.208.46.163	calendar.google.com	
+203.208.46.163	chatenabled.mail.google.com	
+203.208.46.163	checkout.google.com	
+203.208.46.163	chrome.google.com	
+203.208.46.163	clients1.google.com	
+203.208.46.163	clients1.googleusercontent.com	
+203.208.46.163	clients2.google.com	
+203.208.46.163	clients2.googleusercontent.com	
+203.208.46.163	clients3.google.com	
+203.208.46.163	clients3.googleusercontent.com	
+203.208.46.163	clients4.google.com	
+203.208.46.163	clients4.googleusercontent.com	
+203.208.46.163	clients5.google.com	
+203.208.46.163	clients5.googleusercontent.com	
+203.208.46.163	clients6.google.com	
+203.208.46.163	clients6.googleusercontent.com	
+203.208.46.163	clients7.google.com	
+203.208.46.163	clients7.googleusercontent.com	
+203.208.46.163	code.google.com	
+203.208.46.163	csi.gstatic.com	
+203.208.46.163	desktop.google.com	
+203.208.46.163	desktop2.google.com	
+203.208.46.163	ditu.google.cn	
+203.208.46.163	ditu.google.com	
+203.208.46.163	dl.google.com	
+203.208.46.163	docs.google.com	
+203.208.46.163	earth.google.com	
+203.208.46.163	encrypted.google.com	
+203.208.46.163	encrypted.google.com.hk	
+203.208.46.163	encrypted-tbn0.google.com	
+203.208.46.163	encrypted-tbn1.google.com	
+203.208.46.163	encrypted-tbn2.google.com	
+203.208.46.163	encrypted-tbn3.google.com	
+203.208.46.163	feedback.googleusercontent.com	
+203.208.46.163	finance.google.com	
+203.208.46.163	fonts.googleapis.com	
+203.208.46.163	g0.gstatic.com	
+203.208.46.163	gg.google.com	
+203.208.46.163	ghs.google.com	
+203.208.46.163	ghs.l.google.com	
+203.208.46.163	google.com	
+203.208.46.163	google.com.hk	
+203.208.46.163	googlecl.googlecode.com	
+203.208.46.163	googlehosted.l.googleusercontent.com	
+203.208.46.163	groups.google.com	
+203.208.46.163	id.google.cn	
+203.208.46.163	id.google.com	
+203.208.46.163	id.google.com.hk	
+203.208.46.163	images.google.com	
+203.208.46.163	images.google.com.hk	
+203.208.46.163	images0-focus-opensocial.googleusercontent.com	
+203.208.46.163	images1-focus-opensocial.googleusercontent.com	
+203.208.46.163	images2-focus-opensocial.googleusercontent.com	
+203.208.46.163	images3-focus-opensocial.googleusercontent.com	
+203.208.46.163	images4-focus-opensocial.googleusercontent.com	
+203.208.46.163	images5-focus-opensocial.googleusercontent.com	
+203.208.46.163	images6-focus-opensocial.googleusercontent.com	
+203.208.46.163	images-lso-opensocial.googleusercontent.com	
+203.208.46.163	images-oz-opensocial.googleusercontent.com	
+203.208.46.163	images-pos-opensocial.googleusercontent.com	
+203.208.46.163	investor.google.com	
+203.208.46.163	khms0.google.com	
+203.208.46.163	khms1.google.com	
+203.208.46.163	labs.google.com	
+203.208.46.163	large-uploads.l.google.com	
+203.208.46.163	lh1.ggpht.com	
+203.208.46.163	lh1.googleusercontent.com	
+203.208.46.163	lh2.ggpht.com	
+203.208.46.163	lh2.googleusercontent.com	
+203.208.46.163	lh3.ggpht.com	
+203.208.46.163	lh3.googleusercontent.com	
+203.208.46.163	lh4.ggpht.com	
+203.208.46.163	lh4.googleusercontent.com	
+203.208.46.163	lh5.ggpht.com	
+203.208.46.163	lh5.googleusercontent.com	
+203.208.46.163	lh6.ggpht.com	
+203.208.46.163	lh6.googleusercontent.com	
+203.208.46.163	m.google.com	
+203.208.46.163	mail.google.com	
+203.208.46.163	mail-attachment.googleusercontent.com	
+203.208.46.163	maps.google.cn	
+203.208.46.163	maps.google.com	
+203.208.46.163	maps.gstatic.cn	
+203.208.46.163	maps.gstatic.com	
+203.208.46.163	maps-api-ssl.google.com	
+203.208.46.163	mt0.google.cn	
+203.208.46.163	mt0.google.com	
+203.208.46.163	mt1.google.cn	
+203.208.46.163	mt1.google.com	
+203.208.46.163	mt2.google.cn	
+203.208.46.163	mt2.google.com	
+203.208.46.163	mt3.google.cn	
+203.208.46.163	mt3.google.com	
+203.208.46.163	mts0.google.com	
+203.208.46.163	mts1.google.com	
+203.208.46.163	music.google.com	
+203.208.46.163	music.googleusercontent.com	
+203.208.46.163	music-streaming.l.google.com	
+203.208.46.163	mw2.google.com	
+203.208.46.163	news.google.cn	
+203.208.46.163	news.google.com	
+203.208.46.163	news.google.com.hk	
+203.208.46.163	newsfeed-dot-latest-dot-rovio-ad-engine.appspot.com	
+203.208.46.163	nt0.ggpht.com	
+203.208.46.163	nt1.ggpht.com	
+203.208.46.163	nt2.ggpht.com	
+203.208.46.163	nt3.ggpht.com	
+203.208.46.163	oauth.googleusercontent.com	
+203.208.46.163	ode25pfjgmvpquh3b1oqo31ti5ibg5fr-a-calendar-opensocial.googleusercontent.com	
+203.208.46.163	pack.google.cn	
+203.208.46.163	pack.google.com	
+203.208.46.163	picasa.google.com	
+203.208.46.163	picasaweb.google.com	
+203.208.46.163	picasaweb.google.com.hk	
+203.208.46.163	places.google.com	
+203.208.46.163	pop.gmail.com	
+203.208.46.163	profiles.google.com	
+203.208.46.163	project-slingshot-gp.appspot.com	
+203.208.46.163	s1.googleusercontent.com	
+203.208.46.163	s2.googleusercontent.com	
+203.208.46.163	s3.googleusercontent.com	
+203.208.46.163	s4.googleusercontent.com	
+203.208.46.163	s5.googleusercontent.com	
+203.208.46.163	s6.googleusercontent.com	
+203.208.46.163	safebrowsing.clients.google.com	
+203.208.46.163	safebrowsing-cache.google.com	
+203.208.46.163	sandbox.google.com	
+203.208.46.163	scholar.google.cn	
+203.208.46.163	scholar.google.com	
+203.208.46.163	scholar.google.com.hk	
+203.208.46.163	scholar.l.google.com	
+203.208.46.163	services.google.com	
+203.208.46.163	sites.google.com	
+203.208.46.163	sketchup.google.com	
+203.208.46.163	spreadsheets.google.com	
+203.208.46.163	ssl.google-analytics.com	
+203.208.46.163	ssl.gstatic.com	
+203.208.46.163	suggestqueries.google.com	
+203.208.46.163	t.doc-0-0-sj.sj.googleusercontent.com	
+203.208.46.163	t0.gstatic.com	
+203.208.46.163	t1.gstatic.com	
+203.208.46.163	t2.gstatic.com	
+203.208.46.163	t3.gstatic.com	
+203.208.46.163	talkgadget.google.com	
+203.208.46.163	talkx.l.google.com	
+203.208.46.163	themes.googleusercontent.com	
+203.208.46.163	toolbar.google.com	
+203.208.46.163	toolbar.google.com.hk	
+203.208.46.163	toolbarqueries.clients.google.com	
+203.208.46.163	toolbarqueries.google.com.hk	
+203.208.46.163	tools.google.com	
+203.208.46.163	translate.google.cn	
+203.208.46.163	translate.google.com	
+203.208.46.163	translate.google.com.hk	
+203.208.46.163	translate.googleapis.com	
+203.208.46.163	uploadsj.clients.google.com	
+203.208.46.163	v8mq9slfbk1dglresapkg0i5f8pm64lc-a-calendar-opensocial.googleusercontent.com	
+203.208.46.163	video.google.cn	
+203.208.46.163	video.google.com	
+203.208.46.163	video.google.com.hk	
+203.208.46.163	voice.google.com	
+203.208.46.163	wave.google.com	
+203.208.46.163	webcache.googleusercontent.com	
+203.208.46.163	wenda.google.com.hk	
+203.208.46.163	www.gmail.com	
+203.208.46.180	www.google.com	
+203.208.46.163	www.google.com.hk	
+203.208.46.163	www.googleadservices.com	
+203.208.46.163	www.google-analytics.com	
+203.208.46.163	www.googleapis.com	
+203.208.46.163	www.googlelabs.com	
+203.208.46.163	www.gstatic.com	
+203.208.46.163	www-calendar-opensocial.googleusercontent.com	
+203.208.46.163	www-opensocial.googleusercontent.com	
+203.208.46.163	www-oz-opensocial.googleusercontent.com	
+203.208.46.163	r3270-dot-latest-dot-project-slingshot-gp.appspot.com	
+203.208.46.163	bt26mravu2qpe56n8gnmjnpv2inl84bf-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	rbjhe237k979f79d87gmenp3gejfonu9-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	k6v18tjr24doa89b55o3na41kn4v73eb-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	8kubpeu8314p2efdd7jlv09an9i2ljdo-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	adstvca8k2ooaknjjmv89j22n9t676ve-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	ob7f2qc0i50kbjnc81vkhgmb5hsv7a8l-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	53rd6p0catml6vat6qra84rs0del836d-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	u807isd5egseeabjccgcns005p2miucq-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	r70rmsn4s0rhk6cehcbbcbfbs31pu0va-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	59cbv4l9s05pbaks9v77vc3mengeqors-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	i8brh95qor6r54nkl52hidj2ggcs4jgm-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	upt14k1i2veesusrda9nfotcrbp9d7p5-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	debh8vg7vd93bco3prdajidmm7dhql3f-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	4fjvqid3r3oq66t548clrdj52df15coc-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	hsco54a20sh11q9jkmb51ad2n3hmkmrg-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	qhie5b8u979rnch1q0hqbrmbkn9estf7-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	e6ha3snmi09c57cs4h4dnoa006cgfjfu-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	66fl6oqbdsqf5fjl032t5iulimtqjhpa-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	vvpk2b7flnbhcm2p10u4hcnatnp40i3i-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	0rgn8o7pqk7dq7rm8q0639erjd8gnf7g-a-oz-opensocial.googleusercontent.com	
+203.208.46.163	cfmmurgvo3fqrmfu0tjfcpgdt7mh6ccv-a-oz-opensocial.googleusercontent.com	
 
-#Google Services START
-203.208.45.200	0.docs.google.com
-203.208.45.200	0-open-opensocial.googleusercontent.com
-203.208.45.200	1.docs.google.com
-203.208.45.200	1-focus-opensocial.googleusercontent.com
-203.208.45.200	1-open-opensocial.googleusercontent.com
-203.208.45.200	2.docs.google.com
-203.208.45.200	2-focus-opensocial.googleusercontent.com
-203.208.45.200	2-open-opensocial.googleusercontent.com
-203.208.45.200	3.docs.google.com
-203.208.45.200	3-focus-opensocial.googleusercontent.com
-203.208.45.200	3hdrrlnlknhi77nrmsjnjr152ueo3soc-a-calendar-opensocial.googleusercontent.com
-203.208.45.200	3-open-opensocial.googleusercontent.com
-203.208.45.200	4.docs.google.com
-203.208.45.200	4fjvqid3r3oq66t548clrdj52df15coc-a-oz-opensocial.googleusercontent.com
-203.208.45.200	5.docs.google.com
-203.208.45.200	53rd6p0catml6vat6qra84rs0del836d-a-oz-opensocial.googleusercontent.com
-203.208.45.200	59cbv4l9s05pbaks9v77vc3mengeqors-a-oz-opensocial.googleusercontent.com
-203.208.45.200	8kubpeu8314p2efdd7jlv09an9i2ljdo-a-oz-opensocial.googleusercontent.com
-#203.208.45.200	accounts.google.com
-203.208.45.200	adstvca8k2ooaknjjmv89j22n9t676ve-a-oz-opensocial.googleusercontent.com
-203.208.45.200	ajax.googleapis.com
-#203.208.45.200	a-oz-opensocial.googleusercontent.com
-203.208.45.200	apis.google.com
-203.208.45.200	appengine.google.com
-203.208.45.200	apps.google.com
-203.208.45.200	appspot.com
-203.208.45.200	appspot.l.google.com
-203.208.45.200	audio.top100.cn
-203.208.45.200	audio2.top100.cn
-203.208.45.200	auth.keyhole.com
-203.208.45.200	autoproxy-gfwlist.googlecode.com
-203.208.45.200	bks0.books.google.com
-203.208.45.200	bks1.books.google.com
-203.208.45.200	bks2.books.google.com
-203.208.45.200	bks3.books.google.com
-203.208.45.200	bks4.books.google.com
-203.208.45.200	bks5.books.google.com
-203.208.45.200	bks6.books.google.com
-203.208.45.200	bks7.books.google.com
-203.208.45.200	bks8.books.google.com
-203.208.45.200	bks9.books.google.com
-203.208.45.200	blogger.googleusercontent.com
-203.208.45.200	blogsearch.google.cn
-203.208.45.200	blogsearch.google.com
-203.208.45.200	blogsearch.google.com.hk
-203.208.45.200	books.google.com
-203.208.45.200	browserchannel-docs.l.google.com
-203.208.45.200	browserchannel-spreadsheets.l.google.com
-203.208.45.200	browsersync.google.com
-203.208.45.200	browsersync.l.google.com
-203.208.45.200	bt26mravu2qpe56n8gnmjnpv2inl84bf-a-oz-opensocial.googleusercontent.com
-203.208.45.200	cache.pack.google.com
-203.208.45.200	calendar.google.com
-203.208.45.200	cbk0.google.com
-203.208.45.200	cbk1.google.com
-203.208.45.200	cbk2.google.com
-203.208.45.200	cbk3.google.com
-203.208.45.200	cbks0.google.com
-203.208.45.200	cbks1.google.com
-203.208.45.200	cbks2.google.com
-203.208.45.200	cbks3.google.com
-203.208.45.200	chart.apis.google.com
-203.208.45.200	chart.googleapis.com
-203.208.45.200	checkout.google.com
-203.208.45.200	checkout.l.google.com
-203.208.45.200	chrome.angrybirds.com
-203.208.45.200	chrome.google.com
-203.208.45.200	chromium.googlecode.com
-203.208.45.200	clients.l.google.com
-203.208.45.200	clients1.google.com
-203.208.45.200	clients1.google.com.hk
-203.208.45.200	clients1.google.com.tw
-203.208.45.200	clients1.googleusercontent.com
-203.208.45.200	clients2.google.com
-203.208.45.200	clients2.googleusercontent.com
-203.208.45.200	clients3.google.com
-203.208.45.200	clients3.googleusercontent.com
-203.208.45.200	clients4.google.com
-203.208.45.200	clients4.googleusercontent.com
-203.208.45.200	clients5.google.com
-203.208.45.200	clients5.googleusercontent.com
-203.208.45.200	clients6.google.com
-203.208.45.200	clients6.googleusercontent.com
-203.208.45.200	clients7.google.com
-203.208.45.200	clients7.googleusercontent.com
-203.208.45.200	closure-library.googlecode.com
-203.208.45.200	code.google.com
-203.208.45.200	code.l.google.com
-203.208.45.200	code-opensocial.googleusercontent.com
-203.208.45.200	csi.gstatic.com
-203.208.45.200	csi.l.google.com
-203.208.45.200	debh8vg7vd93bco3prdajidmm7dhql3f-a-oz-opensocial.googleusercontent.com
-203.208.45.200	desktop.google.com
-203.208.45.200	desktop.google.com.hk
-203.208.45.200	desktop.l.google.com
-203.208.45.200	desktop2.google.com
-203.208.45.200	ditu.google.cn
-203.208.45.200	ditu.google.com
-203.208.45.200	dl.google.com
-203.208.45.200	dl.l.google.com
-203.208.47.1	dl-ssl.google.com
-203.208.45.200	doc-00-7o-docs.googleusercontent.com
-203.208.45.200	doc-08-7o-docs.googleusercontent.com
-203.208.45.200	doc-0c-7o-docs.googleusercontent.com
-203.208.45.200	doc-0g-7o-docs.googleusercontent.com
-203.208.45.200	doc-0s-7o-docs.googleusercontent.com
-203.208.45.200	doc-10-7o-docs.googleusercontent.com
-203.208.45.200	doc-14-7o-docs.googleusercontent.com
-203.208.45.200	docs.google.com
-203.208.45.200	docs0.google.com
-203.208.45.200	docs1.google.com
-203.208.45.200	docs2.google.com
-203.208.45.200	docs3.google.com
-203.208.45.200	docs4.google.com
-203.208.45.200	docs5.google.com
-203.208.45.200	docs6.google.com
-203.208.45.200	docs7.google.com
-203.208.45.200	docs8.google.com
-203.208.45.200	docs9.google.com
-203.208.45.200	domains.googlesyndication.com
-203.208.45.200	earth.google.com
-203.208.45.200	earth-api-samples.googlecode.com
-203.208.45.200	encrypted.google.com
-203.208.45.200	encrypted.google.com.hk
-203.208.45.200	encrypted-tbn.l.google.com
-203.208.45.200	encrypted-tbn0.google.com
-203.208.45.200	encrypted-tbn1.google.com
-203.208.45.200	encrypted-tbn2.google.com
-203.208.45.200	encrypted-tbn3.google.com
-203.208.45.200	feedback.googleusercontent.com
-203.208.45.200	feedburner.google.com
-203.208.45.200	feedproxy.google.com
-203.208.45.200	feeds.feedburner.com
-203.208.45.200	filetransferenabled.mail.google.com
-203.208.45.200	finance.google.com
-203.208.45.200	fonts.googleapis.com
-203.208.45.200	g.co
-203.208.45.200	g0.gstatic.com
-203.208.45.200	g1.gstatic.com
-203.208.45.200	g2.gstatic.com
-203.208.45.200	g3.gstatic.com
-203.208.45.200	geoauth.google.com
-203.208.45.200	gg.google.cn
-203.208.45.200	gg.google.com
-203.208.45.200	ghs.google.com
-203.208.45.200	ghs.l.google.com
-203.208.45.200	ghs46.google.com
-203.208.45.200	ghs46.l.google.com
-203.208.45.200	gmail.com
-203.208.45.200	gmaps-samples-flash.googlecode.com
-203.208.45.200	goo.gl
-203.208.45.200	google.com
-203.208.45.200	googleapis.l.google.com
-203.208.45.200	googleapis-ajax.google.com
-203.208.45.200	googleapis-ajax.l.google.com
-203.208.45.200	googlecode.l.google.com
-203.208.45.200	google-code-feed-gadget.googlecode.com
-203.208.45.200	googlehosted.l.googleusercontent.com
-203.208.45.200	googlesharedspaces.appspot.com
-203.208.45.200	goto.google.com
-203.208.45.200	groups.google.com
-203.208.45.200	gv-gadget.appspot.com
-203.208.45.200	hsco54a20sh11q9jkmb51ad2n3hmkmrg-a-oz-opensocial.googleusercontent.com
-203.208.45.200	i8brh95qor6r54nkl52hidj2ggcs4jgm-a-oz-opensocial.googleusercontent.com
-203.208.45.200	id.google.cn
-203.208.45.200	id.google.com
-203.208.45.200	id.google.com.hk
-203.208.45.200	id.l.google.com
-203.208.45.200	images.google.com
-203.208.45.200	images.google.com.hk
-203.208.45.200	images7-focus-opensocial.googleusercontent.com
-203.208.45.200	images8-focus-opensocial.googleusercontent.com
-203.208.45.200	images9-focus-opensocial.googleusercontent.com
-203.208.45.200	images-docs-opensocial.googleusercontent.com
-203.208.45.200	jmt0.google.com
-203.208.45.200	k6v18tjr24doa89b55o3na41kn4v73eb-a-oz-opensocial.googleusercontent.com
-203.208.45.200	kh.google.com
-203.208.45.200	kh.l.google.com
-203.208.45.200	khm.google.com
-203.208.45.200	khm.l.google.com
-203.208.45.200	khm0.google.com
-203.208.45.200	khm1.google.com
-203.208.45.200	khm2.google.com
-203.208.45.200	khm3.google.com
-203.208.45.200	khmdb.google.com
-203.208.45.200	khms.google.com
-203.208.45.200	khms.l.google.com
-203.208.45.200	khms0.google.com
-203.208.45.200	khms1.google.com
-203.208.45.200	khms2.google.com
-203.208.45.200	khms3.google.com
-203.208.45.200	labs.google.com
-203.208.46.180	large-uploads.l.google.com
-203.208.45.200	lh1.ggpht.com
-203.208.45.200	lh2.ggpht.com
-203.208.45.200	lh2.l.google.com
-203.208.45.200	lh3.ggpht.com
-203.208.45.200	lh4.ggpht.com
-203.208.45.200	lh5.ggpht.com
-203.208.45.200	lh6.ggpht.com
-203.208.45.200	lh1.googleusercontent.com
-203.208.45.200	lh2.googleusercontent.com
-203.208.45.200	lh3.googleusercontent.com
-203.208.45.200	lh4.googleusercontent.com
-203.208.45.200	lh5.googleusercontent.com
-203.208.45.200	lh6.googleusercontent.com
-203.208.45.200	linkhelp.clients.google.com
-203.208.45.200	local.google.com
-203.208.45.200	m.google.com
-203.208.45.200	magnifier.blogspot.com
-203.208.46.180	mail.google.com
-203.208.46.180	mail-attachment.googleusercontent.com
-203.208.45.200	map.google.com
-203.208.45.200	maps.google.com
-203.208.45.200	maps.googleapis.com
-203.208.45.200	maps.gstatic.cn
-203.208.45.200	maps.gstatic.com
-203.208.45.200	maps.l.google.com
-203.208.45.200	maps-api-ssl.google.com
-203.208.45.200	market.android.com
-203.208.45.200	mars.google.com
-203.208.45.200	mobilemaps.clients.google.com
-203.208.45.200	mt.google.cn
-203.208.45.200	mt.google.com
-203.208.45.200	mt.l.google.com
-203.208.45.200	mt0.google.cn
-203.208.45.200	mt0.google.com
-203.208.45.200	mt0.gstatic.com
-203.208.45.200	mt1.google.cn
-203.208.45.200	mt1.google.com
-203.208.45.200	mt1.gstatic.com
-203.208.45.200	mt2.google.cn
-203.208.45.200	mt2.google.com
-203.208.45.200	mt2.gstatic.com
-203.208.45.200	mt3.google.cn
-203.208.45.200	mt3.google.com
-203.208.45.200	mt3.gstatic.com
-203.208.45.200	mt4.gstatic.com
-203.208.45.200	mt5.gstatic.com
-203.208.45.200	mt6.gstatic.com
-203.208.45.200	mt7.gstatic.com
-203.208.46.180	mtalk.google.com
-203.208.45.200	mts.google.com
-203.208.45.200	mts.l.google.com
-203.208.45.200	mts0.google.com
-203.208.45.200	mts1.google.com
-203.208.45.200	mts2.google.com
-203.208.45.200	mts3.google.com
-203.208.46.180	music.google.com
-203.208.45.200	music.googleusercontent.cn
-203.208.46.180	music.googleusercontent.com
-203.208.45.200	music-onebox.googleusercontent.com
-203.208.46.180	music-streaming.l.google.com
-203.208.45.200	mw1.google.com
-203.208.45.200	mw2.google.com
-203.208.45.200	news.google.com
-203.208.45.200	newsfeed-dot-latest-dot-rovio-ad-engine.appspot.com
-203.208.45.200	nt0.ggpht.com
-203.208.45.200	nt1.ggpht.com
-203.208.45.200	nt2.ggpht.com
-203.208.45.200	nt3.ggpht.com
-203.208.45.200	nt4.ggpht.com
-203.208.45.200	nt5.ggpht.com
-203.208.45.200	oauth.googleusercontent.com
-203.208.45.200	ob7f2qc0i50kbjnc81vkhgmb5hsv7a8l-a-oz-opensocial.googleusercontent.com
-203.208.45.200	ode25pfjgmvpquh3b1oqo31ti5ibg5fr-a-calendar-opensocial.googleusercontent.com
-203.208.45.200	photos.google.com
-203.208.45.200	photos-ugc.l.google.com
-203.208.45.200	picasa.google.com
-203.208.45.200	picasaweb.google.com
-203.208.45.200	picasaweb.google.com.hk
-203.208.45.200	picasaweb.l.google.com
-203.208.45.200	places.google.com
-203.208.45.200	plus.google.com
-203.208.45.200	plus.google.com.hk
-203.208.45.200	plus.url.google.com
-203.208.45.200	plusone.google.com
-203.208.45.200	profiles.google.com
-203.208.45.200	project-slingshot-gp.appspot.com
-203.208.45.200	qhie5b8u979rnch1q0hqbrmbkn9estf7-a-oz-opensocial.googleusercontent.com
-203.208.45.200	r2303.latest.project-slingshot-hr.appspot.com
-203.208.45.200	r3085-dot-latest-dot-project-slingshot-gp.appspot.com
-203.208.45.200	r3091-dot-latest-dot-project-slingshot-gp.appspot.com
-203.208.45.200	r3101-dot-latest-dot-project-slingshot-gp.appspot.com
-203.208.45.200	r3432-dot-latest-dot-project-slingshot-hr.appspot.com
-203.208.45.200	r4681-dot-latest-dot-project-slingshot-hr.appspot.com
-203.208.45.200	r70rmsn4s0rhk6cehcbbcbfbs31pu0va-a-oz-opensocial.googleusercontent.com
-203.208.45.200	rbjhe237k979f79d87gmenp3gejfonu9-a-oz-opensocial.googleusercontent.com
-203.208.45.200	s1.googleusercontent.com
-203.208.45.200	s2.googleusercontent.com
-203.208.45.200	s3.googleusercontent.com
-203.208.45.200	s4.googleusercontent.com
-203.208.45.200	s5.googleusercontent.com
-203.208.45.200	s6.googleusercontent.com
-203.208.45.200	safebrowsing.clients.google.com
-203.208.45.200	safebrowsing-cache.google.com
-203.208.45.200	sandbox.google.com
-203.208.45.200	sb.google.com
-203.208.45.200	scholar.google.com
-203.208.45.200	scholar.l.google.com
-203.208.45.200	services.google.com
-203.208.45.200	sites.google.com
-203.208.45.200	sketchup.google.com
-203.208.45.200	spreadsheet.google.com
-203.208.45.200	spreadsheets.google.com
-203.208.45.200	spreadsheets.l.google.com
-203.208.45.200	spreadsheets0.google.com
-203.208.45.200	spreadsheets1.google.com
-203.208.45.200	spreadsheets2.google.com
-203.208.45.200	spreadsheets-china.l.google.com
-203.208.45.200	spreadsheets-opensocial.googleusercontent.com
-203.208.45.200	ssl.google-analytics.com
-203.208.45.200	stat.top100.cn
-203.208.45.200	static.cache.l.google.com
-203.208.45.200	suggestqueries.google.com
-203.208.45.200	suggestqueries.l.google.com
-203.208.46.180	t.doc-0-0-sj.sj.googleusercontent.com
-203.208.45.200	t0.gstatic.com
-203.208.45.200	t1.gstatic.com
-203.208.45.200	t2.gstatic.com
-203.208.45.200	t3.gstatic.com
-203.208.45.200	talkgadget.google.com
-203.208.46.180	talkx.l.google.com
-203.208.45.200	themes.googleusercontent.com
-203.208.45.200	toolbar.google.com
-203.208.45.200	toolbarqueries.clients.google.com
-203.208.45.200	toolbarqueries.google.com
-203.208.45.200	toolbarqueries.google.com.hk
-203.208.45.200	toolbarqueries.l.google.com
-203.208.45.200	tools.google.com
-203.208.45.200	translate.google.com
-203.208.45.200	translate.googleapis.com
-203.208.45.200	translate.googleusercontent.com
-203.208.45.200	u807isd5egseeabjccgcns005p2miucq-a-oz-opensocial.googleusercontent.com
-203.208.46.180	uploadsj.clients.google.com
-203.208.45.200	upt14k1i2veesusrda9nfotcrbp9d7p5-a-oz-opensocial.googleusercontent.com
-203.208.45.200	video.google.com
-203.208.45.200	video-stats.l.google.com
-203.208.45.200	voice.google.com
-203.208.45.200	webcache.googleusercontent.com
-203.208.45.200	wenda.google.com.hk
-203.208.45.200	wifi.google.com
-203.208.45.200	wifi.l.google.com
-203.208.45.200	wire.l.google.com
-203.208.45.200	writely.l.google.com
-203.208.45.200	writely-china.l.google.com
-203.208.45.200	writely-com.l.google.com
-203.208.45.200	www.appspot.com
-203.208.45.200	www.gmail.com
-203.208.45.200	www.google.cn
-203.208.46.180	www.google.com
-203.208.45.200	www.google.com.hk
-203.208.45.200	www.googleadservices.com
-203.208.45.200	www.google-analytics.com
-203.208.45.200	www.googleapis.com
-203.208.45.200	www.googlelabs.com
-203.208.45.200	www.googleusercontent.com
-203.208.45.200	www.gstatic.cn
-203.208.45.200	www.gstatic.com
-203.208.45.200	www.l.google.com
-203.208.45.200	www0.l.google.com
-203.208.45.200	www1.l.google.com
-203.208.45.200	www2.l.google.com
-203.208.45.200	www3.l.google.com
-203.208.45.200	www4.l.google.com
-203.208.45.200	www-calendar-opensocial.googleusercontent.com
-203.208.45.200	www-fc-opensocial.googleusercontent.com
-203.208.45.200	www-focus-opensocial.googleusercontent.com
-203.208.45.200	www-gm-opensocial.googleusercontent.com
-203.208.45.200	www-kix-opensocial.googleusercontent.com
-203.208.45.200	www-open-opensocial.googleusercontent.com
-203.208.45.200	www-opensocial.googleusercontent.com
-203.208.45.200	www-opensocial-sandbox.googleusercontent.com
-203.208.45.200	www-oz-opensocial.googleusercontent.com
-203.208.45.200	ytstatic.l.google.com
-#Google Services END
-
-#Apple Services START
-203.78.36.40	adcdownload.apple.com
-203.78.36.40	deimos3.apple.com
-203.78.36.40	appldnld.apple.com
-203.78.36.40	swcdn.apple.com
-203.78.36.40	developer.apple.com
-#Apple Services END
-
-#Twitter START
-64.213.102.51	a0.twimg.com
-120.88.53.33	a1.twimg.com
-208.87.33.151	api.mobilepicture.com
-199.59.148.207	api.twitter.com
-199.59.148.223	assets0.twitter.com
-199.59.148.223	assets1.twitter.com
-199.59.148.223	assets2.twitter.com
-199.59.148.223	assets3.twitter.com
-199.59.148.138	betastream.twitter.com
-69.58.188.34	bitly.com
-199.59.149.137	dev.twitter.com
-199.59.148.206	help.twitter.com
-199.59.148.210	mobile.twitter.com
-199.59.148.223	oauth.twitter.com
-209.17.70.144	oi40.tinypic.com
-209.17.70.143	oi41.tinypic.com
-209.17.70.143	oi42.tinypic.com
-209.17.70.143	oi43.tinypic.com
-209.17.70.143	oi44.tinypic.com
-209.17.70.143	oi45.tinypic.com
-209.17.70.143	oi46.tinypic.com
-209.17.70.143	oi47.tinypic.com
-209.17.70.143	oi48.tinypic.com
-209.17.70.143	oi49.tinypic.com
-209.17.70.143	oi50.tinypic.com
-209.17.70.144	oi51.tinypic.com
-209.17.70.144	oi52.tinypic.com
-209.17.70.144	oi53.tinypic.com
-209.17.70.144	oi54.tinypic.com
-209.17.70.144	oi55.tinypic.com
-209.17.70.144	oi56.tinypic.com
-184.28.97.55	p.twimg.com
-199.59.149.212	pic.twitter.com
-184.29.36.124	platform.twitter.com
-219.76.10.138	platform0.twitter.com
-184.106.20.99	posterous.com
-199.59.148.243	scribe.twitter.com
-199.59.149.208	scribe.twitter.com
-199.59.148.223	search.twitter.com
-184.169.75.33	si0.twimg.com
-184.169.75.33	si1.twimg.com
-184.169.75.33	si2.twimg.com
-184.169.75.33	si3.twimg.com
-184.169.75.33	si4.twimg.com
-184.169.75.33	si5.twimg.com
-199.59.148.223	ssl.twitter.com
-199.59.148.223	static.twitter.com
-199.59.148.223	status.twitter.com
-199.59.148.206	support.twitter.com
-#199.59.148.210	t.co
-174.36.58.234	twitpic.com
-199.59.148.223	upload.twitter.com
-199.59.148.139	userstream.twitter.com
-174.36.58.204	web1.twitpic.com
-74.86.87.236	web10.twitpic.com
-174.36.58.224	web2.twitpic.com
-174.36.58.200	web3.twitpic.com
-174.37.33.184	web4.twitpic.com
-174.37.75.16	web5.twitpic.com
-174.36.35.60	web6.twitpic.com
-174.36.46.32	web7.twitpic.com
-66.228.120.92	web8.twitpic.com
-74.86.100.160	web9.twitpic.com
-174.36.58.234	www.twitpic.com
-199.16.156.103	twitter.com #[BACKUP=C7109C69]
-199.16.156.103	www.twitter.com #[BACKUP=C7109C69]
-208.94.0.61	a.yfrog.com
-208.94.0.61	yfrog.com
-208.94.0.61	www.yfrog.com
-
-#Twitter END
-
-#Facebook START
-69.171.227.41	0-333.channel.facebook.com
-66.220.147.47	api.facebook.com
-69.171.242.28	apps.facebook.com
-69.63.190.18	apps.facebook.com
-61.213.189.98	b.static.ak.facebook.com
-61.213.189.120	b.static.ak.fbcdn.net
-61.213.189.113	creative.ak.fbcdn.net
-97.65.135.139	external.ak.fbcdn.net
-66.220.149.25	facebook.com
-61.213.189.113	fbcdn.net
-80.67.74.111	fbcdn-photos-a.akamaihd.net
-64.213.102.26	fbcdn-profile-a.akamaihd.net
-173.223.232.67	fbcdn-sphotos-a.akamaihd.net
-66.220.149.25	graph.facebook.com
-66.220.146.28	login.facebook.com
-69.171.229.32	m.facebook.com
-61.213.189.113	photos-a.ak.fbcdn.net
-61.213.189.113	photos-b.ak.fbcdn.net
-61.213.189.113	photos-c.ak.fbcdn.net
-61.213.189.113	photos-d.ak.fbcdn.net
-61.213.189.113	photos-e.ak.fbcdn.net
-61.213.189.98	photos-f.ak.fbcdn.net
-61.213.189.113	photos-g.ak.fbcdn.net
-61.213.189.113	photos-h.ak.fbcdn.net
-69.171.229.35	pixel.facebook.com
-118.214.190.105	profile.ak.facebook.com
-61.213.189.114	profile.ak.fbcdn.net
-69.63.179.70	secure.facebook.com
-69.63.181.57	secure-media-sf2p.facebook.com
-69.63.181.57	secure-profile.facebook.com
-61.213.189.113	s-hprofile-sf2p.fbcdn.net
-69.63.181.15	ssl.facebook.com
-118.214.114.110	s-static.ak.facebook.com
-61.213.189.98	static.ak.facebook.com
-97.65.135.163	static.ak.fbcdn.net
-69.63.181.31	touch.facebook.com
-69.171.228.42	upload.facebook.com
-120.29.145.50	vthumb.ak.fbcdn.net
-66.220.149.25	www.facebook.com
-66.220.149.25	zh-CN.facebook.com
-#Facebook END
-
-#Dropbox START
-199.47.217.179	dropbox.com
-199.47.216.170	www.dropbox.com
-#107.20.207.62	dl.dropbox.com
-#107.20.207.62	dl-web.dropbox.com
-174.36.51.42	forums.dropbox.com
-174.36.51.42	wiki.dropbox.com
-#Dropbox END
-
-#Flickr START
-66.94.233.186	flickr.com
-66.94.233.186	www.flickr.com
-68.142.214.43	static.flickr.com
-66.196.118.49	farm1.static.flickr.com
-69.147.90.159	farm2.static.flickr.com
-76.13.18.78	farm3.static.flickr.com
-67.195.19.66	farm4.static.flickr.com
-76.13.18.79	farm5.static.flickr.com
-98.139.197.254	farm6.static.flickr.com
-98.139.102.46	farm7.static.flickr.com
-98.136.43.76	geo.yahoo.com
-68.142.250.161	l.yimg.com
-96.6.93.227	s.yimg.com
-98.137.88.88	d.yimg.com
-68.142.196.57	c5.ah.yahoo.com
-124.108.120.124	sa.edit.yahoo.com
-76.13.6.132	row.bc.yahoo.com
-66.163.168.247	open.login.yahoo.com
-209.191.92.114	login.yahoo.com
-209.191.92.115	edit.yahoo.com
-209.191.121.31	up.flickr.com
-209.191.105.102	adjax.flickr.yahoo.com
-204.0.5.35	content.yieldmanager.edgesuite.net
-76.13.6.132	us.bc.yahoo.com
-204.0.5.34	us.js2.yimg.com
-
-#data from HostsX
-76.13.18.78	bf1.farm3.static.flickr.com
-76.13.18.78	farm3.static.flickr.com
-76.13.18.78	gq1.farm3.static.flickr.com
-76.13.18.78	sp1.farm3.static.flickr.com
-76.13.18.79	bf1.farm5.static.flickr.com
-76.13.18.79	farm5.static.flickr.com
-76.13.18.79	gq1.farm5.static.flickr.com
-98.139.102.46	bf1.farm7.static.flickr.com
-98.139.102.46	farm7.static.flickr.com
-98.139.102.46	gq1.farm7.static.flickr.com
-98.139.102.46	ne1.farm7.static.flickr.com
-98.139.197.254	bf1.farm6.static.flickr.com
-98.139.197.254	farm6.static.flickr.com
-98.139.197.254	gq1.farm6.static.flickr.com
-#Flickr END
-
-#Adobe Activation START
-0.0.0.0	3dns-2.adobe.com
-0.0.0.0	3dns-3.adobe.com
-0.0.0.0	activate.adobe.com
-0.0.0.0	activate-sea.adobe.com
-0.0.0.0	activate-sjc0.adobe.com
-0.0.0.0	adobe-dns.adobe.com
-0.0.0.0	adobe-dns-2.adobe.com
-0.0.0.0	adobe-dns-3.adobe.com
-0.0.0.0	ereg.adobe.com
-0.0.0.0	hl2rcv.adobe.com
-0.0.0.0	practivate.adobe.com
-0.0.0.0	wip3.adobe.com
-0.0.0.0	activate.wip3.adobe.com
-0.0.0.0	ereg.wip3.adobe.com
-0.0.0.0	wwis-dubc1-vip60.adobe.com
-#Adobe Activation END
-
-#Wikipedia START
-208.80.152.201	wikipedia.org
-208.80.152.201	www.wikipedia.org
-208.80.152.201	bits.wikipedia.org
-208.80.152.201	en.wikipedia.org
-208.80.152.201	zh.wikipedia.org
-208.80.152.201	simple.wikipedia.org
-208.80.152.201	wikibooks.org
-208.80.152.201	www.wikibooks.org
-208.80.152.201	en.wikibooks.org
-208.80.152.201	zh.wikibooks.org
-208.80.152.201	wikinews.org
-208.80.152.201	www.wikinews.org
-208.80.152.201	en.wikinews.org
-208.80.152.201	zh.wikinews.org
-208.80.152.201	wikiquote.org
-208.80.152.201	www.wikiquote.org
-208.80.152.201	en.wikiquote.org
-208.80.152.201	zh.wikiquote.org
-208.80.152.201	zh.wikisource.org
-208.80.152.201	en.wikisource.org
-208.80.152.201	wiktionary.org
-208.80.152.201	www.wiktionary.org
-208.80.152.201	en.wiktionary.org
-208.80.152.201	zh.wiktionary.org
-208.80.152.201	wikimedia.org
-208.80.152.201	www.wikimedia.org
-208.80.152.201	bugs.wikimedia.org
-208.80.152.201	bugzilla.wikimedia.org
-208.80.152.201	commons.wikimedia.org
-208.80.152.201	dumps.wikimedia.org
-208.80.152.201	download.wikimedia.org
-208.80.152.201	irc.wikimedia.org
-208.80.152.201	ftp.wikimedia.org
-208.80.152.201	ganglia.wikimedia.org
-208.80.152.201	mail.wikimedia.org
-208.80.152.201	meta.wikimedia.org
-208.80.152.201	news.wikimedia.org
-208.80.152.201	noc.wikimedia.org
-208.80.152.201	kate.wikimedia.org
-208.80.152.201	kohl.wikimedia.org
-208.80.152.201	stats.wikimedia.org
-208.80.152.201	ticket.wikimedia.org
-208.80.152.201	tools.wikimedia.org
-208.80.152.211	upload.wikimedia.org
-208.80.152.201	wikimediafoundation.org
-208.80.152.201	www.wikimediafoundation.org
-208.80.152.201	mediawiki.org
-208.80.152.201	www.mediawiki.org
-#Wikipedia END
-
-#YouTube START
-203.208.45.206	accounts.youtube.com
-203.208.45.206	apiblog.youtube.com
-203.208.45.206	clients1.youtube.com
-203.208.45.206	gdata.youtube.com
-203.208.45.206	help.youtube.com
-203.208.45.206	i.ytimg.com
-203.208.45.206	i1.ytimg.com
-203.208.45.206	i2.ytimg.com
-203.208.45.206	i3.ytimg.com
-203.208.45.206	i4.ytimg.com
-203.208.45.206	insight.youtube.com
-203.208.45.206	m.youtube.com
-203.208.45.206	s.youtube.com
-203.208.45.206	s.ytimg.com
-203.208.45.206	www.youtube.com
-203.208.45.206	youtube.com
-203.208.45.206	ytimg.l.google.com
-#YouTube END
-
-#SmartHosts END
+80.239.148.202 ia.media-imdb.com
+72.21.214.36 imdb.com
+203.208.46.146 drive.google.com  
+74.125.71.94 drive.google.com
+203.208.45.200 drive.google.com
+203.208.46.29 support.google.com
 
 
-203.208.46.30 www.google.com
-203.208.46.30 picadaweb.google.com
+203.208.46.29 plus.Google.com
+74.125.230.107 plus.google.com
 
-203.208.46.30 lh1.ggpht.com
-203.208.46.30 lh2.ggpht.com
-203.208.46.30 lh3.ggpht.com
-203.208.46.30 lh4.ggpht.com
-203.208.46.30 lh5.ggpht.com
-203.208.46.30 lh6.ggpht.com
-203.208.46.30 lh6.googleusercontent.com
-203.208.46.30 lh5.googleusercontent.com
-203.208.46.30 lh4.googleusercontent.com
-203.208.46.30 lh3.googleusercontent.com
-203.208.46.30 lh2.googleusercontent.com
-203.208.46.30 lh1.googleusercontent.com
-203.208.46.30 images1-focus-opensocial.googleusercontent.com
-203.208.46.30 images2-focus-opensocial.googleusercontent.com
-203.208.46.30 images3-focus-opensocial.googleusercontent.com
-203.208.46.30 images4-focus-opensocial.googleusercontent.com
-203.208.46.30 images5-focus-opensocial.googleusercontent.com
-203.208.46.30 images6-focus-opensocial.googleusercontent.com
-203.208.46.30 s6.googleusercontent.com
-203.208.46.30 s5.googleusercontent.com
-203.208.46.30 s4.googleusercontent.com
-203.208.46.30 s3.googleusercontent.com
-203.208.46.30 s2.googleusercontent.com
-203.208.46.30 s1.googleusercontent.com
+# my setting end
 
-203.208.46.30 plus.google.com
-203.208.46.30 talkgadget.google.com
-203.208.46.30 ditu.google.com
-203.208.46.30 maps-api-ssl.google.com
-203.208.46.30 mail.google.com
-203.208.46.30 docs.google.com
-203.208.46.30 pop.gmail.com
-203.208.46.30 scholar.l.google.com
-203.208.46.30 news.google.com
-203.208.46.30 video.google.com
-203.208.46.29 translate.google.com
-
-203.208.46.30 profiles.google.com
+#去优酷广告 
+0.0.0.0 stat.youku.com 
+0.0.0.0 static.lstat.youku.com 
+0.0.0.0 valb.atm.youku.com 
+0.0.0.0 valc.atm.youku.com 
+0.0.0.0 valf.atm.youku.com 
+0.0.0.0 valo.atm.youku.com 
+0.0.0.0 valp.atm.youku.com 
+0.0.0.0 vid.atm.youku.com 
+0.0.0.0 walp.atm.youku.com 
+#去土豆网广告 
+127.0.0.1 adextensioncontrol.tudou.com 
+127.0.0.1 iwstat.tudou.com 
+127.0.0.1 nstat.tudou.com 
+127.0.0.1 stats.tudou.com 
+127.0.0.1 *.p2v.tudou.com* 
+127.0.0.1 at-img1.tdimg.com 
+127.0.0.1 at-img2.tdimg.com 
+127.0.0.1 at-img3.tdimg.com 
+127.0.0.1 adplay.tudou.com 
+127.0.0.1 adcontrol.tudou.com 
+127.0.0.1 stat.tudou.com 
+#去酷6网广告 
+127.0.0.1 1.allyes.com.cn 
+127.0.0.1 analytics.ku6.com 
+127.0.0.1 gug.ku6cdn.com 
+127.0.0.1 ku6.allyes.com 
+127.0.0.1 ku6afp.allyes.com 
+127.0.0.1 pq.stat.ku6.com 
+127.0.0.1 st.vq.ku6.cn 
+127.0.0.1 stat0.888.ku6.com 
+127.0.0.1 stat1.888.ku6.com 
+127.0.0.1 stat2.888.ku6.com 
+127.0.0.1 stat3.888.ku6.com 
+127.0.0.1 static.ku6.com 
+127.0.0.1 v0.stat.ku6.com 
+127.0.0.1 v1.stat.ku6.com 
+127.0.0.1 v2.stat.ku6.com 
+127.0.0.1 v3.stat.ku6.com 
+#去奇艺广告 
+127.0.0.1 afp.qiyi.com 
+127.0.0.1 focusbaiduafp.allyes.com 
+#去CNTV 
+127.0.0.1 a.cctv.com 
+127.0.0.1 a.cntv.cn 
+127.0.0.1 ad.cctv.com 
+127.0.0.1 d.cntv.cn 
+127.0.0.1 adguanggao.eee114.com 
+127.0.0.1 cctv.adsunion.com 
+#新浪视频 
+127.0.0.1 dcads.sina.com.cn 
+#pptv 
+127.0.0.1 pp2.pptv.com 
+#乐视 
+127.0.0.1 pro.letv.com 
+#搜狐高清 
+127.0.0.1 images.sohu.com 
+#HostsX 国内站点广告/视频类网站 
+#CNTV 
+127.0.0.1 a.cctv.com 
+127.0.0.1 a.cntv.cn 
+127.0.0.1 ad.cctv.com 
+127.0.0.1 d.cntv.cn 
+127.0.0.1 adguanggao.eee114.com 
+127.0.0.1 cctv.adsunion.com 
+#我乐网 
+127.0.0.1 acs.56.com 
+127.0.0.1 acs.agent.56.com 
+127.0.0.1 acs.agent.v-56.com 
+127.0.0.1 bill.agent.56.com 
+127.0.0.1 bill.agent.v-56.com 
+127.0.0.1 stat.56.com 
+127.0.0.1 stat2.corp.56.com 
+127.0.0.1 union.56.com 
+127.0.0.1 uvimage.56.com 
+127.0.0.1 v16.56.com 
+#6间房 
+127.0.0.1 pole.6rooms.com 
+127.0.0.1 shrek.6.cn 
+127.0.0.1 simba.6.cn 
+127.0.0.1 union.6.cn 
+#激动网 
+127.0.0.1 86file.megajoy.com 
+127.0.0.1 86get.joy.cn 
+127.0.0.1 86log.joy.cn 
+#天线视频 
+127.0.0.1 casting.openv.com 
+127.0.0.1 m.openv.tv 
+127.0.0.1 uniclick.openv.com 
+#迅雷看看屏蔽： 
+127.0.0.1 mcfg.sandai.net 
+127.0.0.1 biz5.sandai.net 
+127.0.0.1 server1.adpolestar.net 
+127.0.0.1 advstat.xunlei.com 
+127.0.0.1 mpv.sandai.net

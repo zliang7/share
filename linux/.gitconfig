@@ -1,0 +1,24 @@
+[core]
+	editor = vi
+	autocrlf = false
+	filemode = false
+[user]
+	name = Yang
+	email = yang.gu@intel.com
+	mail = yang.gu@intel.com
+[sendemail]
+	smtpserver = linux.intel.com
+	chainreplyto = false
+[apply]
+	#whitespace = error
+[giggle]
+	main-window-maximized = true
+	main-window-geometry = 430x282+3+24
+	history-view-vpane-position = 549
+	main-window-view = HistoryView
+	file-view-vpane-position = 953
+	show-graph = true
+	file-view-hpane-position = 307
+[url "http://"]
+	insteadOf = "https://"
+

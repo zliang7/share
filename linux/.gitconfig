@@ -3,7 +3,7 @@
 	autocrlf = false
 	filemode = false
 [user]
-	name = Yang
+	name = Yang Gu
 	email = yang.gu@intel.com
 	mail = yang.gu@intel.com
 [sendemail]
@@ -22,3 +22,5 @@
 [url "http://"]
 	insteadOf = "https://"
 
+[color]
+	ui = auto

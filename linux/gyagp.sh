@@ -8,3 +8,4 @@ export http_proxy=http://proxy-shz.intel.com:911
 export PATH=/workspace/project/chromium/depot_tools:$PATH
 
 export LC_ALL=en_US.UTF-8
+export GYP_GENERATORS='ninja'

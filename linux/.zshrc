@@ -218,9 +218,10 @@ zle -N sudo-command-line
 #定义快捷键为： [Esc] [Esc]
 bindkey "\e\e" sudo-command-line
 #}}}
-  
 #命令别名 {{{
 alias -g cp='cp -i'
+
+
 alias -g mv='mv -i'
 alias -g rm='rm -i'
 alias -g ls='ls -F --color=auto'
@@ -335,7 +336,7 @@ function preexec {
 }  
 
 # Followings are added by Yang
-export CDPATH=/workspace/telephony/ofono
+#export CDPATH=/workspace/telephony/ofono
 export MANPAGER=most
 
 alias cd1="cd .."
@@ -350,13 +351,6 @@ alias -g G='| grep'
 # Suffix aliases
 alias -s txt='gedit'
 alias -s pdf='acroread'
-
-alias ofonod="cd /workspace/telephony/ofono && src/ofonod -nd '*'"
-alias phonesim="cd /workspace/telephony/phonesim && src/phonesim -p 12345 -gui src/default.xml"
-alias em="cd /workspace/telephony/ofono/test && ./enable-modem"
-alias om="cd /workspace/telephony/ofono/test && ./online-modem"
-alias eom="cd /workspace/telephony/ofono/test && ./enable-modem && sleep 5 && ./online-modem"
-alias ob="cd /workspace/telephony/ofono && ./bootstrap-configure && time make -j4"
 
 export GIT_PROXY_COMMAND=/usr/bin/socks-gw
 
@@ -373,4 +367,4 @@ for i in gedit meld bcompare; do
     alias "$i=z $i"
 done
 
-export PATH=/workspace/project/chromium/depot_tools:$PATH
+cd /workspace

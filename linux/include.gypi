@@ -1,1 +1,6 @@
-{'variable':{'component':'shared_library'}}
+{
+  'variable':{
+    'component':'shared_library',
+    'enable_svg':0,
+  },
+}

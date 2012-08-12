@@ -336,7 +336,7 @@ function preexec {
 }  
 
 # Followings are added by Yang
-#export CDPATH=/workspace/telephony/ofono
+
 export MANPAGER=most
 
 alias cd1="cd .."
@@ -344,6 +344,11 @@ alias cd2="cd ../.."
 alias cd3="cd ../../.."
 alias cd4="cd ../../../.."
 alias cd5="cd ../../../../.."
+
+alias cd...=cd2
+alias cd....=cd3
+alias cd.....=cd4
+alias cd......=cd5
 
 # Global aliases
 alias -g G='| grep'
@@ -353,6 +358,19 @@ alias -s txt='gedit'
 alias -s pdf='acroread'
 
 export GIT_PROXY_COMMAND=/usr/bin/socks-gw
+
+export http_proxy=http://proxy-shz.intel.com:911
+export PATH=/workspace/project/chromium/depot_tools:$PATH
+
+#export LC_ALL=en_US.UTF-8
+export GYP_GENERATORS='ninja'
+
+# ccache related
+export CCACHE_DIR=/workspace/ccache
+export CCACHE_SIZE="10G"
+export CCACHE_BASEDIR=/workspace/project
+export CCACHE_SLOPPINESS=include_file_mtime
+
 
 # Automatically background processes (no output to terminal etc)
 alias 'z=echo $RANDOM > /dev/null; zz'

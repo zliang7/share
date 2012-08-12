@@ -9,6 +9,7 @@
 # Post-installation: 
 # Install display card driver, slickedit.
 # Run /workspace/project/chromium/git_upstream/src/build/install-build-deps.sh. This file would help to install many development tools.
+# Run vncserver 
 
 import os;
 import commands;
@@ -154,7 +155,7 @@ if __name__ == "__main__":
     
     copyFile(".gdbinit", homeDir, 0);
     
-    copyFile("gyagp.sh", "/etc/profile.d", 1);
+    #copyFile("gyagp.sh", "/etc/profile.d", 1);
     
     installPackage("ssh");
     installPackage("gnome-shell");
@@ -173,6 +174,5 @@ if __name__ == "__main__":
         commands.getstatusoutput("sudo apt-file update");
 
 
-
-    # post installation
-    # Run vncserver to start vnc server
+    installPackage("ccache");
+    commands.getstatusoutput("ccache -M 10G");

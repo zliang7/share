@@ -367,10 +367,10 @@ export GYP_GENERATORS='ninja'
 
 # ccache related
 export CCACHE_DIR=/workspace/ccache
-export CCACHE_SIZE="10G"
+export CCACHE_SIZE="30G"
 export CCACHE_BASEDIR=/workspace/project
 export CCACHE_SLOPPINESS=include_file_mtime
-
+export PATH=/usr/lib/ccache:$PATH
 
 # Automatically background processes (no output to terminal etc)
 alias 'z=echo $RANDOM > /dev/null; zz'

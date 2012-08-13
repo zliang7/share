@@ -152,7 +152,7 @@ if __name__ == "__main__":
     copyFile("socks-gw", "/usr/bin", 1);
     copyFile("git.sh", "/etc/profile.d", 1);
     copyFile(".gitconfig", homeDir, 0);
-
+    copyFile("servers", "/etc/subversion", 1);
 
     installPackage("gparted");
     installPackage("gnome-shell");

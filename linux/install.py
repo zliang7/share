@@ -10,6 +10,7 @@
 # Install display card driver, slickedit.
 # Run /workspace/project/chromium/git_upstream/src/build/install-build-deps.sh. This file would help to install many development tools.
 # Run vncserver 
+# Set keyboard shortcut: "nautilus /workspace" -> ctrl+alt+E, 
 
 import os;
 import commands;
@@ -102,11 +103,12 @@ def installPackage(pkg):
         return -1;
 
 if __name__ == "__main__":
+    # This should be done first
     patchSudo();
 
-    installPackage("tsocks");
-    overwriteFile("tsocks.conf", "/etc", 1);
-
+    # Update repo info
+    copyFile("apt.conf", "/etc/apt", 1);
+    copyFile("gyagp.list", "/etc/apt/sources.list.d", 1); 
     (status, output) = commands.getstatusoutput("cat /etc/apt/sources.list |grep 'ubuntu.com'");
     if status == 0: # need overwrite
         (status, output) = commands.getstatusoutput("awk '{print $2}' /etc/issue");
@@ -117,7 +119,15 @@ if __name__ == "__main__":
     else:
         info("/etc/apt/sources.list was already updated"); 
 
-    # Need to use tsocks
+    status = installPackage("apt-file");
+    if status == 0:
+        commands.getstatusoutput("sudo apt-file update");
+
+    # Install tsocks
+    installPackage("tsocks");
+    overwriteFile("tsocks.conf", "/etc", 1);
+
+    # Install Chrome, which needs to use tsocks
     (status, output) = commands.getstatusoutput("sudo apt-key list | grep 7FAC5991");
     if status:
         info("Get the key for Chrome...");
@@ -127,52 +137,53 @@ if __name__ == "__main__":
     else:
         info("Key for Chrome has been added");
 
-
-    copyFile("apt.conf", "/etc/apt", 1);
-    copyFile("gyagp.list", "/etc/apt/sources.list.d", 1);    
+    installPackage("google-chrome-unstable");
     
-    installPackage("gparted");
-
-    
+    # zsh related
     status = installPackage("zsh");
     if status == 0:
         copyFile(".zshrc", homeDir, 0);
         # use sudo to bypass password input
         commands.getstatusoutput("sudo chsh -s /bin/zsh " + user);
 
-    installPackage("gnome-shell");
-    installPackage("vim");
-    
+    # git related
     installPackage("git");
     copyFile("connect", "/usr/bin", 1);
     copyFile("socks-gw", "/usr/bin", 1);
     copyFile("git.sh", "/etc/profile.d", 1);
     copyFile(".gitconfig", homeDir, 0);
 
-    installPackage("ssh");
-    
-    copyFile(".bashrc", homeDir, 0);
-    
-    copyFile(".gdbinit", homeDir, 0);
-    
-    #copyFile("gyagp.sh", "/etc/profile.d", 1);
-    
+
+    installPackage("gparted");
+    installPackage("gnome-shell");
+    installPackage("vim");
     installPackage("ssh");
     installPackage("gnome-shell");
     installPackage("most");
+    installPackage("binutils-gold");  
+    installPackage("vnc4server");
+    installPackage("cmake");
 
-    installPackage("binutils-gold");
-
+    copyFile(".bashrc", homeDir, 0);
+    copyFile(".gdbinit", homeDir, 0);
     copyFile("include.gypi", homeDir + "/.gyp", 0);
 
-    installPackage("google-chrome-unstable");
-    
-    installPackage("vnc4server");
-    
-    status = installPackage("apt-file");
-    if status == 0:
-        commands.getstatusoutput("sudo apt-file update");
-
-
+    # ccache related
     installPackage("ccache");
     commands.getstatusoutput("ccache -M 10G");
+
+        
+
+
+
+
+    
+    
+
+    
+
+
+
+
+    
+

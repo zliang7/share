@@ -1,0 +1,25 @@
+set imap_user = "gyagp00@fastmail.fm"
+set imap_pass = "gy12345"
+
+set smtp_url = "smtp://gyagp00@smtps-proxy.messagingengine.com:25/"
+set smtp_pass = "gy12345"
+set from = "gyagp00@fastmail.fm"
+set realname = "Yang Gu"
+
+set folder = "imaps://imaps-proxy.messagingengine.com:443"
+set spoolfile = "+INBOX"
+
+set header_cache=~/.mutt/cache/headers
+set message_cachedir=~/.mutt/cache/bodies
+set certificate_file=~/.mutt/certificates
+
+set move = no
+
+set sort = 'threads'
+set sort_aux = 'last-date-received'
+set imap_check_subscribed
+
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+hdr_order Date From To Cc

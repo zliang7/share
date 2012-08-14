@@ -141,11 +141,11 @@
 ### due to SSL.
 [global]
 # http-proxy-exceptions = *.exception.com, www.internal-site.org
-http-proxy-host = proxy-shz.intel.com
+http-proxy-host = 10.239.120.36 
 http-proxy-port = 911
 # http-proxy-username = defaultusername
 # http-proxy-password = defaultpassword
-# http-compression = no
+http-compression = no
 # http-auth-types = basic;digest;negotiate
 # No http-timeout, so just use the builtin default.
 # No neon-debug-mask, so neon debugging is disabled.

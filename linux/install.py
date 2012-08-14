@@ -148,11 +148,12 @@ if __name__ == "__main__":
 
     # git related
     installPackage("git");
+    installPackage("git-svn");
     copyFile("connect", "/usr/bin", 1);
     copyFile("socks-gw", "/usr/bin", 1);
     copyFile("git.sh", "/etc/profile.d", 1);
     copyFile(".gitconfig", homeDir, 0);
-    copyFile("servers", "/etc/subversion", 1);
+    copyFile("servers", homeDir + "/subversion", 1);
 
     installPackage("gparted");
     installPackage("gnome-shell");

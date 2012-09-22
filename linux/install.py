@@ -7,14 +7,16 @@
 # Backup files in desktop, opened tab in Chrome.
 #
 # Post-installation: 
+# sudo apt-get update && sudo apt-get dist-upgrade -y
 # Install display card driver, slickedit.
 # Run /workspace/project/chromium/git_upstream/src/build/install-build-deps.sh. This file would help to install many development tools.
 # Run vncserver 
-# Set keyboard shortcut: "nautilus /workspace" -> ctrl+alt+E, 
+# Set keyboard shortcut: "nautilus /workspace" -> ctrl+alt+E
 
 import os;
 import commands;
 import re;
+from optparse import OptionParser;
 
 srcDir = "/workspace/project/gyagp/share/linux";
 homeDir = os.getenv("HOME");
@@ -102,7 +104,27 @@ def installPackage(pkg):
         info("Package " + pkg + " was already installed");    
         return -1;
 
+
+def parseOption():
+    global profile;
+    
+    parser = OptionParser()
+    parser.add_option("-p", "--profile", dest="profile", help="designate profile", metavar="DIRECT|PROXY", default="PROXY");
+    (options, args) = parser.parse_args();
+
+    if options.profile.upper() == "DIRECT":
+        profile = "DIRECT";
+    elif options.profile.upper() == "PROXY":
+        profile = "PROXY";
+    else:
+        error("The profile is not correct");
+        exit -1;
+    
 if __name__ == "__main__":
+    global profile;
+
+    parseOption();
+
     # This should be done first
     patchSudo();
 
@@ -124,14 +146,22 @@ if __name__ == "__main__":
         commands.getstatusoutput("sudo apt-file update");
 
     # Install tsocks
-    installPackage("tsocks");
-    overwriteFile("tsocks.conf", "/etc", 1);
+    if profile == "PROXY":
+        installPackage("tsocks");
+        overwriteFile("tsocks.conf", "/etc", 1);
 
     # Install Chrome, which needs to use tsocks
     (status, output) = commands.getstatusoutput("sudo apt-key list | grep 7FAC5991");
+    
     if status:
         info("Get the key for Chrome...");
-        (status, output) = commands.getstatusoutput("tsocks wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -");   
+
+        if profile == "PROXY": # Not sure if the key would change, so get the online one in this profile
+            command = "tsocks wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -";
+        elif profile == "DIRECT":
+            command = "cat " + srcDir + "/chrome_key_pub.txt | sudo apt-key add -";
+            
+        (status, output) = commands.getstatusoutput(command);   
         if status != 0:
             error("Key for Chrome hasn't been added correctly");
     else:
@@ -153,13 +183,13 @@ if __name__ == "__main__":
     copyFile("socks-gw", "/usr/bin", 1);
     copyFile("git.sh", "/etc/profile.d", 1);
     copyFile(".gitconfig", homeDir, 0);
-    copyFile("servers", homeDir + "/subversion", 1);
+    if profile == "PROXY":
+        copyFile("servers", homeDir + "/subversion", 1);
 
     installPackage("gparted");
     installPackage("gnome-shell");
     installPackage("vim");
     installPackage("ssh");
-    installPackage("gnome-shell");
     installPackage("most");
     installPackage("binutils-gold");  
     installPackage("vnc4server");

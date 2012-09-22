@@ -9,9 +9,10 @@
 # Post-installation: 
 # sudo apt-get update && sudo apt-get dist-upgrade -y
 # Install display card driver, slickedit.
-# Run /workspace/project/chromium/git_upstream/src/build/install-build-deps.sh. This file would help to install many development tools.
+# sudo /workspace/project/chromium/git_upstream/src/build/install-build-deps.sh. This file would help to install many development tools.
 # Run vncserver 
 # Set keyboard shortcut: "nautilus /workspace" -> ctrl+alt+E
+# Set input method: gnome-session-properties
 
 import os;
 import commands;
@@ -202,6 +203,10 @@ if __name__ == "__main__":
     # ccache related
     installPackage("ccache");
     commands.getstatusoutput("ccache -M 10G");
+    
+    # specific steps for profile == "DIRECT"
+    if profile == "DIRECT":
+        installPackage("openconnect");
 
         
 

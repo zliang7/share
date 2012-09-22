@@ -13,10 +13,10 @@ def error(msg):
 
 if __name__ == "__main__":
     parser = OptionParser()
-    parser.add_option("-t", "--build-type", dest="buildType", help="Assign the build type", metavar="DEBUG|RELEASE", default="debug");
-    parser.add_option("-d", "--src-dir", dest="srcDir", help="Assign src directory of Chromium", metavar="SRCDIR", default="/workspace/project/chromium/git_upstream/src");
-    parser.add_option("-s", "--build-system", dest="buildSystem", help="Assign build system", metavar="ninja", default="ninja");
-    parser.add_option("-c", "--clean-build", action="store_true", dest="cleanBuild", help="Need a clean build", default=False);
+    parser.add_option("-t", "--build-type", dest="buildType", help="assign the build type", metavar="DEBUG|RELEASE", default="debug");
+    parser.add_option("-d", "--src-dir", dest="srcDir", help="assign src directory of Chromium", metavar="SRCDIR", default="/workspace/project/chromium/git_upstream/src");
+    parser.add_option("-s", "--build-system", dest="buildSystem", help="assign build system", metavar="ninja", default="ninja");
+    parser.add_option("-c", "--clean-build", action="store_true", dest="cleanBuild", help="need a clean build", default=False);
     (options, args) = parser.parse_args();
 
     if options.buildType.upper() == "DEBUG":

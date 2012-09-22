@@ -337,6 +337,14 @@ function preexec {
 
 # Followings are added by Yang
 
+ifconfig |grep 10.239
+if [ $? -eq 1 ] ; then
+    profile="DIRECT"
+else
+    profile="PROXY"
+fi
+echo "profile is "$profile
+
 # fix wildcard character (*) "no matches found" problem
 setopt nonomatch
 
@@ -360,10 +368,13 @@ alias -g G='| grep'
 alias -s txt='gedit'
 alias -s pdf='acroread'
 
-export GIT_PROXY_COMMAND=/usr/bin/socks-gw
 
-export http_proxy=http://proxy-shz.intel.com:911
-export https_proxy=https://proxy-shz.intel.com:911
+if [ $profile == "PROXY" ] ; then
+    export GIT_PROXY_COMMAND=/usr/bin/socks-gw
+    export http_proxy=http://proxy-shz.intel.com:911
+    export https_proxy=https://proxy-shz.intel.com:911
+fi
+
 export PATH=$PATH:/workspace/project/chromium/depot_tools
 
 #export LC_ALL=en_US.UTF-8

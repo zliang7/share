@@ -10,10 +10,18 @@ def info(msg):
 def error(msg):
     print "[ERROR] " + msg + "!";
 
+def hasOutDir(name):
+    outputDir = options.srcDir + "/out/" + buildTypeStr;
+    if not os.path.exists(outputDir):
+        info(outputDir + " doesn't exist. Will create the directory for you and perform a clean build");
+        commands.getstatusoutput("mkdir -p " + outputDir);
+        return False;
+
+    return True;
 
 if __name__ == "__main__":
     parser = OptionParser()
-    parser.add_option("-t", "--build-type", dest="buildType", help="assign the build type", metavar="DEBUG|RELEASE", default="debug");
+    parser.add_option("-t", "--build-type", dest="buildType", help="assign the build type", metavar="DEBUG|RELEASE|ALL", default="Debug");
     parser.add_option("-d", "--src-dir", dest="srcDir", help="assign src directory of Chromium", metavar="SRCDIR", default="/workspace/project/chromium/git_upstream/src");
     parser.add_option("-s", "--build-system", dest="buildSystem", help="assign build system", metavar="ninja", default="ninja");
     parser.add_option("-c", "--clean-build", action="store_true", dest="cleanBuild", help="need a clean build", default=False);
@@ -23,6 +31,8 @@ if __name__ == "__main__":
         buildTypeStr = "Debug";
     elif options.buildType.upper() == "RELEASE":
         buildTypeStr = "Release";
+    elif options.buildType.upper() == "ALL":
+        buildTypeStr = "All";
     else:
         error("The build type is wrong");
         exit -1;
@@ -31,11 +41,13 @@ if __name__ == "__main__":
         error("Currently only the build system ninja is supported");
         exit -1;    
     
-    outputDir = options.srcDir + "/out/" + buildTypeStr;
-    if not os.path.exists(outputDir):
-        info(outputDir + " doesn't exist. Will create the directory for you and perform a clean build");
-        commands.getstatusoutput("mkdir -p " + outputDir);
-        options.cleanBuild = True;
+    if buildTypeStr == "All":
+        if not hasOutDir("Debug") and not hasOutDir("Release"):
+            options.cleanBuild = True;
+    else:
+        if not hasOutDir(buildTypeStr):
+            options.cleanBuild = True;
+
     
     print "== Build Environment ==";
     print "Directory of src: " + options.srcDir;
@@ -48,7 +60,9 @@ if __name__ == "__main__":
     if options.cleanBuild:
         commands.getstatusoutput("build/gyp_chromium");
     
-    os.system("time " + options.buildSystem + " -C out/" + buildTypeStr + " chrome");    
+    if buildTypeStr == "Debug" or buildTypeStr == "All":
+        os.system("time " + options.buildSystem + " -C out/Debug chrome");
 
-
+    if buildTypeStr == "Release" or buildTypeStr == "All":
+        os.system("time " + options.buildSystem + " -C out/Release chrome");
     

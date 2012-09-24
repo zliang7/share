@@ -195,6 +195,7 @@ if __name__ == "__main__":
     installPackage("binutils-gold");  
     installPackage("vnc4server");
     installPackage("cmake");
+    installPackage("hibernate");
 
     copyFile(".bashrc", homeDir, 0);
     copyFile(".gdbinit", homeDir, 0);
@@ -207,6 +208,7 @@ if __name__ == "__main__":
     # specific steps for profile == "DIRECT"
     if profile == "DIRECT":
         installPackage("openconnect");
+        installPackage("python-zsi");
 
         
 

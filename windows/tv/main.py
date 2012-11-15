@@ -77,7 +77,10 @@ def getNew():
                 new.append(record);
 
         if len(new) == 0:
+            print ":( There is no update for " + history[historyIndex][NAME];
             continue;
+        else:
+            print ":) There is an update for " + history[historyIndex][NAME];
    
         todoPattern = re.compile('TODO');
         for lineIndex in range(0, len(lines)):
@@ -123,7 +126,7 @@ if __name__ == "__main__":
     getHistory();
     getNew();
     updateHistory();
-    
+    time.sleep(3);
     
     
   

@@ -337,7 +337,7 @@ function preexec {
 
 # Followings are added by Yang
 
-ifconfig |grep 10.239
+ifconfig |grep 10.239 >/dev/null
 if [ $? -eq 1 ] ; then
     profile="DIRECT"
 else
@@ -375,7 +375,7 @@ if [ $profile == "PROXY" ] ; then
     export https_proxy=https://proxy-shz.intel.com:911
 fi
 
-export PATH=$PATH:/workspace/project/chromium/depot_tools
+export PATH=$PATH:/workspace/project/chromium/depot_tools:/home/gyagp/Komodo-Edit-7/bin
 
 #export LC_ALL=en_US.UTF-8
 export GYP_GENERATORS='ninja'
@@ -396,8 +396,10 @@ zz () {
 
 # Aliases to use this
 # Use e.g. 'command gv' to avoid
-for i in gedit meld bcompare; do
+for i in gedit meld bcompare komodo; do
     alias "$i=z $i"
 done
+
+source /workspace/project/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 cd /workspace

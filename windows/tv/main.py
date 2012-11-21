@@ -17,12 +17,18 @@ urlPrefix = "http://www.yyets.com/php/resource/";
 history = [];
 lines = "";
 debug = 0;
+hasUpdate = False;
 
 def updateHistory():
     global debug;
+    global hasUpdate;
+    
     if debug:
         print lines;
     else:
+        if not hasUpdate:
+            return;
+    
         os.chdir(os.getcwd());
         if os.path.exists("history_old.txt"):    
             os.remove("history_old.txt");
@@ -36,6 +42,8 @@ def updateHistory():
             
 def getNew():
     global debug;
+    global hasUpdate;
+    
     for historyIndex in range(0, len(history)):
         # get the html
         if debug:
@@ -77,10 +85,10 @@ def getNew():
                 new.append(record);
 
         if len(new) == 0:
-            print ":( There is no update for " + history[historyIndex][NAME];
             continue;
         else:
-            print ":) There is an update for " + history[historyIndex][NAME];
+            print "^_^ There is an update for " + history[historyIndex][NAME];
+            hasUpdate = True;
    
         todoPattern = re.compile('TODO');
         for lineIndex in range(0, len(lines)):
@@ -91,13 +99,16 @@ def getNew():
                 break;
             if line.find(history[historyIndex][NAME]) <> -1:
                 lines[lineIndex] = line.replace(history[historyIndex][HISTORY], new[len(new)-1][0]);
+                lines[lineIndex] = lines[lineIndex] + "\n";
 
         lines.append("== " + history[historyIndex][NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + time.strftime('%Y-%m-%d %X', time.localtime(time.time())) + " ==\n");
         for newIndex in range(0, len(new)):
             lines.append(new[newIndex][1]);
         lines.append("\n");    
                 
-
+    if not hasUpdate:
+        print "There is no update at all!";
+                
 def getHistory():
     global history;
     global lines;
@@ -126,7 +137,9 @@ if __name__ == "__main__":
     getHistory();
     getNew();
     updateHistory();
-    time.sleep(3);
+    
+    print "Wait 5 seconds and quit...";
+    time.sleep(5);
     
     
   

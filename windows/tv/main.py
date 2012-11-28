@@ -44,7 +44,11 @@ def getNew():
     global debug;
     global hasUpdate;
     
-    for historyIndex in range(0, len(history)):
+    historyLen = len(history);
+    
+    for historyIndex in range(0, historyLen):
+        print str(historyIndex + 1) + "/" + str(historyLen) + "    Processing " + history[historyIndex][NAME] + " ...";
+    
         # get the html
         if debug:
             file = open('11088.htm');
@@ -59,7 +63,7 @@ def getNew():
         urls = xlPattern.findall(html);
         
         formatPattern = re.compile("rmvb");
-        history[historyIndex][0];
+        # history[historyIndex][0];
         episodePattern = re.compile("(" + history[historyIndex][HISTORY][0:4] + "\d\d)");
         thunderPattern = re.compile("(thunder\:.*)\"");
         new = [];

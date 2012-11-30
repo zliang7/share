@@ -6,6 +6,7 @@ import re;
 import os;
 import commands;
 from sgmllib import SGMLParser;
+from httplib import BadStatusLine;
 import time;
 
 # define each line of history
@@ -26,9 +27,6 @@ def updateHistory():
     if debug:
         print lines;
     else:
-        if not hasUpdate:
-            return;
-    
         os.chdir(os.getcwd());
         if os.path.exists("history_old.txt"):    
             os.remove("history_old.txt");
@@ -38,6 +36,10 @@ def updateHistory():
         f = open("history.txt", "w");
         for line in lines:
             f.write(line);
+
+        if not hasUpdate:
+            f.write("== All,No update," + time.strftime('%Y-%m-%d %X', time.localtime(time.time())) + " ==\n");
+
         f.close();    
             
 def getNew():
@@ -55,7 +57,12 @@ def getNew():
             html = file.read();
         else:
             url = urlPrefix + history[historyIndex][ID];
-            u = urllib2.urlopen(url);
+            try:
+                u = urllib2.urlopen(url);
+            except BadStatusLine:
+                print "Check failed";
+                lines.append("== " + history[historyIndex][NAME] + ",Check failed," + time.strftime('%Y-%m-%d %X', time.localtime(time.time())) + " ==\n");
+                continue;
             html = u.read();
         
         # find all links to xunlei

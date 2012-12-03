@@ -199,6 +199,7 @@ if __name__ == "__main__":
 
     copyFile(".bashrc", homeDir, 0);
     copyFile(".gdbinit", homeDir, 0);
+    copyFile(".vimrc", homeDir, 0);
     copyFile("include.gypi", homeDir + "/.gyp", 0);
 
     # ccache related

@@ -68,6 +68,8 @@ if has("autocmd")
 
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
+  autocmd FileType gitcommit let g:secure_modelines_allowed_items = [] |
+			  \ setlocal textwidth=72
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler

@@ -29,16 +29,21 @@ def main():
         
     files = os.popen("git show --pretty=\"format:\" --name-only " + commitHash).readlines()
     
-    os.mkdir(options.destDir + "/" + commitHash)
+    backupDir = options.destDir + "/" + commitHash
+    if not os.path.isdir(backupDir):
+        os.mkdir(backupDir)
     
     for file in files:
         file = str.strip(file)
         if file == "":
             continue
-        command = " cp --parent " + file + " " + options.destDir + "/" + commitHash
+        command = "cp --parent " + file + " " + backupDir
         if os.system(command):
             print "Failed to backup " + file
             print "The command is: " + command
+            
+    os.system("git format-patch -1 " + commitHash)
+    os.system("mv 0001* " + backupDir)
     
 if __name__ == '__main__':
     main()

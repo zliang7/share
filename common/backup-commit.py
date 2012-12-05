@@ -4,7 +4,6 @@
 
 import warnings
 from optparse import OptionParser
-import commands
 import os
 
 def main():
@@ -18,19 +17,28 @@ def main():
         print("You need to designate src directory of project")
         exit -1
         
-    if options.srcDir is None:
+    if options.destDir is None:
         print("You need to designate dest directory to backup")
         exit -1
         
     os.chdir(options.srcDir)
     if options.commitHash is None:
-        commitHash = commands.getoutput("git log -1 --pretty=\"format:%H\"")
+        commitHash = os.popen("git log -1 --pretty=\"format:%H\"").readline()
+    else:
+        commitHash = options.commitHash
         
-    files = str.split(str.strip(commands.getoutput("git show --pretty=\"format:\" --name-only")), "\n")
+    files = os.popen("git show --pretty=\"format:\" --name-only " + commitHash).readlines()
+    
+    os.mkdir(options.destDir + "/" + commitHash)
     
     for file in files:
-        command = " cp --parent " + file + " " + "/workspace/gytemp"
-        commands.getstatusoutput(command)
+        file = str.strip(file)
+        if file == "":
+            continue
+        command = " cp --parent " + file + " " + options.destDir + "/" + commitHash
+        if os.system(command):
+            print "Failed to backup " + file
+            print "The command is: " + command
     
 if __name__ == '__main__':
     main()

@@ -114,7 +114,7 @@ def getNew():
 
         lines.append("== " + history[historyIndex][NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + time.strftime('%Y-%m-%d %X', time.localtime(time.time())) + " ==\n");
         for newIndex in range(0, len(new)):
-            lines.append(new[newIndex][1]);
+            lines.append(new[newIndex][1] + "\n");
         lines.append("\n");    
                 
     if not hasUpdate:

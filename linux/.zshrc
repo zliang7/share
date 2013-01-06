@@ -378,7 +378,7 @@ fi
 export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-7/bin
 
 #export LC_ALL=en_US.UTF-8
-export GYP_GENERATORS='ninja'
+#export GYP_GENERATORS='ninja'
 
 # ccache related
 export CCACHE_DIR=/workspace/ccache

@@ -57,6 +57,7 @@ if __name__ == "__main__":
     print "======================="
 
     os.chdir(options.srcDir);
+    os.putenv("GYP_GENERATORS", "ninja");
     if options.cleanBuild:
         commands.getstatusoutput("build/gyp_chromium");
     

@@ -375,7 +375,7 @@ if [ $profile == "PROXY" ] ; then
     export https_proxy=https://proxy-shz.intel.com:911
 fi
 
-export PATH=$PATH:/workspace/project/chromium/depot_tools:/home/gyagp/Komodo-Edit-7/bin
+export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-7/bin
 
 #export LC_ALL=en_US.UTF-8
 export GYP_GENERATORS='ninja'
@@ -402,4 +402,8 @@ done
 
 source /workspace/project/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+[[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
+
 cd /workspace
+
+

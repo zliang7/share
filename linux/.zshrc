@@ -10,11 +10,13 @@ done
 FINISH="%{$terminfo[sgr0]%}"
 #}}}
 
+
 #命令提示符 {{{
 RPROMPT=$(echo "$RED%D %T$FINISH")
 PROMPT=$(echo "$BLUE%M$GREEN%/
 $CYAN%n $_YELLOW>>>$FINISH ")
 #}}}
+
 
 #标题栏、任务栏样式{{{
 case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
@@ -335,8 +337,9 @@ function preexec {
     fi
 }  
 
-# Followings are added by Yang
+##### Followings are added by Yang #####
 
+# Set profile
 ifconfig |grep 10.239 >/dev/null
 if [ $? -eq 1 ] ; then
     profile="DIRECT"
@@ -344,6 +347,8 @@ else
     profile="PROXY"
 fi
 echo "profile is "$profile
+
+
 
 # fix wildcard character (*) "no matches found" problem
 setopt nonomatch
@@ -367,7 +372,6 @@ alias -g G='| grep'
 # Suffix aliases
 alias -s txt='gedit'
 alias -s pdf='acroread'
-
 
 if [ $profile == "PROXY" ] ; then
     export GIT_PROXY_COMMAND=/usr/bin/socks-gw
@@ -400,10 +404,105 @@ for i in gedit meld bcompare komodo; do
     alias "$i=z $i"
 done
 
-source /workspace/project/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /workspace/project/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
 
 cd /workspace
+
+# Set my own precmd
+function gyagp_precmd() {
+  #export PS1="$(/workspace/project/zsh/powerline-shell/powerline-shell.py $? --shell zsh)"
+}
+
+function install_gyagp_precmd() {
+  for s in "${precmd_functions[@]}"; do
+    if [ "$s" = "gyagp_precmd" ]; then
+      return
+    fi
+  done
+  precmd_functions+=(gyagp_precmd)
+}
+
+install_gyagp_precmd
+
+
+########## Start of git support ##########
+# Only appears if your current directory is a Git repository.
+# Shows number of commits ahead and behind upstream, as applicable.
+# Shows if a merge is currently taking place.
+# Shows a "traffic light" representation of git status:
+#   Red (●) means there are untracked changes.
+#   Yellow (●) means there are unstaged changes.
+#   Green (●) means there are staged changes.
+
+autoload -U colors && colors # Enable colors in prompt
+
+# Modify the colors and symbols in these variables as desired.
+GIT_PROMPT_SYMBOL="%{$fg[yellow]%}git"
+GIT_PROMPT_PREFIX="%{$fg[green]%}[%{$reset_color%}"
+GIT_PROMPT_SUFFIX="%{$fg[green]%}]%{$reset_color%}"
+GIT_PROMPT_AHEAD="%{$fg[red]%}ANUM%{$reset_color%}"
+GIT_PROMPT_BEHIND="%{$fg[cyan]%}BNUM%{$reset_color%}"
+GIT_PROMPT_MERGING="%{$fg_bold[magenta]%}⚡︎%{$reset_color%}"
+GIT_PROMPT_UNTRACKED="%{$fg_bold[red]%}●%{$reset_color%}"
+GIT_PROMPT_MODIFIED="%{$fg_bold[yellow]%}●%{$reset_color%}"
+GIT_PROMPT_STAGED="%{$fg_bold[green]%}●%{$reset_color%}"
+
+# Show Git branch/tag, or name-rev if on detached head
+parse_git_branch() {
+  (git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null
+}
+
+# Show different symbols as appropriate for various Git repository states
+parse_git_state() {
+
+  # Compose this value via multiple conditional appends.
+  local GIT_STATE=""
+
+  local NUM_AHEAD="$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d ' ')"
+  if [ "$NUM_AHEAD" -gt 0 ]; then
+    GIT_STATE=$GIT_STATE${GIT_PROMPT_AHEAD//NUM/$NUM_AHEAD}
+  fi
+
+  local NUM_BEHIND="$(git log --oneline ..@{u} 2> /dev/null | wc -l | tr -d ' ')"
+  if [ "$NUM_BEHIND" -gt 0 ]; then
+    GIT_STATE=$GIT_STATE${GIT_PROMPT_BEHIND//NUM/$NUM_BEHIND}
+  fi
+
+  local GIT_DIR="$(git rev-parse --git-dir 2> /dev/null)"
+  if [ -n $GIT_DIR ] && test -r $GIT_DIR/MERGE_HEAD; then
+    GIT_STATE=$GIT_STATE$GIT_PROMPT_MERGING
+  fi
+
+  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
+    GIT_STATE=$GIT_STATE$GIT_PROMPT_UNTRACKED
+  fi
+
+  if ! git diff --quiet 2> /dev/null; then
+    GIT_STATE=$GIT_STATE$GIT_PROMPT_MODIFIED
+  fi
+
+  if ! git diff --cached --quiet 2> /dev/null; then
+    GIT_STATE=$GIT_STATE$GIT_PROMPT_STAGED
+  fi
+
+  if [[ -n $GIT_STATE ]]; then
+    echo "$GIT_STATE"
+  fi
+
+}
+
+# If inside a Git repository, print its branch and state
+git_prompt_string() {
+  local git_where="$(parse_git_branch)"
+  [ -n "$git_where" ] && echo "$GIT_PROMPT_PREFIX$GIT_PROMPT_SYMBOL ${git_where#(refs/heads/|tags/)} $(parse_git_state)%{$fg[yellow]%}$GIT_PROMPT_SUFFIX"
+}
+
+########## End of git support ##########
+
+setopt prompt_subst
+PROMPT='%F{blue}%M%F{green}%/$(git_prompt_string)
+%F{cyan}%n %F{yellow}>>>$FINISH'
 
 

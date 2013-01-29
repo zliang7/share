@@ -196,6 +196,7 @@ if __name__ == "__main__":
     installPackage("vnc4server");
     installPackage("cmake");
     installPackage("hibernate");
+    installPackage("libspeechd-dev"); # required by Chromium build
 
     copyFile(".bashrc", homeDir, 0);
     copyFile(".gdbinit", homeDir, 0);

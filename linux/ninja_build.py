@@ -58,6 +58,7 @@ if __name__ == "__main__":
 
     os.chdir(options.srcDir);
     os.putenv("GYP_GENERATORS", "ninja");
+    os.putenv("GYP_DEFINES", "werror= disable_nacl=1 component=shared_library enable_svg=0");
     if options.cleanBuild:
         commands.getstatusoutput("build/gyp_chromium");
     

@@ -377,12 +377,11 @@ if [ $profile == "PROXY" ] ; then
     export GIT_PROXY_COMMAND=/usr/bin/socks-gw
     export http_proxy=http://proxy-shz.intel.com:911
     export https_proxy=https://proxy-shz.intel.com:911
+    export socks_proxy=proxy.jf.intel.com:1080
 fi
 
 export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-7/bin
-
-#export LC_ALL=en_US.UTF-8
-#export GYP_GENERATORS='ninja'
+export ANDROID_SDK_ROOT=/workspace/topic/skia/adt-bundle-linux-x86_64/sdk
 
 # ccache related
 export CCACHE_DIR=/workspace/ccache
@@ -506,3 +505,10 @@ PROMPT='%F{blue}%M%F{green}%/$(git_prompt_string)
 %F{cyan}%n %F{yellow}>>>$FINISH'
 
 
+# ln -s /workspace/project/gyagp/share/linux/.zshrc ~/.zshrc
+if [ ! -f /workspace/project/chromium/git_upstream/ninja_build.py ]; then
+   ln -s /workspace/project/gyagp/share/linux/ninja_build.py /workspace/project/chromium/git_upstream/ninja_build.py
+fi
+if [ ! -f ~/.gyp/include.gypi ]; then
+   ln -s /workspace/project/gyagp/share/linux/include.gypi ~/.gyp/include.gypi
+fi

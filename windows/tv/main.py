@@ -11,8 +11,9 @@ import time;
 
 # define each line of history
 NAME = 0;
-ID = 1;
-HISTORY = 2;
+FORMAT = 1;
+ID = 2;
+HISTORY = 3;
 
 urlPrefix = "http://www.yyets.com/php/resource/";
 history = [];
@@ -53,7 +54,7 @@ def getNew():
     
         # get the html
         if debug:
-            file = open('11088.htm');
+            file = open(history[historyIndex][ID] + '.htm');
             html = file.read();
         else:
             url = urlPrefix + history[historyIndex][ID];
@@ -69,13 +70,13 @@ def getNew():
         xlPattern = re.compile("thunderrestitle.*?迅");
         urls = xlPattern.findall(html);
         
-        formatPattern = re.compile("rmvb");
+        formatPattern = re.compile(history[historyIndex][FORMAT]);
         # history[historyIndex][0];
         episodePattern = re.compile("(" + history[historyIndex][HISTORY][0:4] + "\d\d)");
         thunderPattern = re.compile("(thunder\:.*)\"");
         new = [];
         for url in urls:
-            # find all rmvb format
+            # find all with relative format
             if formatPattern.search(url):
                 # find all suitable episode
                 episodeMatch = episodePattern.search(url);
@@ -126,7 +127,7 @@ def getHistory():
     global debug;
 
     if debug:
-        lines = ["homeland,11088,S02E03"];
+        lines = ["Spar,人人影视.mp4,11176,S03E00"];
     else:
         file = open('history.txt');
         lines = file.readlines();

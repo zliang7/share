@@ -102,12 +102,12 @@ def getNew():
             print "^_^ There is an update for " + history[historyIndex][NAME];
             hasUpdate = True;
    
-        todoPattern = re.compile('TODO');
+        endPattern = re.compile('END');
         for lineIndex in range(0, len(lines)):
             line = lines[lineIndex];
             if not line.strip():
                 continue;
-            if todoPattern.search(line):
+            if endPattern.search(line):
                 break;
             if line.find(history[historyIndex][NAME]) <> -1:
                 lines[lineIndex] = line.replace(history[historyIndex][HISTORY], new[len(new)-1][0]);
@@ -133,11 +133,11 @@ def getHistory():
         lines = file.readlines();
         file.close();
    
-    todoPattern = re.compile('TODO');
+    endPattern = re.compile('END');
     for line in lines:
         if not line.strip():
             continue;
-        if todoPattern.search(line):
+        if endPattern.search(line):
             break;
         fields = line.split(',');
         record = [];

@@ -1,12 +1,29 @@
 Homeland,rmvb,11088,S02E12
-Revenge,rmvb,10979,S02E12
-BigBang,rmvb,11005,S06E14
-LastResort,rmvb,27260,S01E13
-Fringe,rmvb,11013,S05E13
-PersonOfInterest,rmvb,11009,S02E13
+Revenge,rmvb,10979,S02E13
+BigBang,rmvb,11005,S06E16
+PersonOfInterest,rmvb,11009,S02E15
 666ParkAvenue,rmvb,27156,S01E11
 Hunted,rmvb,28111,S01E01
-Spar,人人影视.mp4,11176,S03E02
+Spar,人人影视.mp4,11176,S03E03
+Touch,人人影视.mp4,11178,S02E02
+HouseOfCards,人人影视.mp4,28793,S01E09
+BlackMirror,人人影视.mp4,28235,S02E01
+Hunted,人人影视.mp4,28111,S01E06
+Smash,人人影视.mp4,11179,S02E01
 
-TODO
-== All,No update,2013-02-08 15:51:02 ==
+END
+
+<paused>
+Warehouse13,rmvb,10899,S04E10
+Sinbad,rmvb,26889,S01E12
+Downton,rmvb,11006,S03E08
+TheBorgias,rmvb,10818,S03E00
+GameOfThrones,rmvb,10733,S03E00
+Continuum,rmvb,26705,S01E10
+</paused>
+
+
+== All,No update,2013-02-16 13:03:13 ==
+== BlackMirror,S02E01-S02E01,2013-02-16 15:20:11 ==
+== HouseOfCards,S01E09-S01E09,2013-02-17 17:00:18 ==
+== Smash,S02E01-S02E01,2013-02-17 17:00:20 ==

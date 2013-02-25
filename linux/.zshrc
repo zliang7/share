@@ -382,6 +382,7 @@ fi
 
 export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-7/bin
 export ANDROID_SDK_ROOT=/workspace/topic/skia/adt-bundle-linux-x86_64/sdk
+export TARGET_DEVICE=x86
 
 # ccache related
 export CCACHE_DIR=/workspace/ccache
@@ -407,7 +408,7 @@ source /workspace/project/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
 
-cd /workspace
+
 
 # Set my own precmd
 function gyagp_precmd() {
@@ -512,3 +513,6 @@ fi
 if [ ! -f ~/.gyp/include.gypi ]; then
    ln -s /workspace/project/gyagp/share/linux/include.gypi ~/.gyp/include.gypi
 fi
+
+
+cd /workspace/project/android/skia

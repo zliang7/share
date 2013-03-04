@@ -377,6 +377,7 @@ if [ $profile == "PROXY" ] ; then
     export GIT_PROXY_COMMAND=/usr/bin/socks-gw
     export http_proxy=http://proxy-shz.intel.com:911
     export https_proxy=https://proxy-shz.intel.com:911
+    export ftp_proxy=ftp://proxy-shz.intel.com:21
     export socks_proxy=proxy.jf.intel.com:1080
 fi
 

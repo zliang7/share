@@ -1,12 +1,5 @@
 #/usr/bin/python
 
-# Description: Script to sync and build Chromium
-# usage:
-# python ninja_build.py -g "sync"
-# python ninja_build.py -g "sync --force"
-# python ninja_build.py -g "runhooks"
-# python ninja_build.py -t release
-
 import os
 import commands
 from optparse import OptionParser
@@ -106,6 +99,9 @@ def build(options):
     if buildType == "Release" or buildType == "All":
         os.system("ninja -C out/Release chrome")
     
+# override format_epilog to make it format better
+OptionParser.format_epilog = lambda self, formatter: self.epilog
+
 if __name__ == "__main__":
     # System sanity check
     if not isWindows() and not isLinux():
@@ -113,7 +109,14 @@ if __name__ == "__main__":
         quit()
         
     # Handle options
-    parser = OptionParser()
+    parser = OptionParser(description='Description: Script to sync and build Chromium',
+                          epilog="""
+Examples:
+  python chromium_build.py -g "sync"
+  python chromium_build.py -g "sync --force"
+  python chromium_build.py -g "runhooks"
+  python chromium_build.py -t release
+""")
     parser.add_option("-g", "--gclient", dest="gclient", help="Update source code", default='')
     parser.add_option("-c", "--clean-build", action="store_true", dest="cleanBuild", help="need a clean build", default=False)
     parser.add_option("-t", "--build-type", dest="buildType", help="assign the build type", metavar="DEBUG|RELEASE|ALL", default='')

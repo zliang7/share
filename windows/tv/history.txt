@@ -6,10 +6,6 @@ PersonOfInterest,rmvb,11009,S02E19
 Smash,人人影视.mp4,11179,S02E07
 GameOfThrones,人人影视.mp4,10733,S03E01
 
-
-
-PAUSED	2013-01-01
-
 Hunted,深影字幕组.mp4,28111,S02E00
 BlackMirror,人人影视.mp4,28235,S03E00
 HouseOfCards,人人影视.mp4,28793,S02E00
@@ -27,3 +23,4 @@ END
 == All,No update,2013-04-05 12:09:27 ==
 == BigBang,S06E20-S06E20,2013-04-06 11:02:46 ==
 == PersonOfInterest,S02E19-S02E19,2013-04-06 11:02:48 ==
+== All,No update,2013-04-06 11:29:31 ==

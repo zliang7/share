@@ -8,6 +8,7 @@ import commands
 from sgmllib import SGMLParser
 from httplib import BadStatusLine
 import time
+import datetime
 
 # define each line of history
 NAME = 0
@@ -15,19 +16,132 @@ FORMAT = 1
 ID = 2
 HISTORY = 3
 
-urlPrefix = "http://www.yyets.com/php/resource/"
-history = []
-lines = ""
+PAUSE_STR = 'PAUSE'
+END_STR = 'END'
+
+URL_PREFIX = 'http://www.yyets.com/php/resource/'
+
+# Enable debug mode
 debug = 0
-hasUpdate = False
+
 
 def get_time():
 	return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
-
-def update_history():
-    global debug
-    global hasUpdate
+        
+def update_line(lines, records, record_index):
+    records_number = len(records)
+    line_index = records[record_index]
+    line = lines[line_index]
+    fields = line.split(',')
     
+    print str(record_index + 1) + "/" + str(records_number) + "    Processing " + fields[NAME] + " ..."
+    
+    # get the html
+    if debug:
+        file = open(fields[ID] + '.htm')
+        html = file.read()
+    else:
+        url = URL_PREFIX + fields[ID]
+        try:
+            u = urllib2.urlopen(url)
+        except BadStatusLine:
+            print "Check failed"
+            lines.append("== " + fields[NAME] + ",Check failed," + get_time() + " ==\n")
+            return
+        html = u.read()
+    
+    # Check if it has update
+    xl_pattern = re.compile("thunderrestitle.*?迅")
+    urls = xl_pattern.findall(html)
+    
+    format_pattern = re.compile(fields[FORMAT])
+    episodePattern = re.compile("(" + fields[HISTORY][0:4] + "\d\d)")
+    thunderPattern = re.compile("(thunder\:.*)\"")
+    new = []
+    for url in urls:
+        # find all with relative format
+        if format_pattern.search(url):
+            # find all suitable episode
+            episodeMatch = episodePattern.search(url)
+            if not episodeMatch:
+                continue
+            currentEpisode = int(episodeMatch.group(0)[4:6])
+            historyEpisode = int(fields[HISTORY][4:6])
+            if currentEpisode <= historyEpisode:
+                continue
+                
+            # get the link    
+            thunderMatch = thunderPattern.search(url)
+            if not thunderMatch:
+                continue
+            r = []
+            r.append(episodeMatch.group(0))
+            r.append(thunderMatch.group(1))
+            new.append(r)
+
+    # Handle update
+    if len(new) > 0:
+        print '^_^ There is an update'
+        
+        lines[line_index] = line.replace(fields[HISTORY], new[len(new)-1][0]) + '\n'
+        
+        lines.append("== " + fields[NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + get_time() + " ==\n")
+        for new_index in range(0, len(new)):
+            lines.append(new[new_index][1] + "\n")
+        lines.append("\n")
+        
+        return True
+    else:
+        return False
+                
+def update_history():
+    # each item is the index of line to be checked
+    records = []
+    
+    has_update = False
+
+    # Get lines
+    if debug:
+        lines = ["Spar,人人影视.mp4,11176,S03E00"]
+    else:
+        file = open('history.txt')
+        lines = file.readlines()
+        file.close()
+
+    # Update records
+    for line_index in range(0, len(lines)):
+        # Skip blank line
+        if not lines[line_index].strip():
+            continue
+
+        # Check if pause meets
+        m = re.match(PAUSE_STR + ' (\d+-\d+-\d+ \d+:\d+:\d+)', lines[line_index])
+        if m:
+            diff = datetime.datetime.today() - datetime.datetime.strptime(m.group(1), '%Y-%m-%d %X')
+            lines[line_index] = PAUSE_STR + ' ' + get_time() + '\n'
+            if diff.days < 30:
+                break
+            else:
+                continue
+
+        # Check if end meets    
+        if re.search(END_STR, lines[line_index]):
+            break
+            
+        # Append to records
+        records.append(line_index)
+
+    # Update line
+    for record_index in range(0, len(records)):
+        if update_line(lines, records, record_index):
+            has_update = True
+        
+    # Handle no update
+    if not has_update:
+        print "There is no update at all!"
+        lines.append("== All,No update," + get_time() + " ==\n")
+
+    # Update history file
     if debug:
         print lines
     else:
@@ -40,121 +154,16 @@ def update_history():
         f = open("history.txt", "w")
         for line in lines:
             f.write(line)
+        f.close()        
 
-        if not hasUpdate:
-            f.write("== All,No update," + get_time() + " ==\n")
+def sleep(seconds):
+    print 'Wait ' + str(seconds) + ' seconds and quit...'
+    time.sleep(seconds)
 
-        f.close()    
-            
-def get_new():
-    global debug
-    global hasUpdate
-    
-    historyLen = len(history)
-    
-    for historyIndex in range(0, historyLen):
-        print str(historyIndex + 1) + "/" + str(historyLen) + "    Processing " + history[historyIndex][NAME] + " ..."
-    
-        # get the html
-        if debug:
-            file = open(history[historyIndex][ID] + '.htm')
-            html = file.read()
-        else:
-            url = urlPrefix + history[historyIndex][ID]
-            try:
-                u = urllib2.urlopen(url)
-            except BadStatusLine:
-                print "Check failed"
-                lines.append("== " + history[historyIndex][NAME] + ",Check failed," + get_time() + " ==\n")
-                continue
-            html = u.read()
-        
-        # find all links to xunlei
-        xlPattern = re.compile("thunderrestitle.*?迅")
-        urls = xlPattern.findall(html)
-        
-        formatPattern = re.compile(history[historyIndex][FORMAT])
-        # history[historyIndex][0]
-        episodePattern = re.compile("(" + history[historyIndex][HISTORY][0:4] + "\d\d)")
-        thunderPattern = re.compile("(thunder\:.*)\"")
-        new = []
-        for url in urls:
-            # find all with relative format
-            if formatPattern.search(url):
-                # find all suitable episode
-                episodeMatch = episodePattern.search(url)
-                if not episodeMatch:
-                    continue
-                currentEpisode = int(episodeMatch.group(0)[4:6])
-                historyEpisode = int(history[historyIndex][HISTORY][4:6])
-                if currentEpisode <= historyEpisode:
-                    continue
-                    
-                # get the link    
-                thunderMatch = thunderPattern.search(url)
-                if not thunderMatch:
-                    continue
-                record = []
-                record.append(episodeMatch.group(0))
-                record.append(thunderMatch.group(1))
-                new.append(record)
-
-        if len(new) == 0:
-            continue
-        else:
-            print "^_^ There is an update for " + history[historyIndex][NAME]
-            hasUpdate = True
-   
-        endPattern = re.compile('END')
-        for lineIndex in range(0, len(lines)):
-            line = lines[lineIndex]
-            if not line.strip():
-                continue
-            if endPattern.search(line):
-                break
-            if line.find(history[historyIndex][NAME]) <> -1:
-                lines[lineIndex] = line.replace(history[historyIndex][HISTORY], new[len(new)-1][0])
-                lines[lineIndex] = lines[lineIndex] + "\n"
-
-        lines.append("== " + history[historyIndex][NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + get_time() + " ==\n")
-        for newIndex in range(0, len(new)):
-            lines.append(new[newIndex][1] + "\n")
-        lines.append("\n")    
-                
-    if not hasUpdate:
-        print "There is no update at all!"
-                
-def get_history():
-    global history
-    global lines
-    global debug
-
-    if debug:
-        lines = ["Spar,人人影视.mp4,11176,S03E00"]
-    else:
-        file = open('history.txt')
-        lines = file.readlines()
-        file.close()
-		
-	endPattern = re.compile('END')
-    for line in lines:
-        if not line.strip():
-            continue
-        if endPattern.search(line):
-            break
-        fields = line.split(',')
-        record = []
-        for field in fields:
-            record.append(field)
-        history.append(record)
-    
 if __name__ == "__main__":
-    get_history()
-    get_new()
     update_history()
-    
-    print "Wait 5 seconds and quit..."
-    time.sleep(5)
+    sleep(5)
+
     
     
   

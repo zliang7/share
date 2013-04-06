@@ -6,6 +6,8 @@ PersonOfInterest,rmvb,11009,S02E19
 Smash,人人影视.mp4,11179,S02E07
 GameOfThrones,人人影视.mp4,10733,S03E01
 
+PAUSE 2013-04-06 14:52:18
+
 Hunted,深影字幕组.mp4,28111,S02E00
 BlackMirror,人人影视.mp4,28235,S03E00
 HouseOfCards,人人影视.mp4,28793,S02E00
@@ -19,8 +21,10 @@ Homeland,rmvb,11088,S03E00
 
 END
 
-== Touch,S02E09-S02E09,2013-03-31 16:54:44 ==
-== All,No update,2013-04-05 12:09:27 ==
-== BigBang,S06E20-S06E20,2013-04-06 11:02:46 ==
-== PersonOfInterest,S02E19-S02E19,2013-04-06 11:02:48 ==
-== All,No update,2013-04-06 11:29:31 ==
+
+== All,No update,2013-04-06 14:30:14 ==
+== All,No update,2013-04-06 14:31:08 ==
+== All,No update,2013-04-06 14:47:57 ==
+== All,No update,2013-04-06 14:48:35 ==
+== All,No update,2013-04-06 14:52:11 ==
+== All,No update,2013-04-06 14:52:28 ==

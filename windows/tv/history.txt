@@ -1,38 +1,29 @@
-Homeland,rmvb,11088,S02E12
-Revenge,rmvb,10979,S02E15
-BigBang,rmvb,11005,S06E19
-PersonOfInterest,rmvb,11009,S02E17
-666ParkAvenue,rmvb,27156,S01E13
-Hunted,rmvb,28111,S01E01
-Spar,人人影视.mp4,11176,S03E06
-Touch,人人影视.mp4,11178,S02E06
-HouseOfCards,人人影视.mp4,28793,S01E13
-BlackMirror,人人影视.mp4,28235,S02E03
-Hunted,人人影视.mp4,28111,S01E06
-Smash,人人影视.mp4,11179,S02E04
+Spar,人人影视.mp4,11176,S03E08
+Touch,人人影视.mp4,11178,S02E09
+Revenge,rmvb,10979,S02E18
+BigBang,rmvb,11005,S06E20
+PersonOfInterest,rmvb,11009,S02E19
+Smash,人人影视.mp4,11179,S02E07
+GameOfThrones,人人影视.mp4,10733,S03E01
+
+
+
+PAUSED	2013-01-01
+
+Hunted,深影字幕组.mp4,28111,S02E00
+BlackMirror,人人影视.mp4,28235,S03E00
+HouseOfCards,人人影视.mp4,28793,S02E00
+Warehouse13,rmvb,10899,S05E00
+Sinbad,rmvb,26889,S02E00
+Downton,rmvb,11006,S04E00
+TheBorgias,rmvb,10818,S03E00
+Continuum,rmvb,26705,S02E00
+Homeland,rmvb,11088,S03E00
+
 
 END
 
-<paused>
-Warehouse13,rmvb,10899,S04E10
-Sinbad,rmvb,26889,S01E12
-Downton,rmvb,11006,S03E08
-TheBorgias,rmvb,10818,S03E00
-GameOfThrones,rmvb,10733,S03E00
-Continuum,rmvb,26705,S01E10
-</paused>
-
-
-
-== All,No update,2013-03-09 07:25:53 ==
-== Revenge,S02E15-S02E15,2013-03-12 00:57:05 ==
-== 666ParkAvenue,S01E12-S01E13,2013-03-12 00:58:24 ==
-== Spar,S03E06-S03E06,2013-03-12 00:58:40 ==
-== Touch,S02E06-S02E06,2013-03-12 00:58:50 ==
-== Smash,S02E04-S02E04,2013-03-12 00:59:26 ==
-
-
-== All,No update,2013-03-13 11:55:15 ==
-== BigBang,S06E19-S06E19,2013-03-15 14:03:42 ==
-
-
+== Touch,S02E09-S02E09,2013-03-31 16:54:44 ==
+== All,No update,2013-04-05 12:09:27 ==
+== BigBang,S06E20-S06E20,2013-04-06 11:02:46 ==
+== PersonOfInterest,S02E19-S02E19,2013-04-06 11:02:48 ==

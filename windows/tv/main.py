@@ -22,7 +22,7 @@ debug = 0
 hasUpdate = False
 
 def get_time():
-	time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
+	return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
 
 def update_history():
     global debug

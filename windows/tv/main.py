@@ -157,13 +157,9 @@ def update_history():
             f.write(line)
         f.close()        
 
-def sleep(seconds):
-    print 'Wait ' + str(seconds) + ' seconds and quit...'
-    time.sleep(seconds)
-
 if __name__ == "__main__":
     update_history()
-    sleep(5)
+    raw_input("Press <enter>")
 
     
     

@@ -511,9 +511,5 @@ PROMPT='%F{blue}%M%F{green}%/$(git_prompt_string)
 if [ ! -f /workspace/project/chromium/git_upstream/ninja_build.py ]; then
    ln -s /workspace/project/gyagp/share/linux/ninja_build.py /workspace/project/chromium/git_upstream/ninja_build.py
 fi
-if [ ! -f ~/.gyp/include.gypi ]; then
-   ln -s /workspace/project/gyagp/share/linux/include.gypi ~/.gyp/include.gypi
-fi
-
 
 cd /workspace/project/android/skia

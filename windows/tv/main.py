@@ -9,6 +9,7 @@ from sgmllib import SGMLParser
 from httplib import BadStatusLine
 import time
 import datetime
+import sys
 
 # define each line of history
 NAME = 0
@@ -145,7 +146,7 @@ def update_history():
     if debug:
         print lines
     else:
-        os.chdir(os.getcwd())
+        os.chdir(sys.path[0])
         if os.path.exists("history_old.txt"):    
             os.remove("history_old.txt")
             

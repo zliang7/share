@@ -43,6 +43,8 @@ def update_line(lines, records, record_index):
     
     output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
     print output_prefix + " is processing ..."
+    # FIXME: We expect a well-formatted stdout for print. However, this doesn't work well.
+    sys.stdout.flush()
     
     # get the html
     if debug_mode:
@@ -89,7 +91,7 @@ def update_line(lines, records, record_index):
 
     # Handle update
     if len(new) > 0:
-        print output_prefix + ' has an update'
+        print ':) ' + output_prefix + ' has an update'
         
         lines[line_index] = line.replace(fields[HISTORY], new[len(new)-1][0]) + '\n'
         lines.append("== " + fields[NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + get_time() + " ==\n")
@@ -98,7 +100,7 @@ def update_line(lines, records, record_index):
         lines.append("\n")
         return True
     else:
-        print output_prefix + ' has no update'
+        print ':( ' + output_prefix + ' has no update'
         return False
                 
 def update_history():
@@ -140,7 +142,7 @@ def update_history():
 
     
     # Update line
-    # Now multiprocess mode has problem that reports: PicklingError: Can't pickle <type 'cStringIO.StringO'>: attribute lookup cStringIO.StringO failed
+    # FIXME: Occasionally multiprocess mode has problem that reports: PicklingError: Can't pickle <type 'cStringIO.StringO'>: attribute lookup cStringIO.StringO failed
     if mp_mode:
         pool = Pool(processes = multiprocessing.cpu_count() * 2)
         results = []

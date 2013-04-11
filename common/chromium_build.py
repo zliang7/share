@@ -128,7 +128,7 @@ Examples:
         if isWindows():
             rootDir = "d:/user/ygu5/project/chromium"
         else:
-            rootDir = "/workspace/project/chromium/git_upstream"
+            rootDir = "/workspace/project/chromium"
     else:
         rootDir = options.rootDir
         

@@ -11,6 +11,10 @@ import time
 import datetime
 import sys
 
+import multiprocessing
+from multiprocessing import Pool
+
+
 # define each line of history
 NAME = 0
 FORMAT = 1
@@ -22,23 +26,30 @@ END_STR = 'END'
 
 URL_PREFIX = 'http://www.yyets.com/php/resource/'
 
-# Enable debug mode
-debug = 0
+# Enable debug mode or not
+debug_mode = 0
 
+# Enable multiprocess mode or not
+mp_mode = 0
+
+has_update = False
 
 def get_time():
 	return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
         
 def update_line(lines, records, record_index):
+    global has_update
+
     records_number = len(records)
     line_index = records[record_index]
     line = lines[line_index]
     fields = line.split(',')
     
-    print str(record_index + 1) + "/" + str(records_number) + "    Processing " + fields[NAME] + " ..."
+    output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
+    print output_prefix + " is processing ..."
     
     # get the html
-    if debug:
+    if debug_mode:
         file = open(fields[ID] + '.htm')
         html = file.read()
     else:
@@ -82,27 +93,24 @@ def update_line(lines, records, record_index):
 
     # Handle update
     if len(new) > 0:
-        print '^_^ There is an update'
+        print output_prefix + ' has an update'
         
         lines[line_index] = line.replace(fields[HISTORY], new[len(new)-1][0]) + '\n'
-        
         lines.append("== " + fields[NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + get_time() + " ==\n")
         for new_index in range(0, len(new)):
             lines.append(new[new_index][1] + "\n")
         lines.append("\n")
-        
-        return True
+        has_update = True
     else:
-        return False
+        print output_prefix + ' has no update'
+        has_update = False
                 
 def update_history():
     # each item is the index of line to be checked
     records = []
-    
-    has_update = False
 
     # Get lines
-    if debug:
+    if debug_mode:
         lines = ["Spar,人人影视.mp4,11176,S03E00"]
     else:
         file = open('history.txt')
@@ -132,10 +140,19 @@ def update_history():
         # Append to records
         records.append(line_index)
 
+    
     # Update line
-    for record_index in range(0, len(records)):
-        if update_line(lines, records, record_index):
-            has_update = True
+    # Now multiprocess mode has problem that reports: PicklingError: Can't pickle <type 'cStringIO.StringO'>: attribute lookup cStringIO.StringO failed
+    if mp_mode:
+        pool = Pool(processes = multiprocessing.cpu_count() * 2)
+        for record_index in range(0, len(records)):
+            pool.apply_async(update_line, (lines, records, record_index,))
+
+        pool.close()
+        pool.join()
+    else:
+        for record_index in range(0, len(records)):
+            update_line(lines, records, record_index)
         
     # Handle no update
     if not has_update:
@@ -143,7 +160,7 @@ def update_history():
         lines.append("== All,No update," + get_time() + " ==\n")
 
     # Update history file
-    if debug:
+    if debug_mode:
         print lines
     else:
         os.chdir(sys.path[0])

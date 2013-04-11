@@ -30,16 +30,12 @@ URL_PREFIX = 'http://www.yyets.com/php/resource/'
 debug_mode = 0
 
 # Enable multiprocess mode or not
-mp_mode = 0
-
-has_update = False
+mp_mode = 1
 
 def get_time():
 	return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
         
 def update_line(lines, records, record_index):
-    global has_update
-
     records_number = len(records)
     line_index = records[record_index]
     line = lines[line_index]
@@ -100,12 +96,14 @@ def update_line(lines, records, record_index):
         for new_index in range(0, len(new)):
             lines.append(new[new_index][1] + "\n")
         lines.append("\n")
-        has_update = True
+        return True
     else:
         print output_prefix + ' has no update'
-        has_update = False
+        return False
                 
 def update_history():
+    has_update = False
+
     # each item is the index of line to be checked
     records = []
 
@@ -145,14 +143,20 @@ def update_history():
     # Now multiprocess mode has problem that reports: PicklingError: Can't pickle <type 'cStringIO.StringO'>: attribute lookup cStringIO.StringO failed
     if mp_mode:
         pool = Pool(processes = multiprocessing.cpu_count() * 2)
+        results = []
+        
         for record_index in range(0, len(records)):
-            pool.apply_async(update_line, (lines, records, record_index,))
+            results.append(pool.apply_async(update_line, (lines, records, record_index,)))
 
         pool.close()
         pool.join()
+        
+        for i in results:
+            has_update = has_update or i.get()
+        
     else:
         for record_index in range(0, len(records)):
-            update_line(lines, records, record_index)
+            has_update = has_update or update_line(lines, records, record_index)
         
     # Handle no update
     if not has_update:

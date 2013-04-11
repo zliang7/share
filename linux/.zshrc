@@ -508,8 +508,8 @@ PROMPT='%F{blue}%M%F{green}%/$(git_prompt_string)
 
 
 # ln -s /workspace/project/gyagp/share/linux/.zshrc ~/.zshrc
-if [ ! -L /workspace/project/chromium/git_upstream/chromium_build.py ]; then
-   ln -s /workspace/project/gyagp/share/common/chromium_build.py /workspace/project/chromium/git_upstream/chromium_build.py
+if [ ! -L /workspace/project/chromium/chromium_build.py ]; then
+   ln -s /workspace/project/gyagp/share/common/chromium_build.py /workspace/project/chromium/chromium_build.py
 fi
 
-cd /workspace/project/android/skia
+cd /workspace/project

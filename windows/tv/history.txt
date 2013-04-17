@@ -1,12 +1,12 @@
-Spar,人人影视.mp4,11176,S03E08
 Touch,人人影视.mp4,11178,S02E09
 Revenge,rmvb,10979,S02E18
 BigBang,rmvb,11005,S06E20
 PersonOfInterest,rmvb,11009,S02E19
-Smash,人人影视.mp4,11179,S02E07
-GameOfThrones,人人影视.mp4,10733,S03E01
+Smash,人人影视.mp4,11179,S02E08
+GameOfThrones,人人影视.mp4,10733,S03E03
+DaVinci,人人影视.mp4,28404,S01E01
 
-PAUSE 2013-04-06 14:52:18
+PAUSE 2013-04-17 23:12:46
 
 Hunted,深影字幕组.mp4,28111,S02E00
 BlackMirror,人人影视.mp4,28235,S03E00
@@ -18,13 +18,11 @@ TheBorgias,rmvb,10818,S03E00
 Continuum,rmvb,26705,S02E00
 Homeland,rmvb,11088,S03E00
 
-
 END
 
+== All,No update,2013-04-11 22:31:21 ==
 
-== All,No update,2013-04-06 14:30:14 ==
-== All,No update,2013-04-06 14:31:08 ==
-== All,No update,2013-04-06 14:47:57 ==
-== All,No update,2013-04-06 14:48:35 ==
-== All,No update,2013-04-06 14:52:11 ==
-== All,No update,2013-04-06 14:52:28 ==
+== GameOfThrones,S03E03-S03E03,2013-04-17 22:59:21 ==
+
+
+== All,No update,2013-04-17 23:13:55 ==

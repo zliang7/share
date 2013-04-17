@@ -57,7 +57,7 @@ def update_line(lines, records, record_index):
         except BadStatusLine:
             print "Check failed"
             lines.append("== " + fields[NAME] + ",Check failed," + get_time() + " ==\n")
-            return
+            return (False, line_index, '', '')
         html = u.read()
     
     # Check if it has update
@@ -93,15 +93,17 @@ def update_line(lines, records, record_index):
     if len(new) > 0:
         print ':) ' + output_prefix + ' has an update'
         
-        lines[line_index] = line.replace(fields[HISTORY], new[len(new)-1][0]) + '\n'
-        lines.append("== " + fields[NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + get_time() + " ==\n")
+        line_new = line.replace(fields[HISTORY], new[len(new)-1][0]) + '\n'
+
+        line_added = "== " + fields[NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + get_time() + " ==\n"
         for new_index in range(0, len(new)):
-            lines.append(new[new_index][1] + "\n")
-        lines.append("\n")
-        return True
+            line_added = line_added + new[new_index][1] + "\n"
+        line_added = line_added + "\n"
+
+        return (True, line_index, line_new, line_added)
     else:
-        print ':( ' + output_prefix + ' has no update'
-        return False
+        print output_prefix + ' has no update'
+        return (False, line_index, '', '')
                 
 def update_history():
     has_update = False
@@ -111,7 +113,7 @@ def update_history():
 
     # Get lines
     if debug_mode:
-        lines = ["Spar,人人影视.mp4,11176,S03E00"]
+        lines = ["Spar,人人影视.mp4,11176,S03E01", "Homeland,rmvb,11088,S02E05"]
     else:
         file = open('history.txt')
         lines = file.readlines()
@@ -143,21 +145,27 @@ def update_history():
     
     # Update line
     # FIXME: Occasionally multiprocess mode has problem that reports: PicklingError: Can't pickle <type 'cStringIO.StringO'>: attribute lookup cStringIO.StringO failed
+    records_number = len(records)
     if mp_mode:
-        pool = Pool(processes = multiprocessing.cpu_count() * 2)
+        process_number = min(multiprocessing.cpu_count(), records_number)
+        pool = Pool(processes = process_number)
         results = []
         
-        for record_index in range(0, len(records)):
+        for record_index in range(0, records_number):
             results.append(pool.apply_async(update_line, (lines, records, record_index,)))
 
         pool.close()
         pool.join()
         
         for i in results:
-            has_update = has_update or i.get()
+            r = i.get()
+            if r[0] == True:
+                lines[r[1]] = r[2]
+                lines.append(r[3])
+                has_update = True
         
     else:
-        for record_index in range(0, len(records)):
+        for record_index in range(0, records_number):
             has_update = has_update or update_line(lines, records, record_index)
         
     # Handle no update

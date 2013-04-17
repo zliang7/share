@@ -42,9 +42,6 @@ def update_line(lines, records, record_index):
     fields = line.split(',')
     
     output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
-    print output_prefix + " is processing ..."
-    # FIXME: We expect a well-formatted stdout for print. However, this doesn't work well.
-    sys.stdout.flush()
     
     # get the html
     if debug_mode:
@@ -152,6 +149,12 @@ def update_history():
         results = []
         
         for record_index in range(0, records_number):
+            line_index = records[record_index]
+            line = lines[line_index]
+            fields = line.split(',')
+            output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
+            print output_prefix + " is processing ..."
+        
             results.append(pool.apply_async(update_line, (lines, records, record_index,)))
 
         pool.close()

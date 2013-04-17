@@ -30,7 +30,7 @@ URL_PREFIX = 'http://www.yyets.com/php/resource/'
 debug_mode = 0
 
 # Enable multiprocess mode or not
-mp_mode = 1
+mp_mode = 0
 
 def get_time():
 	return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
@@ -168,7 +168,15 @@ def update_history():
         
     else:
         for record_index in range(0, records_number):
-            has_update = has_update or update_line(lines, records, record_index)
+            line_index = records[record_index]
+            line = lines[line_index]
+            fields = line.split(',')
+            output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
+            print output_prefix + " is processing ..."
+            
+            r = update_line(lines, records, record_index)
+            if r[0] == True:
+                has_update = True
         
     # Handle no update
     if not has_update:

@@ -141,7 +141,6 @@ def update_history():
 
     
     # Update line
-    # FIXME: Occasionally multiprocess mode has problem that reports: PicklingError: Can't pickle <type 'cStringIO.StringO'>: attribute lookup cStringIO.StringO failed
     records_number = len(records)
     if mp_mode:
         process_number = min(multiprocessing.cpu_count(), records_number)

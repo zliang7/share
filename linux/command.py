@@ -75,7 +75,7 @@ commands = [
     ('hardware', 'uname -a', '32 or 64 bit system, x86_64 for 64 bit system', TYPE_RUNNABLE),
     ('hardware', 'file /sbin/init', '32 or 64 bit system, ELF (32|64)-bit LSB executable', TYPE_RUNNABLE),
     ('vi', ':w !sudo tee %', 'write file in vi', TYPE_NULL),
-    ('', '', ''),
+    ('', '', '', TYPE_NULL),
 ]
 
 commands_cache = []
@@ -113,7 +113,7 @@ def search(string, index_field):
 
     for command_cache in commands_cache:
         command = commands[command_cache]
-        print '[' + str(command_cache) + ']->' + ','.join(command)
+        print '[' + str(command_cache) + ']->' + ','.join(str(c) for c in command)
 
 if __name__ == '__main__':
     prompt = GREEN + 'Please choose an option:\n'

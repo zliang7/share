@@ -30,7 +30,7 @@ URL_PREFIX = 'http://www.yyets.com/php/resource/'
 debug_mode = 0
 
 # Enable multiprocess mode or not
-mp_mode = 0
+mp_mode = 1
 
 def get_time():
 	return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
@@ -156,6 +156,7 @@ def update_history():
         
             results.append(pool.apply_async(update_line, (lines, records, record_index,)))
 
+        print '\n'
         pool.close()
         pool.join()
         

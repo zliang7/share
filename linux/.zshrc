@@ -340,7 +340,7 @@ function preexec {
 ##### Followings are added by Yang #####
 
 # Set profile
-ifconfig |grep 10.239 >/dev/null
+ifconfig |grep tun0 >/dev/null
 if [ $? -eq 1 ] ; then
     profile="DIRECT"
 else

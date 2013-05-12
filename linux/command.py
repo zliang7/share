@@ -74,7 +74,7 @@ commands = [
     ('hardware', 'getconf LONG_BIT', '32 or 64 bit system', TYPE_RUNNABLE),
     ('hardware', 'uname -a', '32 or 64 bit system, x86_64 for 64 bit system', TYPE_RUNNABLE),
     ('hardware', 'file /sbin/init', '32 or 64 bit system, ELF (32|64)-bit LSB executable', TYPE_RUNNABLE),
-    ('vi', ':w !sudo tee %', 'write file in vi', TYPE_NULL),
+    ('tool', 'alacarte', 'menu setting', TYPE_NULL),
     ('', '', '', TYPE_NULL),
 ]
 

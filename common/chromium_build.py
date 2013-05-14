@@ -35,13 +35,15 @@ def info(msg):
 def error(msg):
     print "[ERROR] " + msg + "!"
 
-def hasOutDir(name):
-    if not os.path.exists(srcDir + "/out/" + name):
+def hasBuildDir(name):
+    outDir = srcDir + '/out'
+    if not os.path.exists(outDir):
+        os.mkdir(outDir)
+
+    buildDir = outDir + '/' + name
+    if not os.path.exists(buildDir):
         info(name + " directory doesn't exist. Will create the directory for you and perform a clean build")
-        os.chdir(srcDir)
-        os.mkdir('out')
-        os.chdir(srcDir + '/out')
-        os.mkdir(name)
+        os.mkdir(buildDir)
         return False
 
     return True
@@ -73,10 +75,10 @@ def build(options):
 
     cleanBuild = options.cleanBuild    
     if buildType == "All":
-        if not hasOutDir("Debug") and not hasOutDir("Release"):
+        if not hasBuildDir("Debug") and not hasBuildDir("Release"):
             cleanBuild = True
     else:
-        if not hasOutDir(buildType):
+        if not hasBuildDir(buildType):
             cleanBuild = True
     
     print "== Build Environment =="

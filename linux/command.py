@@ -79,6 +79,8 @@ commands = [
     ('network', 'sudo iptraf -g', 'Network speed. Need to install', TYPE_RUNNABLE),
     ('network', 'sar -n DEV 1 100', 'Network speed. 1 means 1 time per second, and 100 means to observe 100 times. Need to install sysstat', TYPE_RUNNABLE),
     ('network', 'watch -n 1 "/sbin/ifconfig wlan0 | grep bytes"', 'Network speed.', TYPE_RUNNABLE),
+    ('network', 'lsof -Pnl +M -i4', 'List IPV4 connections', TYPE_NULL),
+    ('network', 'netstat', '-l Show only listening sockets, -a All sockets, -p Show PID and name, -t tcp, -u udp, -x Unix sockets, -c timer', TYPE_NULL),
     ('', '', '', TYPE_NULL),
 ]
 

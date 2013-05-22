@@ -75,6 +75,10 @@ commands = [
     ('hardware', 'uname -a', '32 or 64 bit system, x86_64 for 64 bit system', TYPE_RUNNABLE),
     ('hardware', 'file /sbin/init', '32 or 64 bit system, ELF (32|64)-bit LSB executable', TYPE_RUNNABLE),
     ('tool', 'alacarte', 'menu setting', TYPE_NULL),
+    ('network', 'sudo iftop -i wlan0', 'Network speed. Need to install', TYPE_RUNNABLE),
+    ('network', 'sudo iptraf -g', 'Network speed. Need to install', TYPE_RUNNABLE),
+    ('network', 'sar -n DEV 1 100', 'Network speed. 1 means 1 time per second, and 100 means to observe 100 times. Need to install sysstat', TYPE_RUNNABLE),
+    ('network', 'watch -n 1 "/sbin/ifconfig wlan0 | grep bytes"', 'Network speed.', TYPE_RUNNABLE),
     ('', '', '', TYPE_NULL),
 ]
 

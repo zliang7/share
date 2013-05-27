@@ -384,6 +384,7 @@ fi
 export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-7/bin
 export ANDROID_SDK_ROOT=/workspace/topic/skia/adt-bundle-linux-x86_64/sdk
 export TARGET_DEVICE=x86
+export PATH=/workspace/topic/skia/gsutil:$PATH
 
 # ccache related
 export CCACHE_DIR=/workspace/ccache

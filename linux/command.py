@@ -68,6 +68,7 @@ commands = [
     ('uncompress,rpm', 'rpm2cpio file.rpm | cpio -div', 'Uncompress rpm file', TYPE_NULL),
     ('uncompress,deb', 'dpkg-deb -x file.deb ./', 'Uncompress deb file', TYPE_NULL),
     ('uncompress', 'tar zxvf file.tar.gz', 'Uncompress tar.gz file', TYPE_NULL),
+    ('uncompress', 'tar zxvf file.tgz', 'Uncompress tgz file', TYPE_NULL),
     ('uncompress', 'bunzip2 file.bz2', 'Uncompress bz2 file', TYPE_NULL),
     ('hardware', 'cat /proc/cpuinfo |grep -i -E "vmx|svm" |wc -l', 'virtualization support, >0 if support, vmx for Intel CPU, and svm for AMD CPU', TYPE_RUNNABLE),
     ('hardware', 'cat /proc/cpuinfo | grep flags | grep "lm"|wc -l', 'CPU 64bit support, >0 if support, lm means long mode', TYPE_RUNNABLE),

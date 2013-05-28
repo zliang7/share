@@ -95,11 +95,18 @@ def build(options):
         cmd = 'python build/gyp_chromium'
         os.system(cmd)
     
+    if options.verbose:
+        cmd = 'ninja -v '
+    else:
+        cmd = 'ninja '
+
     if buildType == "Debug" or buildType == "All":
-        os.system("ninja -C out/Debug chrome")
+        cmd = cmd + '-C out/Debug chrome'
+        os.system(cmd)
 
     if buildType == "Release" or buildType == "All":
-        os.system("ninja -C out/Release chrome")
+        cmd = cmd + '-C out/Release chrome'
+        os.system(cmd)
     
 # override format_epilog to make it format better
 OptionParser.format_epilog = lambda self, formatter: self.epilog
@@ -123,6 +130,7 @@ Examples:
     parser.add_option("-c", "--clean-build", action="store_true", dest="cleanBuild", help="need a clean build", default=False)
     parser.add_option("-t", "--build-type", dest="buildType", help="assign the build type", metavar="DEBUG|RELEASE|ALL", default='')
     parser.add_option("-d", "--root-dir", dest="rootDir", help="assign root directory of Chromium", metavar="ROOTDIR", default='')
+    parser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="enable verbose mode for ninja. Find log at out/Release/.ninja_log", default=False)
     (options, args) = parser.parse_args()
 
     # Global variables

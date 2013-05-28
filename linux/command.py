@@ -65,6 +65,7 @@ commands = [
     ('zypper', 'zypper si <package_name>', 'Install source package', TYPE_NULL),
     ('zypper', 'zypper wp <file_name>', 'Find package according to file name', TYPE_NULL),
     ('system', 'X -version', 'xorg version', TYPE_RUNNABLE),
+    ('system', 'sudo sysv-rc-conf', 'services after system boot. Need to install package. Run level: 0 for halt, 1 for single user, 2-5 for multi-user (3 for character UI, 5 for GUI), 6 for reboot', TYPE_RUNNABLE),
     ('uncompress,rpm', 'rpm2cpio file.rpm | cpio -div', 'Uncompress rpm file', TYPE_NULL),
     ('uncompress,deb', 'dpkg-deb -x file.deb ./', 'Uncompress deb file', TYPE_NULL),
     ('uncompress', 'tar zxvf file.tar.gz', 'Uncompress tar.gz file', TYPE_NULL),

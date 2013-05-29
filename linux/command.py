@@ -39,6 +39,7 @@ commands = [
     ('basic', r'history -r; history |grep cd', 'Test shell built-in command', TYPE_BUILTIN),
     ('upgrade', 'do-release-upgrade', 'Upgrade system', TYPE_NULL),
     ('info', 'cat /etc/os-release', 'List distribution info', TYPE_RUNNABLE),
+    ('info', 'cat /etc/lsb-release', 'List distribution info', TYPE_RUNNABLE),
     ('vi', ':w !sudo tee %', 'Write a readonly file in vi', TYPE_NULL),
     ('git', r'git log --summary 223286b.. | grep "Author:" | wc -l', 'Count git commits since specific commit', TYPE_RUNNABLE),
     ('repo', 'add-apt-repository ppa:gwibber-daily/ppa', 'Add repo', TYPE_NULL),

@@ -6,7 +6,7 @@
 IDSID: ygu5
 domain: CCR
 Rialto: CCR password
-Hostname: ygu5-mobl.ccr.corp.intel.com
+Hostname: ygu5-mobl.ccr.corp.intel.com （ygu5-mobl1.ccr.corp.intel.com）
 new private-key password: Iaob****10
 
 * run network.sh to connect to vpn

@@ -8,7 +8,7 @@ if __name__ == "__main__":
     parser = OptionParser(description='Description: Script to upgrade system',
                           epilog="""
 Examples:
-  python chromium_build.py -t socks
+  python chromium_build.py -p socks
 """)
     parser.add_option("-p", "--proxy", dest="proxy", help="What kind of proxy to use", default='http')
     (options, args) = parser.parse_args()

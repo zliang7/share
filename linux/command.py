@@ -44,6 +44,7 @@ commands = [
     ('git', r'git log --summary 223286b.. | grep "Author:" | wc -l', 'Count git commits since specific commit', TYPE_RUNNABLE),
     ('repo', 'add-apt-repository ppa:gwibber-daily/ppa', 'Add repo', TYPE_NULL),
     ('repo', 'sudo tsocks apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 27F5B2C1B3EAC8D9 27F5B2C1B3EAC8D0', 'Import PPA key', TYPE_NULL),
+    ('package', 'sudo apt-get install package-name:i386', 'Install 32-bit package on 64-bit system', TYPE_NULL),
     ('rpm', 'rpm -q <package_name>', 'See if the package is installed', TYPE_NULL),
     ('rpm', 'rpm -qi <package_name>', 'Info for installed package', TYPE_NULL),
     ('rpm', 'rpm -ql <package_name>', 'List files in installed package', TYPE_NULL),

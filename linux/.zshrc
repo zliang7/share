@@ -381,7 +381,7 @@ if [ $profile == "PROXY" ] ; then
     export socks_proxy=proxy.jf.intel.com:1080
 fi
 
-export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-7/bin
+export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-8/bin
 
 # Skia related
 export ANDROID_SDK_ROOT=/workspace/topic/skia/adt-bundle-linux-x86_64/sdk

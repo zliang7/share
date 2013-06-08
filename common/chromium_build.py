@@ -96,16 +96,17 @@ def build(options):
         os.system(cmd)
     
     if options.verbose:
-        cmd = 'ninja -v '
+        cmd = 'ninja -v chrome'
     else:
-        cmd = 'ninja '
+        cmd = 'ninja chrome'
 
     if buildType == "Debug" or buildType == "All":
-        cmd = cmd + '-C out/Debug chrome'
+        cmd = cmd + ' -C out/Debug'
+        print cmd
         os.system(cmd)
 
     if buildType == "Release" or buildType == "All":
-        cmd = cmd + '-C out/Release chrome'
+        cmd = cmd + ' -C out/Release'
         os.system(cmd)
     
 # override format_epilog to make it format better

@@ -126,10 +126,10 @@ def update_history():
         m = re.match(PAUSE_STR + ' (\d+-\d+-\d+ \d+:\d+:\d+)', lines[line_index])
         if m:
             diff = datetime.datetime.today() - datetime.datetime.strptime(m.group(1), '%Y-%m-%d %X')
-            lines[line_index] = PAUSE_STR + ' ' + get_time() + '\n'
             if diff.days < 30:
                 break
             else:
+                lines[line_index] = PAUSE_STR + ' ' + get_time() + '\n'
                 continue
 
         # Check if end meets    

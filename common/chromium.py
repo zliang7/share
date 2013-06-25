@@ -2,7 +2,7 @@
 
 import os
 import commands
-from optparse import OptionParser
+import argparse
 import platform
 import re
 
@@ -30,10 +30,17 @@ def isLinux():
         return False
         
 def info(msg):
-    print "[INFO] " + msg + "."
+    print '[INFO] ' + msg + '.'
 
 def error(msg):
-    print "[ERROR] " + msg + "!"
+    print '[ERROR] ' + msg + '!'
+
+def cmd(msg):
+    print '[COMMAND] ' + msg
+    
+def execute(command):
+    cmd(command)
+    print os.system(command)
 
 def hasBuildDir(name):
     outDir = srcDir + '/out'
@@ -42,14 +49,14 @@ def hasBuildDir(name):
 
     buildDir = outDir + '/' + name
     if not os.path.exists(buildDir):
-        info(name + " directory doesn't exist. Will create the directory for you and perform a clean build")
+        info(name + ' directory doesn\'t exist. Will create the directory for you and perform a clean build')
         os.mkdir(buildDir)
         return False
 
     return True
 
-def gclient(options):
-    if options.gclient == '':
+def update(args):
+    if not args.update:
         return()
 
     os.chdir(rootDir)
@@ -58,90 +65,129 @@ def gclient(options):
     else:
         cmd = 'gclient'
         
-    cmd = cmd + ' ' + options.gclient    
-    info(cmd)
-    print os.system(cmd)
+    cmd = cmd + ' ' + args.update
+    execute(cmd)
     
-def build(options):   
-    if options.buildType == '':
+    
+def build(args):   
+    if not args.build:
         return()
     
-    if options.buildType.upper() == "DEBUG":
-        buildType = "Debug"
-    elif options.buildType.upper() == "RELEASE":
-        buildType = "Release"
-    elif options.buildType.upper() == "ALL":
-        buildType = "All"
+    if args.build.upper() == 'DEBUG':
+        build = 'Debug'
+    elif args.build.upper() == 'RELEASE':
+        build = 'Release'
+    elif args.build.upper() == 'ALL':
+        build = 'All'
 
-    cleanBuild = options.cleanBuild    
-    if buildType == "All":
-        if not hasBuildDir("Debug") and not hasBuildDir("Release"):
-            cleanBuild = True
+    buildClean = args.buildClean
+    if build == 'All':
+        if not hasBuildDir('Debug') and not hasBuildDir('Release'):
+            buildClean = True
     else:
-        if not hasBuildDir(buildType):
-            cleanBuild = True
+        if not hasBuildDir(build):
+            buildClean = True
     
-    print "== Build Environment =="
-    print "Directory of src: " + srcDir
-    print "Build type: " + buildType
-    print "Build system: Ninja"
-    print "Need clean build: " + str(cleanBuild)
-    print "System: " + system
-    print "======================="
+    print '== Build Environment =='
+    print 'Directory of src: ' + srcDir
+    print 'Build type: ' + build
+    print 'Build system: Ninja'
+    print 'Need clean build: ' + str(buildClean)
+    print 'System: ' + system
+    print '======================='
         
     os.chdir(srcDir)
         
-    if cleanBuild:
+    if buildClean:
         cmd = 'python build/gyp_chromium'
-        os.system(cmd)
+        execute(cmd)
     
-    if options.verbose:
+    if args.buildVerbose:
         cmd = 'ninja -v chrome'
     else:
         cmd = 'ninja chrome'
 
-    if buildType == "Debug" or buildType == "All":
-        cmd = cmd + ' -C out/Debug'
-        print cmd
-        os.system(cmd)
+    if build == 'Debug' or build == 'All':
+        execute(cmd + ' -C out/Debug')
 
-    if buildType == "Release" or buildType == "All":
-        cmd = cmd + ' -C out/Release'
-        os.system(cmd)
+    if build == 'Release' or build == 'All':
+        execute(cmd + ' -C out/Release')
+
+def run(args):
+    if not args.run:
+        return()
+
+    runOption = '--no-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + rootDir + '/user-data'
+    print args.run
+    if args.run != 'default':
+        runOption = runOption + ' ' + args.run
+        
+    if args.runGPU:
+        runOption = runOption + ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
+    
+    cmd = rootDir + '/src/out/Release/chrome ' + runOption
+    execute(cmd)
     
 # override format_epilog to make it format better
-OptionParser.format_epilog = lambda self, formatter: self.epilog
+argparse.format_epilog = lambda self, formatter: self.epilog
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # System sanity check
     if not isWindows() and not isLinux():
         error('Current system is not suppported')
         quit()
         
     # Handle options
-    parser = OptionParser(description='Description: Script to sync and build Chromium',
-                          epilog="""
-Examples:
-  python chromium_build.py -g "sync"
-  python chromium_build.py -g "sync --force"
-  python chromium_build.py -g "runhooks"
-  python chromium_build.py -t release
-""")
-    parser.add_option("-g", "--gclient", dest="gclient", help="Update source code", default='')
-    parser.add_option("-c", "--clean-build", action="store_true", dest="cleanBuild", help="need a clean build", default=False)
-    parser.add_option("-t", "--build-type", dest="buildType", help="assign the build type", metavar="DEBUG|RELEASE|ALL", default='')
-    parser.add_option("-d", "--root-dir", dest="rootDir", help="assign root directory of Chromium", metavar="ROOTDIR", default='')
-    parser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="enable verbose mode for ninja. Find log at out/Release/.ninja_log", default=False)
-    (options, args) = parser.parse_args()
+    parser = argparse.ArgumentParser(description = 'Script to update, build and run Chromium',
+                                     formatter_class = argparse.RawTextHelpFormatter,
+                                     epilog = '''
+examples:
+
+  update:
+  python %(prog)s -u sync
+  python %(prog)s -u 'sync --force'
+  python %(prog)s -u runhooks
+  
+  build:
+  python %(prog)s -b release
+  python %(prog)s -b all
+  python %(prog)s -b release -c -v
+  
+  run:
+  python %(prog)s -r default
+  python %(prog)s -r=--enable-logging=stderr
+  python %(prog)s -r--enable-logging=stderr
+  python %(prog)s '-r --enable-logging=stderr'
+  python %(prog)s -r default -g
+''')
+
+    groupUpdate = parser.add_argument_group('update')
+    groupUpdate.add_argument('-u', '--update', dest='update', help='gclient options to update source code')
+
+    groupBuild = parser.add_argument_group('build')
+    groupBuild.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug', 'all'])
+    groupBuild.add_argument('-c', '--build-clean', dest='buildClean', help='regenerate gyp', action='store_true')
+    groupBuild.add_argument('-v', '--build-verbose', dest='buildVerbose', help='output verbose info. Find log at out/Release/.ninja_log', action='store_true')
+
+    groupRun = parser.add_argument_group('run')
+    groupRun.add_argument('-r', '--run', dest='run', help='options to run')
+    groupRun.add_argument('-g', '--gpu', dest='runGPU', help='enable GPU acceleration', action='store_true')
+    # Other options
+    parser.add_argument('-d', '--root-dir', dest='rootDir', help='set root directory')
+    
+    args = parser.parse_args()
+
+    if not (args.update or args.build or args.run):
+        parser.print_help()
 
     # Global variables
-    if options.rootDir == '':
+    if not args.rootDir:
         if isWindows():
             rootDir = "d:/user/ygu5/project/chromium"
         else:
-            rootDir = "/workspace/project/chromium"
+            rootDir = '/workspace/project/chromium'
     else:
-        rootDir = options.rootDir
+        rootDir = args.rootDir
         
     srcDir = rootDir + '/src'
 
@@ -149,24 +195,25 @@ Examples:
     os.putenv('https_proxy', 'https://proxy-shz.intel.com:911')
     
     if isWindows():
-        path = os.getenv("PATH")
+        path = os.getenv('PATH')
         p = re.compile('depot_tools')
         if not p.search(path):
-            path = "d:\user\ygu5\project\chromium\depot_tools;" + path
-            os.putenv("PATH", path)        
+            path = 'd:\user\ygu5\project\chromium\depot_tools;' + path
+            os.putenv('PATH', path)        
     
-    os.putenv("GYP_GENERATORS", "ninja")
+    os.putenv('GYP_GENERATORS', 'ninja')
     if isWindows():
         os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0 windows_sdk_path="d:/user/ygu5/project/chromium/win_toolchain/win8sdk"')
-        os.putenv("GYP_MSVS_VERSION", "2010e")
-        os.putenv("GYP_MSVS_OVERRIDE_PATH", "d:/user/ygu5/project/chromium/win_toolchain")
-        os.putenv("WDK_DIR", "d:/user/ygu5/project/chromium/win_toolchain/WDK")
-        os.putenv("DXSDK_DIR", "d:/user/ygu5/project/chromium/win_toolchain/DXSDK")
-        os.putenv("WindowsSDKDir", "d:/user/ygu5/project/chromium/win_toolchain/win8sdk")
+        os.putenv('GYP_MSVS_VERSION', '2010e')
+        os.putenv('GYP_MSVS_OVERRIDE_PATH', 'd:/user/ygu5/project/chromium/win_toolchain')
+        os.putenv('WDK_DIR', 'd:/user/ygu5/project/chromium/win_toolchain/WDK')
+        os.putenv('DXSDK_DIR', 'd:/user/ygu5/project/chromium/win_toolchain/DXSDK')
+        os.putenv('WindowsSDKDir', 'd:/user/ygu5/project/chromium/win_toolchain/win8sdk')
     else:
-        os.putenv("GYP_DEFINES", "werror= disable_nacl=1 component=shared_library enable_svg=0")    
+        os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0')    
     
     # Real work
-    gclient(options)
-    build(options)
+    update(args)
+    build(args)
+    run(args)
     

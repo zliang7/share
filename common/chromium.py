@@ -40,7 +40,7 @@ def cmd(msg):
     
 def execute(command):
     cmd(command)
-    print os.system(command)
+    os.system(command)
 
 def hasBuildDir(name):
     outDir = srcDir + '/out'
@@ -117,15 +117,14 @@ def run(args):
     if not args.run:
         return()
 
-    runOption = '--no-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + rootDir + '/user-data'
-    print args.run
-    if args.run != 'default':
-        runOption = runOption + ' ' + args.run
+    option = '--disable-setuid-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + rootDir + '/user-data'
+    if args.runOption:
+        option = option + ' ' + args.runOption
         
     if args.runGPU:
-        runOption = runOption + ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
+        option = option + ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
     
-    cmd = rootDir + '/src/out/Release/chrome ' + runOption
+    cmd = rootDir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
     execute(cmd)
     
 # override format_epilog to make it format better
@@ -154,11 +153,15 @@ examples:
   python %(prog)s -b release -c -v
   
   run:
-  python %(prog)s -r default
-  python %(prog)s -r=--enable-logging=stderr
-  python %(prog)s -r--enable-logging=stderr
-  python %(prog)s '-r --enable-logging=stderr'
-  python %(prog)s -r default -g
+  python %(prog)s -r release
+  python %(prog)s -r release -g
+  python %(prog)s -r debug
+  python %(prog)s -o=--enable-logging=stderr
+  python %(prog)s -o--enable-logging=stderr
+  python %(prog)s '-o --enable-logging=stderr'
+  
+  update & build & run
+  python chromium.py -u sync -b release -r release
 ''')
 
     groupUpdate = parser.add_argument_group('update')
@@ -170,7 +173,8 @@ examples:
     groupBuild.add_argument('-v', '--build-verbose', dest='buildVerbose', help='output verbose info. Find log at out/Release/.ninja_log', action='store_true')
 
     groupRun = parser.add_argument_group('run')
-    groupRun.add_argument('-r', '--run', dest='run', help='options to run')
+    groupRun.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
+    groupRun.add_argument('-o', '--run-option', dest='runOption', help='option to run')
     groupRun.add_argument('-g', '--gpu', dest='runGPU', help='enable GPU acceleration', action='store_true')
     # Other options
     parser.add_argument('-d', '--root-dir', dest='rootDir', help='set root directory')
@@ -210,7 +214,8 @@ examples:
         os.putenv('DXSDK_DIR', 'd:/user/ygu5/project/chromium/win_toolchain/DXSDK')
         os.putenv('WindowsSDKDir', 'd:/user/ygu5/project/chromium/win_toolchain/win8sdk')
     else:
-        os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0')    
+        os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0')
+        os.putenv('CHROME_DEVEL_SANDBOX', '/usr/local/sbin/chrome-devel-sandbox')
     
     # Real work
     update(args)

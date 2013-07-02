@@ -381,7 +381,7 @@ if [ $profile == "PROXY" ] ; then
     export socks_proxy=proxy.jf.intel.com:1080
 fi
 
-export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-8/bin
+export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-8/bin:/workspace/software/sublime
 
 # Skia related
 export ANDROID_SDK_ROOT=/workspace/topic/skia/adt-bundle-linux-x86_64/sdk
@@ -404,7 +404,7 @@ zz () {
 
 # Aliases to use this
 # Use e.g. 'command gv' to avoid
-for i in gedit meld bcompare komodo; do
+for i in gedit meld bcompare komodo sublime_text; do
     alias "$i=z $i"
 done
 

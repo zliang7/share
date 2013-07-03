@@ -78,6 +78,7 @@ commands = [
     ('hardware', 'getconf LONG_BIT', '32 or 64 bit system', TYPE_RUNNABLE),
     ('hardware', 'uname -a', '32 or 64 bit system, x86_64 for 64 bit system', TYPE_RUNNABLE),
     ('hardware', 'file /sbin/init', '32 or 64 bit system, ELF (32|64)-bit LSB executable', TYPE_RUNNABLE),
+    ('hardware', 'lspci |grep VGA', 'Info of display card', TYPE_RUNNABLE),
     ('tool', 'alacarte', 'menu setting', TYPE_NULL),
     ('network', 'sudo iftop -i wlan0', 'Network speed. Need to install', TYPE_RUNNABLE),
     ('network', 'sudo iptraf -g', 'Network speed. Need to install', TYPE_RUNNABLE),

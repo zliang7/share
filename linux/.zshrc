@@ -381,7 +381,7 @@ if [ $profile == "PROXY" ] ; then
     export socks_proxy=proxy.jf.intel.com:1080
 fi
 
-export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-8/bin:/workspace/software/sublime
+export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-8/bin
 
 # Skia related
 export ANDROID_SDK_ROOT=/workspace/topic/skia/adt-bundle-linux-x86_64/sdk
@@ -514,5 +514,9 @@ PROMPT='%F{blue}%M%F{green}%/$(git_prompt_string)
 if [ ! -L /workspace/project/chromium/chromium.py ]; then
    ln -s /workspace/project/gyagp/share/common/chromium.py /workspace/project/chromium/chromium.py
 fi
+
+# sublime
+export PATH=$PATH:/workspace/software/sublime
+alias st="sublime_text"
 
 cd /workspace/project

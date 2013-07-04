@@ -32,6 +32,9 @@ def isLinux():
 def info(msg):
     print '[INFO] ' + msg + '.'
 
+def warning(msg):
+    print '[WARNING] ' + msg + '.'
+
 def error(msg):
     print '[ERROR] ' + msg + '!'
 
@@ -51,7 +54,7 @@ def hasBuildDir(name):
 
     buildDir = outDir + '/' + name
     if not os.path.exists(buildDir):
-        info(name + ' directory doesn\'t exist. Will create the directory for you and perform a clean build')
+        warning(name + ' directory doesn\'t exist. Will create the directory for you and perform a clean build')
         os.mkdir(buildDir)
         return False
 
@@ -125,6 +128,12 @@ def run(args):
         
     if args.runGPU:
         option = option + ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
+
+    if args.runDebugRenderer:
+        if args.run.upper() == 'RELEASE':
+            warning('Debugger should run with debug version. Switch to it automatically')
+            args.run = 'debug'
+        option = option + ' ' + '--renderer-cmd-prefix="xterm -title renderer -e gdb --args"'
     
     cmd = rootDir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
     execute(cmd)
@@ -158,9 +167,10 @@ examples:
   python %(prog)s -r release
   python %(prog)s -r release -g
   python %(prog)s -r debug
-  python %(prog)s -o=--enable-logging=stderr
-  python %(prog)s -o--enable-logging=stderr
-  python %(prog)s '-o --enable-logging=stderr'
+  python %(prog)s -r release -o=--enable-logging=stderr
+  python %(prog)s -r release -o--enable-logging=stderr
+  python %(prog)s -r release '-o --enable-logging=stderr'
+  python %(prog)s -r release --run-debug-renderer
   
   update & build & run
   python chromium.py -u sync -b release -r release
@@ -177,7 +187,9 @@ examples:
     groupRun = parser.add_argument_group('run')
     groupRun.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
     groupRun.add_argument('-o', '--run-option', dest='runOption', help='option to run')
-    groupRun.add_argument('-g', '--gpu', dest='runGPU', help='enable GPU acceleration', action='store_true')
+    groupRun.add_argument('-g', '--run-gpu', dest='runGPU', help='enable GPU acceleration', action='store_true')
+    groupRun.add_argument('--run-debug-renderer', dest='runDebugRenderer', help='run gdb before renderer starts', action='store_true')
+
     # Other options
     parser.add_argument('-d', '--root-dir', dest='rootDir', help='set root directory')
     

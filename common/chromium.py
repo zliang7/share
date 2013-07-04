@@ -40,7 +40,9 @@ def cmd(msg):
     
 def execute(command):
     cmd(command)
-    os.system(command)
+    if os.system(command):
+        error('Failed to execute')
+        quit()
 
 def hasBuildDir(name):
     outDir = srcDir + '/out'

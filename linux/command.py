@@ -80,6 +80,7 @@ commands = [
     ('hardware', 'file /sbin/init', '32 or 64 bit system, ELF (32|64)-bit LSB executable', TYPE_RUNNABLE),
     ('hardware', 'lspci |grep VGA', 'Info of display card', TYPE_RUNNABLE),
     ('tool', 'alacarte', 'menu setting', TYPE_NULL),
+	('tool', 'killall Xvnc4 && vncserver :1 -geometry 1920x1080', 'Start vnc server', TYPE_NULL),
     ('network', 'sudo iftop -i wlan0', 'Network speed. Need to install', TYPE_RUNNABLE),
     ('network', 'sudo iptraf -g', 'Network speed. Need to install', TYPE_RUNNABLE),
     ('network', 'sar -n DEV 1 100', 'Network speed. 1 means 1 time per second, and 100 means to observe 100 times. Need to install sysstat', TYPE_RUNNABLE),

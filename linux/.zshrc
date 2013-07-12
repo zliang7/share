@@ -511,12 +511,18 @@ PROMPT='%F{blue}%M%F{green}%/$(git_prompt_string)
 
 
 # ln -s /workspace/project/gyagp/share/linux/.zshrc ~/.zshrc
+
+# Chromium
 if [ ! -L /workspace/project/chromium/chromium.py ]; then
    ln -s /workspace/project/gyagp/share/common/chromium.py /workspace/project/chromium/chromium.py
 fi
+export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 
 # sublime
 export PATH=$PATH:/workspace/software/sublime
 alias st="sublime_text"
+if [ ! -L ~/.config/sublime-text-2/Packages/User/Preferences.sublime-settings ]; then
+   ln -s /workspace/project/gyagp/share/common/sublime/Preferences.sublime-settings ~/.config/sublime-text-2/Packages/User/Preferences.sublime-settings
+fi
 
 cd /workspace/project

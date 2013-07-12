@@ -1,11 +1,14 @@
 {
-	"color_scheme": "Packages/Color Scheme - Default/iPlastic.tmTheme",
-	"draw_white_space": "all",
-	"font_size": 11.0,
-	"highlight_line": true,
-	"ignored_packages":
-	[
-		"Vintage"
-	],
-	"spell_check": true
+    "color_scheme": "Packages/Color Scheme - Default/iPlastic.tmTheme",
+    "draw_white_space": "all",  // 显示空白字符, 比如 空格 tab
+    "font_size": 11.0,
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "spell_check": true,
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "highlight_line": true,     // 突出显示当前光标所在的行
+    "trim_trailing_white_space_on_save": true  // 为true时，保存文件时会删除每行结束后多余的空格
 }

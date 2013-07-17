@@ -16,7 +16,7 @@ def isSystem(name):
         return True
     else:
         return False
-        
+
 def isWindows():
     if isSystem('Windows'):
         return True
@@ -28,7 +28,7 @@ def isLinux():
         return True
     else:
         return False
-        
+
 def info(msg):
     print '[INFO] ' + msg + '.'
 
@@ -40,7 +40,7 @@ def error(msg):
 
 def cmd(msg):
     print '[COMMAND] ' + msg
-    
+
 def execute(command):
     cmd(command)
     if os.system(command):
@@ -69,15 +69,15 @@ def update(args):
         cmd = 'd:/user/ygu5/project/chromium/depot_tools/gclient'
     else:
         cmd = 'gclient'
-        
+
     cmd = cmd + ' ' + args.update
     execute(cmd)
-    
-    
-def build(args):   
+
+
+def build(args):
     if not args.build:
         return()
-    
+
     if args.build.upper() == 'DEBUG':
         build = 'Debug'
     elif args.build.upper() == 'RELEASE':
@@ -92,7 +92,7 @@ def build(args):
     else:
         if not hasBuildDir(build):
             buildClean = True
-    
+
     print '== Build Environment =='
     print 'Directory of src: ' + srcDir
     print 'Build type: ' + build
@@ -100,13 +100,13 @@ def build(args):
     print 'Need clean build: ' + str(buildClean)
     print 'System: ' + system
     print '======================='
-        
+
     os.chdir(srcDir)
-        
+
     if buildClean:
         cmd = 'python build/gyp_chromium'
         execute(cmd)
-    
+
     if args.buildVerbose:
         cmd = 'ninja -v chrome'
     else:
@@ -125,7 +125,7 @@ def run(args):
     option = '--disable-setuid-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + rootDir + '/user-data'
     if args.runOption:
         option = option + ' ' + args.runOption
-        
+
     if args.runGPU:
         option = option + ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
 
@@ -134,10 +134,10 @@ def run(args):
             warning('Debugger should run with debug version. Switch to it automatically')
             args.run = 'debug'
         option = option + ' ' + '--renderer-cmd-prefix="xterm -title renderer -e gdb --args"'
-    
+
     cmd = rootDir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
     execute(cmd)
-    
+
 # override format_epilog to make it format better
 argparse.format_epilog = lambda self, formatter: self.epilog
 
@@ -146,7 +146,7 @@ if __name__ == '__main__':
     if not isWindows() and not isLinux():
         error('Current system is not suppported')
         quit()
-        
+
     # Handle options
     parser = argparse.ArgumentParser(description = 'Script to update, build and run Chromium',
                                      formatter_class = argparse.RawTextHelpFormatter,
@@ -157,12 +157,12 @@ examples:
   python %(prog)s -u sync
   python %(prog)s -u 'sync --force'
   python %(prog)s -u runhooks
-  
+
   build:
   python %(prog)s -b release
   python %(prog)s -b all
   python %(prog)s -b release -c -v
-  
+
   run:
   python %(prog)s -r release
   python %(prog)s -r release -g
@@ -171,7 +171,7 @@ examples:
   python %(prog)s -r release -o--enable-logging=stderr
   python %(prog)s -r release '-o --enable-logging=stderr'
   python %(prog)s -r release --run-debug-renderer
-  
+
   update & build & run
   python chromium.py -u sync -b release -r release
 ''')
@@ -192,7 +192,7 @@ examples:
 
     # Other options
     parser.add_argument('-d', '--root-dir', dest='rootDir', help='set root directory')
-    
+
     args = parser.parse_args()
 
     if not (args.update or args.build or args.run):
@@ -206,19 +206,19 @@ examples:
             rootDir = '/workspace/project/chromium'
     else:
         rootDir = args.rootDir
-        
+
     srcDir = rootDir + '/src'
 
     os.putenv('http_proxy', 'http://proxy-shz.intel.com:911')
     os.putenv('https_proxy', 'https://proxy-shz.intel.com:911')
-    
+
     if isWindows():
         path = os.getenv('PATH')
         p = re.compile('depot_tools')
         if not p.search(path):
             path = 'd:\user\ygu5\project\chromium\depot_tools;' + path
-            os.putenv('PATH', path)        
-    
+            os.putenv('PATH', path)
+
     os.putenv('GYP_GENERATORS', 'ninja')
     if isWindows():
         os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0 windows_sdk_path="d:/user/ygu5/project/chromium/win_toolchain/win8sdk"')
@@ -230,9 +230,9 @@ examples:
     else:
         os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0')
         os.putenv('CHROME_DEVEL_SANDBOX', '/usr/local/sbin/chrome-devel-sandbox')
-    
+
     # Real work
     update(args)
     build(args)
     run(args)
-    
+

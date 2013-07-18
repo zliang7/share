@@ -5,6 +5,8 @@ import commands
 import argparse
 import platform
 import re
+import sys
+import commands
 
 # Global variables
 rootDir = ''
@@ -138,6 +140,34 @@ def run(args):
     cmd = rootDir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
     execute(cmd)
 
+def findOwner(args):
+    if not args.owner:
+        return()
+
+    os.chdir(srcDir)
+    files = commands.getoutput('git diff --name-only HEAD origin/master').split('\n')
+    ownerFileMap = {} # map from OWNERS file to list of modified files
+    for file in files:
+        dir = os.path.dirname(file)
+        while not os.path.exists(dir + '/OWNERS'):
+            dir = os.path.dirname(dir)
+
+        ownerFile = dir + '/OWNERS'
+        if ownerFile in ownerFileMap:
+            ownerFileMap[ownerFile].append(file)
+        else:
+            ownerFileMap[ownerFile] = [file]
+
+    for ownerFile in ownerFileMap:
+        owner = commands.getoutput('cat ' + dir + '/OWNERS')
+        print '--------------------------------------------------'
+        print '[Modified Files]'
+        for modifiedFile in ownerFileMap[ownerFile]:
+            print modifiedFile
+        print '[OWNERS File]'
+        print owner
+
+
 # override format_epilog to make it format better
 argparse.format_epilog = lambda self, formatter: self.epilog
 
@@ -172,6 +202,8 @@ examples:
   python %(prog)s -r release '-o --enable-logging=stderr'
   python %(prog)s -r release --run-debug-renderer
 
+  python %(prog)s --owner
+
   update & build & run
   python chromium.py -u sync -b release -r release
 ''')
@@ -191,11 +223,12 @@ examples:
     groupRun.add_argument('--run-debug-renderer', dest='runDebugRenderer', help='run gdb before renderer starts', action='store_true')
 
     # Other options
+    parser.add_argument('--owner', dest='owner', help='find owner for latest commit', action='store_true')
     parser.add_argument('-d', '--root-dir', dest='rootDir', help='set root directory')
 
     args = parser.parse_args()
 
-    if not (args.update or args.build or args.run):
+    if len(sys.argv) <= 1:
         parser.print_help()
 
     # Global variables
@@ -235,4 +268,4 @@ examples:
     update(args)
     build(args)
     run(args)
-
+    findOwner(args)

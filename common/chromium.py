@@ -6,7 +6,6 @@ import argparse
 import platform
 import re
 import sys
-import commands
 
 # Global variables
 rootDir = ''
@@ -65,6 +64,20 @@ def hasBuildDir(name):
 def update(args):
     if not args.update:
         return()
+
+    # 'third_party/skia/src' is not on master
+    repos = ['./', 'third_party/WebKit']
+    for repo in repos:
+        isMaster = False
+        os.chdir(srcDir + '/' + repo)
+        branches = commands.getoutput('git branch').split('\n')
+        for branch in branches:
+            if branch == '* master':
+                isMaster = True
+
+        if not isMaster:
+            error('Repo ' + repo + ' is not on master')
+            quit()
 
     os.chdir(rootDir)
     if isWindows():

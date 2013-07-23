@@ -21,7 +21,7 @@ def error(msg):
 
 def cmd(msg):
     print '[COMMAND] ' + msg
-    
+
 def execute(command):
     cmd(command)
     if os.system(command):
@@ -38,6 +38,7 @@ def rest():
     if args.poweroff:
         cmd = 'shutdown.exe -s -t 0 -f'
 
+    info(time.strftime("%Y-%m-%d %X", time.localtime()))
     execute(cmd)
 
 def sleep():
@@ -58,7 +59,7 @@ def check():
         error('Please choose a rest mode')
 
     if count > 1:
-        error('More than one rest mode is choosed')            
+        error('More than one rest mode is chosen')
 
 if __name__ == '__main__':
     # Handle options
@@ -71,15 +72,15 @@ examples:
   python %(prog)s -w 5 --hibernate
 ''')
 
-    parser.add_argument('-w', '--work', dest='work', help='seconds to work', default=60)
+    parser.add_argument('-w', '--work', dest='work', help='seconds to work', default=3600)
     parser.add_argument('--hibernate', dest='hibernate', help='choose to hibernate', action='store_true')
     parser.add_argument('--restart', dest='restart', help='choose to restart', action='store_true')
     parser.add_argument('--poweroff', dest='poweroff', help='choose to poweroff', action='store_true')
-    
+
     args = parser.parse_args()
 
     check()
     sleep()
     rest()
 
-    
+

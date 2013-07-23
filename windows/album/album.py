@@ -17,6 +17,9 @@ skyDriveStorageDir = storageDir + u'SkyDrive/顾诗云/'
 
 ffmpeg = 'E:/software/active/ffmpeg/bin/ffmpeg.exe'
 
+def info(msg):
+    print '[INFO] ' + msg + '.'
+
 def hasFile(dir, name):
     files = os.listdir(dir)
     for file in files:
@@ -41,6 +44,7 @@ def originToGooglePlus():
         originFiles = os.listdir(originCheckDir)
         for originFile in originFiles:
             if originFile[-4:] == '.mp4' and not hasFile(googlePlusCheckDir, originFile):
+                info('Copy file ' + originCheckDir + originFile + ' to ' + googlePlusCheckDir + originFile)
                 shutil.copyfile(originCheckDir + originFile, googlePlusCheckDir + originFile)
                 continue
 
@@ -49,6 +53,7 @@ def originToGooglePlus():
                 if hasFile(googlePlusCheckDir, destFile):
                     continue
                 command = (ffmpeg + ' -i ' + originCheckDir + originFile + ' -qscale 0 -s hd1080 -f mp4 ' + destFile + ' 2>>NUL').encode(sys.getfilesystemencoding())
+                info('Convert file ' + originCheckDir + originFile + ' to ' + googlePlusCheckDir + destFile)
                 os.system(command)
                 os.rename(destFile, googlePlusCheckDir + destFile)
 
@@ -61,21 +66,22 @@ def googlePlusToSkyDrive():
 
         googlePlusFiles = os.listdir(googlePlusCheckDir)
         for googlePlusFile in googlePlusFiles:
-            if googlePlusFile[-4:] != '.mp4' or hasFile(skyDriveCheckDir, googlePlusFile):
+            if googlePlusFile[-4:].lower() != '.mp4' or hasFile(skyDriveCheckDir, googlePlusFile):
                 continue
 
             command = (ffmpeg + ' -i ' + googlePlusCheckDir  + googlePlusFile + ' -qscale 0 -s hd720 -f mp4 ' + googlePlusFile + ' 2>>NUL').encode(sys.getfilesystemencoding())
+            info('Convert file ' + googlePlusCheckDir + googlePlusFile + ' to ' + skyDriveCheckDir + googlePlusFile)
             os.system(command)
             os.rename(googlePlusFile, skyDriveCheckDir + googlePlusFile)
 
 if __name__ == '__main__':
     os.chdir(scriptDir)
     lockFile = 'lock'
-    #if hasFile(scriptDir, lockFile):
-    #    quit()
+    if hasFile(scriptDir, lockFile):
+        quit()
 
-    #lock(lockFile)
+    lock(lockFile)
     originToGooglePlus()
-    #googlePlusToSkyDrive()
-    #unlock(lockFile)
+    googlePlusToSkyDrive()
+    unlock(lockFile)
 

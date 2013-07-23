@@ -1,46 +1,31 @@
-Touch,人人影视.mp4,11178,S02E13
-Revenge,rmvb,10979,S02E22
-BigBang,rmvb,11005,S06E24
-PersonOfInterest,rmvb,11009,S02E22
-GameOfThrones,人人影视.mp4,10733,S03E10
-DaVinci,人人影视.mp4,28404,S01E08
-TheBorgias,人人影视.mp4,10818,S03E10
-Continuum,字幕组.mp4,26705,S02E05
+Vikings,人人影视.mp4,29311,S01E09
 
-PAUSE 2013-06-17 22:26:59
 
+PersonOfInterest,rmvb,11009,S03E00
+BigBang,rmvb,11005,S07E00
+Revenge,rmvb,10979,S03E00
 Hunted,深影字幕组.mp4,28111,S02E00
 BlackMirror,人人影视.mp4,28235,S03E00
 HouseOfCards,人人影视.mp4,28793,S02E00
 Warehouse13,rmvb,10899,S05E00
-Sinbad,rmvb,26889,S02E00
-Downton,rmvb,11006,S04E00
 Homeland,rmvb,11088,S03E00
+Downton,rmvb,11006,S04E00
+Sinbad,rmvb,26889,S02E00
+GameOfThrones,人人影视.mp4,10733,S04E00
+DaVinci,人人影视.mp4,28404,S02E00
+
+PAUSE 2013-07-21 11:01:42
 
 END
 
-== TheBorgias,S03E08-S03E08,2013-06-01 09:15:05 ==
-== All,No update,2013-06-01 09:17:37 ==
-== Smash,S02E16-S02E16,2013-06-02 22:47:06 ==
+== All,No update,2013-06-27 23:38:58 ==
+== UnderTheDome,S01E01-S01E01,2013-06-30 09:38:52 ==
+== All,No update,2013-07-05 23:57:24 ==
+== All,No update,2013-07-08 21:15:20 ==
+== All,No update,2013-07-09 21:09:49 ==
+== All,No update,2013-07-09 21:10:17 ==
+== Continuum,S02E09-S02E10,2013-07-21 11:01:43 ==
 
 
-== GameOfThrones,S03E09-S03E09,2013-06-04 22:08:16 ==
+== Vikings,S01E03-S01E09,2013-07-21 11:01:43 ==
 
-
-== DaVinci,S01E07-S01E07,2013-06-04 22:07:55 ==
-
-== TheBorgias,S03E09-S03E09,2013-06-04 22:08:08 ==
-
-== Continuum,S02E01-S02E05,2013-06-04 22:47:10 ==
-
-
-== DaVinci,S01E08-S01E08,2013-06-12 21:31:49 ==
-
-== GameOfThrones,S03E10-S03E10,2013-06-13 22:09:09 ==
-
-
-== TheBorgias,S03E10-S03E10,2013-06-13 22:08:48 ==
-
-
-== All,No update,2013-06-16 20:19:58 ==
-== All,No update,2013-06-17 22:27:10 ==

@@ -8,24 +8,24 @@ import re
 import sys
 
 # Global variables
-rootDir = ''
-srcDir = ''
+root_dir = ''
+src_dir = ''
 system = platform.system()
 
-def isSystem(name):
+def is_system(name):
     if system == name:
         return True
     else:
         return False
 
-def isWindows():
-    if isSystem('Windows'):
+def is_windows():
+    if is_system('Windows'):
         return True
     else:
         return False
 
-def isLinux():
-    if isSystem('Linux'):
+def is_linux():
+    if is_system('Linux'):
         return True
     else:
         return False
@@ -48,15 +48,15 @@ def execute(command):
         error('Failed to execute')
         quit()
 
-def hasBuildDir(name):
-    outDir = srcDir + '/out'
-    if not os.path.exists(outDir):
-        os.mkdir(outDir)
+def has_build_dir(name):
+    out_dir = src_dir + '/out'
+    if not os.path.exists(out_dir):
+        os.mkdir(out_dir)
 
-    buildDir = outDir + '/' + name
-    if not os.path.exists(buildDir):
+    build_dir = out_dir + '/' + name
+    if not os.path.exists(build_dir):
         warning(name + ' directory doesn\'t exist. Will create the directory for you and perform a clean build')
-        os.mkdir(buildDir)
+        os.mkdir(build_dir)
         return False
 
     return True
@@ -68,26 +68,25 @@ def update(args):
     # 'third_party/skia/src' is not on master
     repos = ['./', 'third_party/WebKit']
     for repo in repos:
-        isMaster = False
-        os.chdir(srcDir + '/' + repo)
+        is_master = False
+        os.chdir(src_dir + '/' + repo)
         branches = commands.getoutput('git branch').split('\n')
         for branch in branches:
             if branch == '* master':
-                isMaster = True
+                is_master = True
 
-        if not isMaster:
+        if not is_master:
             error('Repo ' + repo + ' is not on master')
             quit()
 
-    os.chdir(rootDir)
-    if isWindows():
+    os.chdir(root_dir)
+    if is_windows():
         cmd = 'd:/user/ygu5/project/chromium/depot_tools/gclient'
     else:
         cmd = 'gclient'
 
     cmd = cmd + ' ' + args.update
     execute(cmd)
-
 
 def build(args):
     if not args.build:
@@ -100,29 +99,29 @@ def build(args):
     elif args.build.upper() == 'ALL':
         build = 'All'
 
-    buildClean = args.buildClean
+    build_clean = args.build_clean
     if build == 'All':
-        if not hasBuildDir('Debug') and not hasBuildDir('Release'):
-            buildClean = True
+        if not has_build_dir('Debug') and not has_build_dir('Release'):
+            build_clean = True
     else:
-        if not hasBuildDir(build):
-            buildClean = True
+        if not has_build_dir(build):
+            build_clean = True
 
     print '== Build Environment =='
-    print 'Directory of src: ' + srcDir
+    print 'Directory of src: ' + src_dir
     print 'Build type: ' + build
     print 'Build system: Ninja'
-    print 'Need clean build: ' + str(buildClean)
+    print 'Need clean build: ' + str(build_clean)
     print 'System: ' + system
     print '======================='
 
-    os.chdir(srcDir)
+    os.chdir(src_dir)
 
-    if buildClean:
+    if build_clean:
         cmd = 'python build/gyp_chromium'
         execute(cmd)
 
-    if args.buildVerbose:
+    if args.build_verbose:
         cmd = 'ninja -v chrome'
     else:
         cmd = 'ninja chrome'
@@ -137,46 +136,46 @@ def run(args):
     if not args.run:
         return()
 
-    option = '--disable-setuid-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + rootDir + '/user-data'
-    if args.runOption:
-        option = option + ' ' + args.runOption
+    option = '--disable-setuid-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + root_dir + '/user-data'
+    if args.run_option:
+        option = option + ' ' + args.run_option
 
-    if args.runGPU:
+    if args.run_GPU:
         option = option + ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
 
-    if args.runDebugRenderer:
+    if args.run_debug_renderer:
         if args.run.upper() == 'RELEASE':
             warning('Debugger should run with debug version. Switch to it automatically')
             args.run = 'debug'
         option = option + ' ' + '--renderer-cmd-prefix="xterm -title renderer -e gdb --args"'
 
-    cmd = rootDir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
+    cmd = root_dir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
     execute(cmd)
 
-def findOwner(args):
+def find_owner(args):
     if not args.owner:
         return()
 
-    os.chdir(srcDir)
+    os.chdir(src_dir)
     files = commands.getoutput('git diff --name-only HEAD origin/master').split('\n')
-    ownerFileMap = {} # map from OWNERS file to list of modified files
+    owner_file_map = {} # map from OWNERS file to list of modified files
     for file in files:
         dir = os.path.dirname(file)
         while not os.path.exists(dir + '/OWNERS'):
             dir = os.path.dirname(dir)
 
-        ownerFile = dir + '/OWNERS'
-        if ownerFile in ownerFileMap:
-            ownerFileMap[ownerFile].append(file)
+        owner_file = dir + '/OWNERS'
+        if owner_file in owner_file_map:
+            owner_file_map[owner_file].append(file)
         else:
-            ownerFileMap[ownerFile] = [file]
+            owner_file_map[owner_file] = [file]
 
-    for ownerFile in ownerFileMap:
+    for owner_file in owner_file_map:
         owner = commands.getoutput('cat ' + dir + '/OWNERS')
         print '--------------------------------------------------'
         print '[Modified Files]'
-        for modifiedFile in ownerFileMap[ownerFile]:
-            print modifiedFile
+        for modified_file in owner_file_map[owner_file]:
+            print modified_file
         print '[OWNERS File]'
         print owner
 
@@ -186,7 +185,7 @@ argparse.format_epilog = lambda self, formatter: self.epilog
 
 if __name__ == '__main__':
     # System sanity check
-    if not isWindows() and not isLinux():
+    if not is_windows() and not is_linux():
         error('Current system is not suppported')
         quit()
 
@@ -226,18 +225,18 @@ examples:
 
     groupBuild = parser.add_argument_group('build')
     groupBuild.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug', 'all'])
-    groupBuild.add_argument('-c', '--build-clean', dest='buildClean', help='regenerate gyp', action='store_true')
-    groupBuild.add_argument('-v', '--build-verbose', dest='buildVerbose', help='output verbose info. Find log at out/Release/.ninja_log', action='store_true')
+    groupBuild.add_argument('-c', '--build-clean', dest='build_clean', help='regenerate gyp', action='store_true')
+    groupBuild.add_argument('-v', '--build-verbose', dest='build_verbose', help='output verbose info. Find log at out/Release/.ninja_log', action='store_true')
 
     groupRun = parser.add_argument_group('run')
     groupRun.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
-    groupRun.add_argument('-o', '--run-option', dest='runOption', help='option to run')
-    groupRun.add_argument('-g', '--run-gpu', dest='runGPU', help='enable GPU acceleration', action='store_true')
-    groupRun.add_argument('--run-debug-renderer', dest='runDebugRenderer', help='run gdb before renderer starts', action='store_true')
+    groupRun.add_argument('-o', '--run-option', dest='run_option', help='option to run')
+    groupRun.add_argument('-g', '--run-gpu', dest='run_GPU', help='enable GPU acceleration', action='store_true')
+    groupRun.add_argument('--run-debug-renderer', dest='run_debug_renderer', help='run gdb before renderer starts', action='store_true')
 
     # Other options
     parser.add_argument('--owner', dest='owner', help='find owner for latest commit', action='store_true')
-    parser.add_argument('-d', '--root-dir', dest='rootDir', help='set root directory')
+    parser.add_argument('-d', '--root-dir', dest='root_dir', help='set root directory')
 
     args = parser.parse_args()
 
@@ -245,20 +244,20 @@ examples:
         parser.print_help()
 
     # Global variables
-    if not args.rootDir:
-        if isWindows():
-            rootDir = "d:/user/ygu5/project/chromium"
+    if not args.root_dir:
+        if is_windows():
+            root_dir = "d:/user/ygu5/project/chromium"
         else:
-            rootDir = '/workspace/project/chromium'
+            root_dir = '/workspace/project/chromium'
     else:
-        rootDir = args.rootDir
+        root_dir = args.root_dir
 
-    srcDir = rootDir + '/src'
+    src_dir = root_dir + '/src'
 
     os.putenv('http_proxy', 'http://proxy-shz.intel.com:911')
     os.putenv('https_proxy', 'https://proxy-shz.intel.com:911')
 
-    if isWindows():
+    if is_windows():
         path = os.getenv('PATH')
         p = re.compile('depot_tools')
         if not p.search(path):
@@ -266,7 +265,7 @@ examples:
             os.putenv('PATH', path)
 
     os.putenv('GYP_GENERATORS', 'ninja')
-    if isWindows():
+    if is_windows():
         os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0 windows_sdk_path="d:/user/ygu5/project/chromium/win_toolchain/win8sdk"')
         os.putenv('GYP_MSVS_VERSION', '2010e')
         os.putenv('GYP_MSVS_OVERRIDE_PATH', 'd:/user/ygu5/project/chromium/win_toolchain')
@@ -281,4 +280,4 @@ examples:
     update(args)
     build(args)
     run(args)
-    findOwner(args)
+    find_owner(args)

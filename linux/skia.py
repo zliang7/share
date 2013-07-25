@@ -12,14 +12,14 @@ import sys
 import commands
 
 system = platform.system()
-root_dir = '/workspace/project/android/skia/'
-src_dir = root_dir + 'trunk/'
-platform_tools_dir = src_dir + 'platform_tools/'
-log_dir = '/workspace/topic/skia/log/'
 log_suffix = '.txt'
 config = ['8888', '565', 'GPU', 'NULLGPU']
 NA = 'NA'
 target = ''
+root_dir = ''
+log_dir = ''
+src_dir = ''
+platform_tools_dir = ''
 
 android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
 
@@ -232,7 +232,7 @@ def set_target(args):
         target_from_option = 'x86'
     elif args.target == 's3':
         target_from_option = 'nexus_4'
-    elif args.target = 'nexus_4':
+    elif args.target == 'nexus_4':
         target_from_option = 'nexus_4'
 
     target_from_device = ''
@@ -272,6 +272,33 @@ def update(args):
 
     os.chdir(root_dir)
     execute('gclient ' + args.update)
+
+def setup(args):
+    global root_dir
+    global src_dir
+    global platform_tools_dir
+    global log_dir
+
+    if args.root_dir:
+        root_dir = args.root_dir
+    else:
+        root_dir = '/workspace/project/android/skia/'
+
+    if not os.path.exists(root_dir):
+        error('You must designate root_dir')
+        quit()
+
+    if args.log_dir:
+        log_dir = args.log_dir
+    else:
+        log_dir = '/workspace/topic/skia/log/'
+
+    if not os.path.exists(log_dir):
+        error('You must designate log_dir')
+        quit()
+
+    src_dir = root_dir + 'trunk/'
+    platform_tools_dir = src_dir + 'platform_tools/'
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Script to update, build and run Skia for Android IA',
@@ -313,8 +340,10 @@ examples:
     groupUpdate.add_argument('--run-nonroot', dest='run_nonroot', help='run without root access, which would not install skia_launcher to /system', action='store_true')
     groupUpdate.add_argument("--bench-option", dest="bench_option", help="option to run bench test", default='')
 
-    parser.add_argument("-p", "--parse-result", dest="parse_result", help="Parse result file", default='')
-    parser.add_argument("-c", "--compare-result", dest="compare_result", help="Compare result file", default='')
+    parser.add_argument('--root-dir', dest='root_dir', help='root dir')
+    parser.add_argument('--log-dir', dest='log_dir', help='log dir')
+    parser.add_argument('-p', '--parse-result', dest='parse_result', help='Parse result file', default='')
+    parser.add_argument('-c', '--compare-result', dest='compare_result', help='Compare result file', default='')
 
     groupUpdate = parser.add_argument_group('other')
 
@@ -323,6 +352,7 @@ examples:
     if len(sys.argv) <= 1:
         parser.print_help()
 
+    setup(args)
     update(args)
     set_target(args)
     build(args)

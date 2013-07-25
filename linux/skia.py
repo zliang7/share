@@ -234,10 +234,21 @@ def set_target(args):
         target_from_option = 'nexus_4'
 
     target_from_device = ''
-    if re.match('Medfield', args.device):
-        target_from_device = 'x86'
-    elif args.device == '32300bd273508f3b':
-        target_from_device = 'nexus_4'
+    # Guess target from 'adb devices -l'
+    command = 'adb devices -l'
+    devices = commands.getoutput(command).split('\n')
+    for device in devices:
+        if device[:len(args.device)] == args.device:
+            if re.search('Medfield', device):
+                target_from_device = 'x86'
+            elif re.search('Nexus_4', device):
+                target_from_device = 'nexus_4'
+            break
+
+    # Add some manual map here
+    if target_from_device == '':
+        if args.device == '32300bd273508f3b':
+            target_from_device = 'nexus_4'
 
     if target_from_device != '' and target_from_option != '' and target_from_device != target_from_option:
         error('Device could not match target. ' + 'target_from_device: ' + target_from_device + ' target_from_option: ' + target_from_option)
@@ -277,6 +288,7 @@ examples:
 
   run:
   python %(prog)s -r release -d 32300bd273508f3b // s3
+  python %(prog)s -r release -d 006e7e464bd64fef // nexus 4
   python %(prog)s -r release --run-nonroot -d 32300bd273508f3b --bench-option '--match region_contains_sect --match verts'
   python %(prog)s -r release -d Medfield6CCF763B // pr2
   python %(prog)s -r release -d Medfield6CCF763B --bench-option '--match region_contains_sect --match verts'

@@ -384,8 +384,9 @@ fi
 export PATH=$PATH:/workspace/project/depot_tools:/home/gyagp/Komodo-Edit-8/bin
 
 # ccache related
+export USE_CCACHE=1
 export CCACHE_DIR=/workspace/ccache
-export CCACHE_SIZE="30G"
+export CCACHE_SIZE="60G"
 export CCACHE_BASEDIR=/workspace/project
 export CCACHE_SLOPPINESS=include_file_mtime
 export PATH=/usr/lib/ccache:$PATH

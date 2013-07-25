@@ -232,6 +232,8 @@ def set_target(args):
         target_from_option = 'x86'
     elif args.target == 's3':
         target_from_option = 'nexus_4'
+    elif args.target = 'nexus_4':
+        target_from_option = 'nexus_4'
 
     target_from_device = ''
     # Guess target from 'adb devices -l'
@@ -303,7 +305,7 @@ examples:
 
     groupUpdate = parser.add_argument_group('build')
     groupUpdate.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug', 'all'])
-    groupUpdate.add_argument('-t', '--target', dest='target', help='target', choices=['x86', 's3'])
+    groupUpdate.add_argument('-t', '--target', dest='target', help='target', choices=['x86', 's3', 'nexus_4'])
 
     groupUpdate = parser.add_argument_group('run')
     groupUpdate.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])

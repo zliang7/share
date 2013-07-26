@@ -514,6 +514,11 @@ if [ ! -L /workspace/project/chromium/chromium.py ]; then
 fi
 export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 
+# Android
+if [ ! -L /workspace/project/android/android.py ]; then
+   ln -s /workspace/project/gyagp/share/common/android.py /workspace/project/android/android.py
+fi
+
 # sublime
 export PATH=$PATH:/workspace/software/sublime
 alias st="sublime_text"

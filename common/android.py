@@ -81,7 +81,7 @@ examples:
 ''')
 
     parser.add_argument('-l', '--level', dest='level', help='level', choices=['user', 'userdebug', 'eng'], default='userdebug')
-    parser.add_argument('-d', '--device', dest='device', help='device', choices=['mato'], default='mato')
+    parser.add_argument('-d', '--device', dest='device', help='device', choices=['mako'], default='mako')
     parser.add_argument('-b', '--build', dest='build', help='build', action='store_true')
     parser.add_argument('-s', '--sync', dest='sync', help='tag to sync')
     parser.add_argument('-f', '--flash', dest='flash', help='type to flash', choices=['all'])

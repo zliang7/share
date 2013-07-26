@@ -13,7 +13,7 @@ import commands
 
 system = platform.system()
 log_suffix = '.txt'
-config = ['8888', '565', 'GPU', 'NULLGPU']
+config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
 NA = 'NA'
 target = ''
 root_dir = ''
@@ -140,12 +140,14 @@ def parse_result(log_file):
     fr.close()
 
     fw = open(format_file, 'w')
+    fw.write('Name ' + ' '.join(config) + '\n')
     for line in lines:
         if re.match('^running bench', line):
             p = re.compile('^running bench \[\d+ \d+\]\s+(\S+)\s+')
             m = re.match(p, line)
             s = m.group(1)
-            p = re.compile('(8888|565|GPU|NULLGPU):.+?cmsecs =\s+(\S+)\s')
+
+            p = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+(\S+)\s')
             m = re.findall(p, line)
             for i in range(len(config)):
                 s = s + ' ' + get_data(config[i], m)

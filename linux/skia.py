@@ -1,8 +1,6 @@
 #! N:\Python27\python.exe
 # -*- coding: utf-8 -*-
 
-#
-
 import re
 import os
 import datetime
@@ -252,6 +250,8 @@ def set_target(args):
                 target_from_device = 'x86'
             elif re.search('Medfield', device):
                 target_from_device = 'x86'
+            elif re.search('mako', device):
+                target_from_device = 'nexus_4'
             elif re.search('Nexus_4', device):
                 target_from_device = 'nexus_4'
             break

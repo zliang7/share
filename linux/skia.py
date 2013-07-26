@@ -193,7 +193,11 @@ def run(args):
 
     log_file = log_dir + get_datetime() + '_' + args.device + '_bench_origin' + log_suffix
     command = command + ' 2>&1 |tee '+  log_file
+
+    start = datetime.datetime.now()
     execute(command)
+    elapsed = (datetime.datetime.now() - start)
+    info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
 
     if not args.run_nonroot:
         execute('platform_tools/android/bin/linux/adb shell start')

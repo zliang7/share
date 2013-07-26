@@ -130,14 +130,19 @@ def _compare_result(files):
         print s
 
 def parse_result(log_file):
-    fr = open(log_dir + log_file + log_suffix)
+    format_file = log_file.replace('origin', 'format')
+
+    if os.path.exists(format_file):
+        os.remove(format_file)
+
+    fr = open(log_file)
     lines = fr.readlines()
     fr.close()
 
-    fw = open(log_dir + log_file + '_format' + log_suffix, 'w')
+    fw = open(format_file, 'w')
     for line in lines:
         if re.match('^running bench', line):
-            p = re.compile('^running bench \[640 480\]\s+(\S+)\s+')
+            p = re.compile('^running bench \[\d+ \d+\]\s+(\S+)\s+')
             m = re.match(p, line)
             s = m.group(1)
             p = re.compile('(8888|565|GPU|NULLGPU):.+?cmsecs =\s+(\S+)\s')
@@ -186,8 +191,8 @@ def run(args):
             command = command + ' ' + args.bench_option
 
 
-    log_file = get_datetime() + '_' + args.device + '_bench'
-    command = command + ' 2>&1 |tee '+ log_dir + log_file + '.txt'
+    log_file = log_dir + get_datetime() + '_' + args.device + '_bench_origin' + log_suffix
+    command = command + ' 2>&1 |tee '+  log_file
     execute(command)
 
     if not args.run_nonroot:
@@ -241,7 +246,9 @@ def set_target(args):
     devices = commands.getoutput(command).split('\n')
     for device in devices:
         if device[:len(args.device)] == args.device:
-            if re.search('Medfield', device):
+            if re.search('redhookbay', device):
+                target_from_device = 'x86'
+            elif re.search('Medfield', device):
                 target_from_device = 'x86'
             elif re.search('Nexus_4', device):
                 target_from_device = 'nexus_4'
@@ -282,7 +289,7 @@ def setup(args):
     if args.root_dir:
         root_dir = args.root_dir
     else:
-        root_dir = '/workspace/project/android/skia/'
+        root_dir = '/workspace/project/skia/'
 
     if not os.path.exists(root_dir):
         error('You must designate root_dir')
@@ -318,10 +325,11 @@ examples:
   run:
   python %(prog)s -r release -d 32300bd273508f3b // s3
   python %(prog)s -r release -d 006e7e464bd64fef // nexus 4
+  python %(prog)s -r release -d RHBEC245400171 // pr2
   python %(prog)s -r release --run-nonroot -d 32300bd273508f3b --bench-option '--match region_contains_sect --match verts'
-  python %(prog)s -r release -d Medfield6CCF763B // pr2
-  python %(prog)s -r release -d Medfield6CCF763B --bench-option '--match region_contains_sect --match verts'
+  python %(prog)s -r release -d RHBEC245400171 --bench-option '--match region_contains_sect --match verts'
 
+  python %(prog)s --parse-result /workspace/topic/skia/log/20130725173815_RHBEC245400171_bench_origin.txt
 
   update & build & run
   python %(prog)s -u sync -b release -r release -d Medfield6CCF763B
@@ -342,7 +350,7 @@ examples:
 
     parser.add_argument('--root-dir', dest='root_dir', help='root dir')
     parser.add_argument('--log-dir', dest='log_dir', help='log dir')
-    parser.add_argument('-p', '--parse-result', dest='parse_result', help='Parse result file', default='')
+    parser.add_argument('--parse-result', dest='parse_result', help='log file to be parsed')
     parser.add_argument('-c', '--compare-result', dest='compare_result', help='Compare result file', default='')
 
     groupUpdate = parser.add_argument_group('other')
@@ -357,7 +365,9 @@ examples:
     set_target(args)
     build(args)
     run(args)
-    #parse_result(args)
+
+    if args.parse_result:
+        parse_result(args.parse_result)
     #compare_result(args)
 
 

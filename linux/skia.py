@@ -226,14 +226,14 @@ def compare(args):
                 compared_index += 1
 
     for i in range(len(config)):
-        diffs[i] = sorted(diffs[i], key=lambda x: x[1])
+        diffs[i] = sorted(diffs[i], key=lambda x: x[1], reverse=True)
 
     # Print the sorted diff
     for i in range(len(config)):
         if not config_concerned[i]:
             continue
 
-        print '[' + config[i] + ']'
+        print config[i] + ' ' + '% ' + files[0] + ' ' + files[1]
         for j in range(len(diffs[i])):
             print diffs[i][j][0] + ' ' + ('%.2f' %(diffs[i][j][1] * 100)) + ' ' + diffs[i][j][2] + ' ' + diffs[i][j][3]
 

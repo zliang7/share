@@ -9,17 +9,23 @@ import platform
 import sys
 import commands
 
+import urllib2
+from httplib import BadStatusLine
+
 system = platform.system()
 log_suffix = '.txt'
 config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
+config_concerned = [0, 0, 1, 0, 1]
 NA = 'NA'
 target = ''
 root_dir = ''
 log_dir = ''
 src_dir = ''
 platform_tools_dir = ''
-
 android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
+
+SMALL_NUMBER = 0.000001
+LARGE_NUMBER = 10000
 
 def info(msg):
     print "[INFO] " + msg + "."
@@ -55,77 +61,196 @@ def get_datetime():
     now = datetime.datetime.now()
     return now.strftime("%Y%m%d%H%M%S")
 
-def _parse_format_result(log_file, base):
-    fr = open(log_dir + log_file)
+def download(args):
+    if not args.download:
+        return()
+
+    if args.download != 'nexus_10':
+        error('Only Nexus 10 is supported now')
+        quit()
+
+    # Get latest build number
+    url = 'http://108.170.217.252:10117/console?reload=40&repository=http://skia.googlecode.com/svn&revs=20&limit=50&category=Perf|Android'
+    try:
+        u = urllib2.urlopen(url)
+    except BadStatusLine:
+        error('Failed to visit waterfall')
+
+    html = u.read()
+    pattern = re.compile('Perf-Android-Nexus10-MaliT604-Arm7-Release&number=(\d+)')
+    match = pattern.search(html)
+    build_number = match.group(1)
+
+    # Get log for specific build number
+    if args.download == 'nexus_10':
+        link = 'Nexus10-MaliT604-Arm7'
+    origin_file = log_dir + link + '-' + str(build_number) + '-bench-origin' + log_suffix
+
+    if os.path.exists(origin_file):
+        info(origin_file + ' has been downloaded')
+        return()
+
+    url = 'http://108.170.217.252:10117/builders/Perf-Android-' + link + '-Release/builds/' + build_number + '/steps/RunBench/logs/stdio/text'
+    try:
+        u = urllib2.urlopen(url)
+    except BadStatusLine:
+        error('Failed to get results of ' + args.download + ' with build number ' + build_number)
+
+    fw = open(origin_file, 'w')
+    for line in u:
+        fw.write(line)
+    fw.close()
+
+
+    # Format origin log
+    fr = open(origin_file)
+    lines = fr.readlines()
+    fr.close()
+
+    format_file = origin_file.replace('origin', 'format')
+
+    if os.path.exists(format_file):
+        os.remove(format_file)
+
+    fw = open(format_file, 'w')
+    fw.write('Name ' + ' '.join(config) + '\n')
+    for line_index in range(0, len(lines)):
+        if re.search('beginning of /dev/log/main', lines[line_index]):
+            break
+
+        if re.search('running bench', lines[line_index]):
+            p = re.compile('running bench \[\d+ \d+\]\s+(\S+)')
+            m = re.search(p, lines[line_index])
+            s = m.group(1)
+            pattern = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+([^ \t\n\r\f\v[a-zA-Z]*)[a-zA-Z]*\s*')
+            matches = re.findall(pattern, lines[line_index])
+            if matches[0][0] == '8888':
+                while len(matches) < 4:
+                    line_index += 1
+                    # Skip error lines
+                    while re.search('\] Skia Error', lines[line_index]):
+                        line_index += 1
+                    m = re.findall(pattern, lines[line_index])
+                    matches.append(m)
+
+            for i in range(len(config)):
+                s = s + ' ' + get_data(config[i], matches)
+            fw.write(s + '\n')
+    fw.close()
+
+
+
+def _parse_format_result(log_file, results):
+    os.chdir(log_dir)
+    fr = open(log_file)
     lines = fr.readlines()
     fr.close()
 
     for line in lines:
+        # Skip blank line
         if re.match('^\s+$', line):
             continue
+        # Skip title
+        if re.match('Name 8888 565 GPU NULLGPU NONRENDERING', line):
+            continue
+
         p = re.compile('\S+')
-        base.append(re.findall(p, line))
+        results.append(re.findall(p, line))
 
-def _compare_result(files):
-    #f = files.split(',')
+def _item_in_list(item, list):
+    for i in range(len(list)):
+        if item == list[i][0]:
+            return True
 
-    file_number = len(f)
+    return False
+
+def compare(args):
+    if not args.compare:
+        return()
+
+    diffs = []
+    for i in range(len(config)):
+        diffs.append([])
+
+    files = args.compare.split(',')
+
+    file_number = len(files)
     base = []
     total = []
-    _parse_format_result(f[0], base)
-    _parse_format_result(f[0], total)
+    _parse_format_result(files[0], base)
+    _parse_format_result(files[0], total)
 
     for i in range(1, file_number):
-        print '== ' + f[0] + ' vs. ' + f[i] + ' =='
-        compare = []
-        parse_format_result(f[i], compare)
+        compared = []
+        _parse_format_result(files[i], compared)
 
-        for i in range(len(base)):
-            if base[i][0] != compare[i][0]:
-                error('Result can\'t be compared')
-                quit()
+        base_index = 0
+        compared_index = 0
+        while base_index < len(base) and compared_index < len(compared):
+            if base[base_index][0] != compared[compared_index][0]:
+                base_in_compared = _item_in_list(base[base_index][0], compared)
+                compared_in_base = _item_in_list(compared[compared_index][0], base)
+
+                if base_in_compared and compared_in_base:
+                    error('Base and compared data have different order')
+                    quit()
+
+                if base_in_compared:
+                    base_index += 1
+                else:
+                    compared_index += 1
             else:
-                s = ''
-                diff = []
-                for j in range(1, len(base[i])):
-                    if base[i][j] == NA or compare[i][j] == NA:
-                        total[i][j] = NA
-                        if base[i][j] == compare[i][j]:
+                for j in range(1, len(config) + 1):
+                    if base[base_index][j] == NA or compared[compared_index][j] == NA:
+                        total[base_index][j] = NA
+                        if base[base_index][j] == compared[compared_index][j]:
                             continue
 
-                        if s != '':
-                            s = s + ' '
-                        s = s + config[j - 1] + ':' + base[i][j] + '->' + compare[i][j]
+                        diffs[j - 1].append((base[base_index][0], LARGE_NUMBER, base[base_index][j], compared[compared_index][j]))
 
                     else:
-                        b = float(base[i][j])
-                        c = float(compare[i][j])
-                        d = (b - c) / b
-                        total[i][j] = float(total[i][j]) + c
+                        b = float(base[base_index][j])
+                        if b < SMALL_NUMBER:
+                            b = SMALL_NUMBER
+                        c = float(compared[compared_index][j])
+                        if c < SMALL_NUMBER:
+                            c = SMALL_NUMBER
+                        d = round((c - b) / b, 4)
+                        total[base_index][j] = float(total[base_index][j]) + c
                         if abs(d) < 0.05:
                             continue
 
-                        if s != '':
-                            s = s + ' '
-                        s = s + config[j - 1] + ':' + base[i][j] + '->' + compare[i][j] + '(' + ('%.2f' %(d * 100)) + '%)'
+                        diffs[j - 1].append((base[base_index][0], d, base[base_index][j], compared[compared_index][j]))
 
-                if s != '':
-                    print base[i][0] + ' ' + s
+                base_index += 1
+                compared_index += 1
 
-        print ''
+    for i in range(len(config)):
+        diffs[i] = sorted(diffs[i], key=lambda x: x[1])
 
+    # Print the sorted diff
+    for i in range(len(config)):
+        if not config_concerned[i]:
+            continue
+
+        print '[' + config[i] + ']'
+        for j in range(len(diffs[i])):
+            print diffs[i][j][0] + ' ' + ('%.2f' %(diffs[i][j][1] * 100)) + ' ' + diffs[i][j][2] + ' ' + diffs[i][j][3]
+
+    # Don't calculate average for the time being
+    return()
     # Print average
-    print '== Average =='
+    info('== Average ==')
     for i in range(len(total)):
         s = ''
         for j in range(1, len(total[i])):
-        #for j in range(3, 4):
             if total[i][j] == NA:
                 s = s + ' NA'
             else:
-                s = s + ' ' + ('%.2f' %(total[i][j] / file_number))
+                s = s + ' ' + ('%.2f' %(float(total[i][j]) / file_number))
         s = total[i][0] + s
         print s
+
 
 def parse_result(log_file):
     format_file = log_file.replace('origin', 'format')
@@ -142,13 +267,13 @@ def parse_result(log_file):
     for line in lines:
         if re.match('^running bench', line):
             p = re.compile('^running bench \[\d+ \d+\]\s+(\S+)\s+')
-            m = re.match(p, line)
-            s = m.group(1)
-
+            matches = re.match(p, line)
+            s = matches.group(1)
             p = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+(\S+)\s')
-            m = re.findall(p, line)
+            matches = re.findall(p, line)
+
             for i in range(len(config)):
-                s = s + ' ' + get_data(config[i], m)
+                s = s + ' ' + get_data(config[i], matches)
             fw.write(s + '\n')
     fw.close()
 
@@ -191,7 +316,7 @@ def run(args):
             command = command + ' ' + args.bench_option
 
 
-    log_file = log_dir + get_datetime() + '_' + args.device + '_bench_origin' + log_suffix
+    log_file = log_dir + get_datetime() + '-' + args.device + '-bench-origin' + log_suffix
     command = command + ' 2>&1 |tee '+  log_file
 
     start = datetime.datetime.now()
@@ -335,7 +460,14 @@ examples:
   python %(prog)s -r release --run-nonroot -d 32300bd273508f3b --bench-option '--match region_contains_sect --match verts'
   python %(prog)s -r release -d RHBEC245400171 --bench-option '--match region_contains_sect --match verts'
 
-  python %(prog)s --parse-result /workspace/topic/skia/log/20130725173815_RHBEC245400171_bench_origin.txt
+  parse result:
+  python %(prog)s --parse-result /workspace/topic/skia/log/20130725173815-RHBEC245400171-bench-origin.txt
+
+  compare results:
+  python %(prog)s -c Nexus10-MaliT604-Arm7-416-bench-format.txt,20130726183834_006e7e464bd64fef_bench_format.txt
+
+  download:
+  python %(prog)s --download nexus_10
 
   update & build & run
   python %(prog)s -u sync -b release -r release -d Medfield6CCF763B
@@ -354,12 +486,18 @@ examples:
     groupUpdate.add_argument('--run-nonroot', dest='run_nonroot', help='run without root access, which would not install skia_launcher to /system', action='store_true')
     groupUpdate.add_argument("--bench-option", dest="bench_option", help="option to run bench test", default='')
 
-    parser.add_argument('--root-dir', dest='root_dir', help='root dir')
-    parser.add_argument('--log-dir', dest='log_dir', help='log dir')
-    parser.add_argument('--parse-result', dest='parse_result', help='log file to be parsed')
-    parser.add_argument('-c', '--compare-result', dest='compare_result', help='Compare result file', default='')
+    groupUpdate = parser.add_argument_group('parse result')
+    groupUpdate.add_argument('--parse-result', dest='parse_result', help='log file to be parsed')
+
+    groupUpdate = parser.add_argument_group('compare results')
+    groupUpdate.add_argument('-c', '--compare', dest='compare', help='compare 2 formatted result files, format: BASE,COMPARED, the bigger the worse')
+
+    groupUpdate = parser.add_argument_group('download')
+    groupUpdate.add_argument('--download', dest='download', help='download result from Skia waterfall', choices=['nexus_10'])
 
     groupUpdate = parser.add_argument_group('other')
+    groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')
+    groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
 
     args = parser.parse_args()
 
@@ -374,6 +512,7 @@ examples:
 
     if args.parse_result:
         parse_result(args.parse_result)
-    #compare_result(args)
 
+    compare(args)
 
+    download(args)

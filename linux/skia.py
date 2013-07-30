@@ -65,8 +65,9 @@ def download(args):
     if not args.download:
         return()
 
-    if args.download != 'nexus_10':
-        error('Only Nexus 10 is supported now')
+
+    if args.download not in ['nexus10', 'nexus4']:
+        error('Device to download is supported now')
         quit()
 
     # Get latest build number
@@ -82,15 +83,17 @@ def download(args):
     build_number = match.group(1)
 
     # Get log for specific build number
-    if args.download == 'nexus_10':
-        link = 'Nexus10-MaliT604-Arm7'
-    origin_file = log_dir + link + '-' + str(build_number) + '-bench-origin' + log_suffix
+    if args.download == 'nexus10':
+        link = 'Nexus10-MaliT604'
+    elif args.download == 'nexus4':
+        link = 'Nexus4-Adreno320'
+    origin_file = log_dir + link + '-Arm7-' + str(build_number) + '-bench-origin' + log_suffix
 
     if os.path.exists(origin_file):
         info(origin_file + ' has been downloaded')
         return()
 
-    url = 'http://108.170.217.252:10117/builders/Perf-Android-' + link + '-Release/builds/' + build_number + '/steps/RunBench/logs/stdio/text'
+    url = 'http://108.170.217.252:10117/builders/Perf-Android-' + link + '-Arm7-Release/builds/' + build_number + '/steps/RunBench/logs/stdio/text'
     try:
         u = urllib2.urlopen(url)
     except BadStatusLine:
@@ -365,14 +368,15 @@ def set_target(args):
     if args.target == 'x86':
         target_from_option = 'x86'
     elif args.target == 's3':
-        target_from_option = 'nexus_4'
-    elif args.target == 'nexus_4':
+        target_from_option = 'nexus4'
+    elif args.target == 'nexus4':
         target_from_option = 'nexus_4'
 
     target_from_device = ''
     # Guess target from 'adb devices -l'
     command = 'adb devices -l'
     devices = commands.getoutput(command).split('\n')
+
     for device in devices:
         if device[:len(args.device)] == args.device:
             if re.search('redhookbay', device):
@@ -467,7 +471,7 @@ examples:
   python %(prog)s -c Nexus10-MaliT604-Arm7-416-bench-format.txt,20130726183834_006e7e464bd64fef_bench_format.txt
 
   download:
-  python %(prog)s --download nexus_10
+  python %(prog)s --download nexus10
 
   update & build & run
   python %(prog)s -u sync -b release -r release -d Medfield6CCF763B
@@ -478,7 +482,7 @@ examples:
 
     groupUpdate = parser.add_argument_group('build')
     groupUpdate.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug', 'all'])
-    groupUpdate.add_argument('-t', '--target', dest='target', help='target', choices=['x86', 's3', 'nexus_4'])
+    groupUpdate.add_argument('-t', '--target', dest='target', help='target', choices=['x86', 's3', 'nexus4'])
 
     groupUpdate = parser.add_argument_group('run')
     groupUpdate.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
@@ -493,7 +497,7 @@ examples:
     groupUpdate.add_argument('-c', '--compare', dest='compare', help='compare 2 formatted result files, format: BASE,COMPARED, the bigger the worse')
 
     groupUpdate = parser.add_argument_group('download')
-    groupUpdate.add_argument('--download', dest='download', help='download result from Skia waterfall', choices=['nexus_10'])
+    groupUpdate.add_argument('--download', dest='download', help='download result from Skia waterfall', choices=['nexus10', 'nexus4'])
 
     groupUpdate = parser.add_argument_group('other')
     groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')

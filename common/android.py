@@ -55,7 +55,7 @@ def build(args):
     info('Time elapsed to build: ' + str(elapsed.seconds) + 's')
 
     # Backup
-    dest_dir = backup_dir + get_datetime() + '_self/'
+    dest_dir = backup_dir + get_datetime() + '-' + args.device + '-' + args.level + '/'
     os.mkdir(dest_dir)
     execute('cp ' + root_dir + 'out/target/product/' + args.device + '/*.img ' + dest_dir)
 

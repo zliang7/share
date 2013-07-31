@@ -8,7 +8,7 @@ import argparse
 import platform
 import sys
 import commands
-
+import time
 import urllib2
 from httplib import BadStatusLine
 
@@ -23,6 +23,7 @@ log_dir = ''
 src_dir = ''
 platform_tools_dir = ''
 android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
+saved_dir = ''
 
 SMALL_NUMBER = 0.000001
 LARGE_NUMBER = 10000
@@ -35,6 +36,14 @@ def error(msg):
 
 def cmd(msg):
     print '[COMMAND] ' + msg
+
+def backup_dir(new_dir):
+    global saved_dir
+    saved_dir = os.getcwd()
+    os.chdir(new_dir)
+
+def restore_dir():
+    os.chdir(saved_dir)
 
 def execute(command):
     cmd(command)
@@ -60,6 +69,77 @@ def get_data(name, result):
 def get_datetime():
     now = datetime.datetime.now()
     return now.strftime("%Y%m%d%H%M%S")
+
+def _parse_format_result(dir, log_file, results):
+    backup_dir(dir)
+    fr = open(log_file)
+    lines = fr.readlines()
+    fr.close()
+
+    for line in lines:
+        # Skip blank line
+        if re.match('^\s+$', line):
+            continue
+        # Skip title
+        if re.match('Name 8888 565 GPU NULLGPU NONRENDERING', line):
+            continue
+
+        p = re.compile('\S+')
+        results.append(re.findall(p, line))
+
+    restore_dir()
+
+def average(average_dir):
+    backup_dir(log_dir)
+    total_result = []
+    total_number = 0
+
+    files = os.listdir(average_dir)
+    for file in files:
+        if not re.search('format', file):
+            continue
+
+        total_number += 1
+        if total_number == 1:
+            _parse_format_result(average_dir, file, total_result)
+            continue
+
+        temp_result = []
+        _parse_format_result(average_dir, file, temp_result)
+
+        for i in range(len(temp_result)):
+            if temp_result[i][0] != total_result[i][0]:
+                error('Results to calculate average do not have same format')
+                quit()
+
+            for j in range(1, len(config) + 1):
+                if temp_result[i][j] == 'NA' or total_result[i][j] == 'NA':
+                    total_result[i][j] = 'NA'
+                    if temp_result[i][j] != total_result[i][j]:
+                        error('One of result is NA, while the other is not')
+                        quit()
+                else:
+                    total_result[i][j] = float(total_result[i][j]) + float(temp_result[i][j])
+
+    dirs = average_dir.split('/')
+    if dirs[-1] == '':
+        dir_name = dirs[-2]
+    else:
+        dir_name = dirs[-1]
+    fw = open(average_dir + '/' + dir_name + '-average' + log_suffix, 'w')
+    fw.write('Name ' + ' '.join(config) + '\n')
+    for r in total_result:
+        s = r[0]
+        for i in range(1, len(config) + 1):
+            if r[i] == 'NA':
+                s += ' NA'
+            else:
+                s += ' ' + str(r[i] / total_number)
+        s += '\n'
+        fw.write(s)
+    fw.close()
+
+    restore_dir()
 
 def download(args):
     if not args.download:
@@ -141,25 +221,6 @@ def download(args):
             fw.write(s + '\n')
     fw.close()
 
-
-
-def _parse_format_result(log_file, results):
-    os.chdir(log_dir)
-    fr = open(log_file)
-    lines = fr.readlines()
-    fr.close()
-
-    for line in lines:
-        # Skip blank line
-        if re.match('^\s+$', line):
-            continue
-        # Skip title
-        if re.match('Name 8888 565 GPU NULLGPU NONRENDERING', line):
-            continue
-
-        p = re.compile('\S+')
-        results.append(re.findall(p, line))
-
 def _item_in_list(item, list):
     for i in range(len(list)):
         if item == list[i][0]:
@@ -179,13 +240,11 @@ def compare(args):
 
     file_number = len(files)
     base = []
-    total = []
-    _parse_format_result(files[0], base)
-    _parse_format_result(files[0], total)
+    _parse_format_result(log_dir, files[0], base)
 
     for i in range(1, file_number):
         compared = []
-        _parse_format_result(files[i], compared)
+        _parse_format_result(log_dir, files[i], compared)
 
         base_index = 0
         compared_index = 0
@@ -205,7 +264,6 @@ def compare(args):
             else:
                 for j in range(1, len(config) + 1):
                     if base[base_index][j] == NA or compared[compared_index][j] == NA:
-                        total[base_index][j] = NA
                         if base[base_index][j] == compared[compared_index][j]:
                             continue
 
@@ -219,7 +277,6 @@ def compare(args):
                         if c < SMALL_NUMBER:
                             c = SMALL_NUMBER
                         d = round((c - b) / b, 4)
-                        total[base_index][j] = float(total[base_index][j]) + c
                         if abs(d) < 0.05:
                             continue
 
@@ -240,22 +297,8 @@ def compare(args):
         for j in range(len(diffs[i])):
             print diffs[i][j][0] + ' ' + ('%.2f' %(diffs[i][j][1] * 100)) + ' ' + diffs[i][j][2] + ' ' + diffs[i][j][3]
 
-    # Don't calculate average for the time being
-    return()
-    # Print average
-    info('== Average ==')
-    for i in range(len(total)):
-        s = ''
-        for j in range(1, len(total[i])):
-            if total[i][j] == NA:
-                s = s + ' NA'
-            else:
-                s = s + ' ' + ('%.2f' %(float(total[i][j]) / file_number))
-        s = total[i][0] + s
-        print s
-
-
-def parse_result(log_file):
+def parse_result(dir, log_file):
+    backup_dir(dir)
     format_file = log_file.replace('origin', 'format')
 
     if os.path.exists(format_file):
@@ -280,7 +323,11 @@ def parse_result(log_file):
             fw.write(s + '\n')
     fw.close()
 
+    restore_dir()
+
 def run(args):
+    global log_dir
+
     if not args.run:
         return()
 
@@ -288,6 +335,7 @@ def run(args):
         error('Please designate device to run with')
         quit()
 
+    backup_dir(src_dir)
     device_found = False
     command = 'adb devices -l'
     devices = commands.getoutput(command).split('\n')
@@ -302,35 +350,41 @@ def run(args):
 
     execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
 
-    format_files = ''
-
-    os.chdir(src_dir)
     if args.run_nonroot:
         execute('platform_tools/android/bin/android_install_skia --release -s ' + args.device)
-        if args.bench_option:
-            command = 'platform_tools/android/bin/android_run_skia --intent "bench --repeat 20 ' + args.bench_option + '"'
+        if args.run_option:
+            command = 'platform_tools/android/bin/android_run_skia --intent "bench --repeat 20 ' + args.run_option + '"'
         else:
             command = 'platform_tools/android/bin/android_run_skia --intent "bench --repeat 20"'
     else:
         execute('platform_tools/android/bin/android_install_skia --release --install-launcher -s ' + args.device)
         execute('platform_tools/android/bin/linux/adb shell stop')
         command = 'platform_tools/android/bin/android_run_skia bench --repeat 20'
-        if args.bench_option:
-            command = command + ' ' + args.bench_option
+        if args.run_option:
+            command = command + ' ' + args.run_option
 
+    group_log_dir = log_dir
+    if args.run_times > 1:
+        group_log_dir = log_dir + get_datetime() + '-' + args.device + '-bench/'
+        os.mkdir(group_log_dir)
 
-    log_file = log_dir + get_datetime() + '-' + args.device + '-bench-origin' + log_suffix
-    command = command + ' 2>&1 |tee '+  log_file
-
-    start = datetime.datetime.now()
-    execute(command)
-    elapsed = (datetime.datetime.now() - start)
-    info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
+    for i in range(args.run_times):
+        log_file = get_datetime() + '-' + args.device + '-bench-origin' + log_suffix
+        command = command + ' 2>&1 |tee ' + group_log_dir + log_file
+        start = datetime.datetime.now()
+        execute(command)
+        elapsed = (datetime.datetime.now() - start)
+        info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
+        parse_result(group_log_dir, log_file)
+        time.sleep(2)
 
     if not args.run_nonroot:
         execute('platform_tools/android/bin/linux/adb shell start')
 
-    parse_result(log_file)
+    if args.run_times > 1:
+        average(group_log_dir)
+
+    restore_dir()
 
 def build(args):
     if not args.build:
@@ -351,13 +405,16 @@ def build(args):
     print 'System: ' + system
     print '======================='
 
-    os.chdir(src_dir)
+
+    backup_dir(src_dir)
 
     if build == 'Debug' or build == 'All':
         execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Debug')
 
     if build == 'Release' or build == 'All':
         execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Release')
+
+    restore_dir()
 
 def set_target(args):
     global target
@@ -412,8 +469,9 @@ def update(args):
     if not args.update:
         return()
 
-    os.chdir(root_dir)
+    backup_dir(root_dir)
     execute('gclient ' + args.update)
+    restore_dir()
 
 def setup(args):
     global root_dir
@@ -461,17 +519,20 @@ examples:
   python %(prog)s -r release -d 32300bd273508f3b // s3
   python %(prog)s -r release -d 006e7e464bd64fef // nexus 4
   python %(prog)s -r release -d RHBEC245400171 // pr2
-  python %(prog)s -r release --run-nonroot -d 32300bd273508f3b --bench-option '--match region_contains_sect --match verts'
-  python %(prog)s -r release -d RHBEC245400171 --bench-option '--match region_contains_sect --match verts'
+  python %(prog)s -r release --run-nonroot -d 32300bd273508f3b --run-option '--match region_contains_sect --match verts'
+  python %(prog)s -r release -d RHBEC245400171 --run-option '--match region_contains_sect --match verts'
 
   parse result:
-  python %(prog)s --parse-result /workspace/topic/skia/log/20130725173815-RHBEC245400171-bench-origin.txt
+  python %(prog)s --parse-result ORIGIN
 
   compare results:
-  python %(prog)s -c Nexus10-MaliT604-Arm7-416-bench-format.txt,20130726183834_006e7e464bd64fef_bench_format.txt
+  python %(prog)s -c BASE,COMPARED
 
   download:
   python %(prog)s --download nexus10
+
+  average:
+  python %(prog)s --average DIR
 
   update & build & run
   python %(prog)s -u sync -b release -r release -d Medfield6CCF763B
@@ -482,13 +543,12 @@ examples:
 
     groupUpdate = parser.add_argument_group('build')
     groupUpdate.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug', 'all'])
-    groupUpdate.add_argument('-t', '--target', dest='target', help='target', choices=['x86', 's3', 'nexus4'])
 
     groupUpdate = parser.add_argument_group('run')
     groupUpdate.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
-    groupUpdate.add_argument('-d', '--device', dest='device', help='device id')
     groupUpdate.add_argument('--run-nonroot', dest='run_nonroot', help='run without root access, which would not install skia_launcher to /system', action='store_true')
-    groupUpdate.add_argument("--bench-option", dest="bench_option", help="option to run bench test", default='')
+    groupUpdate.add_argument("--run-option", dest="run_option", help="option to run bench test", default='')
+    groupUpdate.add_argument("--run-times", dest="run_times", help="times to run test", default=1, type=int)
 
     groupUpdate = parser.add_argument_group('parse result')
     groupUpdate.add_argument('--parse-result', dest='parse_result', help='log file to be parsed')
@@ -499,7 +559,12 @@ examples:
     groupUpdate = parser.add_argument_group('download')
     groupUpdate.add_argument('--download', dest='download', help='download result from Skia waterfall', choices=['nexus10', 'nexus4'])
 
+    groupUpdate = parser.add_argument_group('average')
+    groupUpdate.add_argument('--average', dest='average', help='calculate average of results within a directory')
+
     groupUpdate = parser.add_argument_group('other')
+    groupUpdate.add_argument('-t', '--target', dest='target', help='target', choices=['x86', 's3', 'nexus4'])
+    groupUpdate.add_argument('-d', '--device', dest='device', help='device id')
     groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')
     groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
 
@@ -515,8 +580,10 @@ examples:
     run(args)
 
     if args.parse_result:
-        parse_result(args.parse_result)
+        parse_result(log_dir, args.parse_result)
 
     compare(args)
-
     download(args)
+
+    if args.average:
+        average(args.average)

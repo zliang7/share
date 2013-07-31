@@ -24,6 +24,8 @@ src_dir = ''
 platform_tools_dir = ''
 android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
 saved_dir = ''
+root_dir_default = '/workspace/project/skia/'
+log_dir_default = '/workspace/topic/skia/log/'
 
 SMALL_NUMBER = 0.000001
 LARGE_NUMBER = 10000
@@ -482,7 +484,7 @@ def setup(args):
     if args.root_dir:
         root_dir = args.root_dir
     else:
-        root_dir = '/workspace/project/skia/'
+        root_dir = root_dir_default
 
     if not os.path.exists(root_dir):
         error('You must designate root_dir')
@@ -491,7 +493,7 @@ def setup(args):
     if args.log_dir:
         log_dir = args.log_dir
     else:
-        log_dir = '/workspace/topic/skia/log/'
+        log_dir = log_dir_default
 
     if not os.path.exists(log_dir):
         error('You must designate log_dir')

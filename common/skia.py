@@ -525,7 +525,7 @@ examples:
   python %(prog)s -r release -d 32300bd273508f3b // s3
   python %(prog)s -r release -d 006e7e464bd64fef // nexus 4
   python %(prog)s -r release -d RHBEC245400171 // pr2
-  python %(prog)s -r release --run-nonroot -d 32300bd273508f3b --run-option '--match region_contains_sect --match verts'
+  python %(prog)s -r release --run-nonroot -d 006e7e464bd64fef --run-option '--match region_contains_sect --match verts'
   python %(prog)s -r release -d RHBEC245400171 --run-option '--match region_contains_sect --match verts'
 
   parse result:
@@ -541,7 +541,7 @@ examples:
   python %(prog)s --average DIR
 
   update & build & run
-  python %(prog)s -u sync -b release -r release -d Medfield6CCF763B
+  python %(prog)s -u sync -b release -r release -d RHBEC245400171
 ''')
 
     groupUpdate = parser.add_argument_group('update')

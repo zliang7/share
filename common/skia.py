@@ -432,21 +432,22 @@ def set_target(args):
         target_from_option = 'nexus_4'
 
     target_from_device = ''
-    # Guess target from 'adb devices -l'
-    command = 'adb devices -l'
-    devices = commands.getoutput(command).split('\n')
+    if args.device:
+        # Guess target from 'adb devices -l'
+        command = 'adb devices -l'
+        devices = commands.getoutput(command).split('\n')
 
-    for device in devices:
-        if device[:len(args.device)] == args.device:
-            if re.search('redhookbay', device):
-                target_from_device = 'x86'
-            elif re.search('Medfield', device):
-                target_from_device = 'x86'
-            elif re.search('mako', device):
-                target_from_device = 'nexus_4'
-            elif re.search('Nexus_4', device):
-                target_from_device = 'nexus_4'
-            break
+        for device in devices:
+            if device[:len(args.device)] == args.device:
+                if re.search('redhookbay', device):
+                    target_from_device = 'x86'
+                elif re.search('Medfield', device):
+                    target_from_device = 'x86'
+                elif re.search('mako', device):
+                    target_from_device = 'nexus_4'
+                elif re.search('Nexus_4', device):
+                    target_from_device = 'nexus_4'
+                break
 
     # Add some manual map here
     if target_from_device == '':

@@ -38,6 +38,9 @@ def unlock(name):
 def originToGooglePlus():
     for checkDir in checkDirs:
         originCheckDir = originDir + checkDir + '/'
+        if not os.path.exists(originCheckDir):
+            continue
+
         googlePlusCheckDir = googlePlusStorageDir + checkDir + '/'
         if not os.path.exists(googlePlusCheckDir):
             os.mkdir(googlePlusCheckDir)
@@ -58,21 +61,24 @@ def originToGooglePlus():
                 os.rename(destFile, googlePlusCheckDir + destFile)
 
 def googlePlusToSkyDrive():
+    print 'haha'
     for checkDir in checkDirs:
         googlePlusCheckDir = googlePlusStorageDir + checkDir + '/'
-        skyDriveCheckDir = skyDriveStorageDir + checkDir + u'视频/'
+        skyDriveCheckDir = skyDriveStorageDir + checkDir + '/'
         if not os.path.exists(skyDriveCheckDir):
             os.mkdir(skyDriveCheckDir)
 
         googlePlusFiles = os.listdir(googlePlusCheckDir)
         for googlePlusFile in googlePlusFiles:
-            if googlePlusFile[-4:].lower() != '.mp4' or hasFile(skyDriveCheckDir, googlePlusFile):
-                continue
-
-            command = (ffmpeg + ' -i ' + googlePlusCheckDir  + googlePlusFile + ' -qscale 0 -s hd720 -f mp4 ' + googlePlusFile + ' 2>>NUL').encode(sys.getfilesystemencoding())
-            info('Convert file ' + googlePlusCheckDir + googlePlusFile + ' to ' + skyDriveCheckDir + googlePlusFile)
-            os.system(command)
-            os.rename(googlePlusFile, skyDriveCheckDir + googlePlusFile)
+            if googlePlusFile[-4:].lower() == '.jpg' and not hasFile(skyDriveCheckDir, googlePlusFile):
+                command = ('cp ' + googlePlusCheckDir  + googlePlusFile + ' ' + skyDriveCheckDir + googlePlusFile).encode(sys.getfilesystemencoding())
+                info('Copy file ' + googlePlusCheckDir + googlePlusFile + ' to ' + skyDriveCheckDir + googlePlusFile)
+                os.system(command)
+            elif googlePlusFile[-4:].lower() == '.mp4' and not hasFile(skyDriveCheckDir, googlePlusFile):
+                command = (ffmpeg + ' -i ' + googlePlusCheckDir  + googlePlusFile + ' -qscale 0 -s hd720 -f mp4 ' + googlePlusFile + ' 2>>NUL').encode(sys.getfilesystemencoding())
+                info('Convert file ' + googlePlusCheckDir + googlePlusFile + ' to ' + skyDriveCheckDir + googlePlusFile)
+                os.system(command)
+                os.rename(googlePlusFile, skyDriveCheckDir + googlePlusFile)
 
 if __name__ == '__main__':
     os.chdir(scriptDir)

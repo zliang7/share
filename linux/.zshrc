@@ -519,6 +519,11 @@ if [ ! -L /workspace/project/android/android.py ]; then
    ln -s /workspace/project/gyagp/share/common/android.py /workspace/project/android/android.py
 fi
 
+# Skia
+if [ ! -L /workspace/project/skia/skia.py ]; then
+   ln -s /workspace/project/gyagp/share/common/skia.py /workspace/project/skia/skia.py
+fi
+
 # sublime
 export PATH=$PATH:/workspace/software/sublime
 alias st="sublime_text"

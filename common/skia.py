@@ -503,6 +503,9 @@ def setup(args):
     src_dir = root_dir + 'trunk/'
     platform_tools_dir = src_dir + 'platform_tools/'
 
+    os.putenv('http_proxy', 'http://proxy-shz.intel.com:911')
+    os.putenv('https_proxy', 'https://proxy-shz.intel.com:911')
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Script to update, build and run Skia for Android IA',
                                      formatter_class = argparse.RawTextHelpFormatter,

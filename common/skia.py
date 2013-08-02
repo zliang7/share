@@ -459,8 +459,6 @@ def build(args):
         build = 'Debug'
     elif args.build.upper() == 'RELEASE':
         build = 'Release'
-    elif args.build.upper() == 'ALL':
-        build = 'All'
 
     print '== Build Environment =='
     print 'Directory of src: ' + src_dir
@@ -472,13 +470,8 @@ def build(args):
     backup_dir(src_dir)
 
     os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
-    if build == 'Debug' or build == 'All':
-        for target in targets:
-            execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Debug')
-
-    if build == 'Release' or build == 'All':
-        for target in targets:
-            execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Release')
+    for target in targets:
+        execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=' + build)
 
     restore_dir()
 
@@ -562,7 +555,7 @@ examples:
     groupUpdate.add_argument('-u', '--update', dest='update', help='gclient options to update source code')
 
     groupUpdate = parser.add_argument_group('build')
-    groupUpdate.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug', 'all'])
+    groupUpdate.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug'])
 
     groupUpdate = parser.add_argument_group('run')
     groupUpdate.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])

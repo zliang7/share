@@ -12,12 +12,8 @@ import time
 import urllib2
 from httplib import BadStatusLine
 
+device_to_target = {}
 system = platform.system()
-log_suffix = '.txt'
-config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
-config_concerned = [0, 0, 1, 0, 1]
-NA = 'NA'
-target = ''
 root_dir = ''
 log_dir = ''
 src_dir = ''
@@ -26,15 +22,26 @@ android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
 saved_dir = ''
 root_dir_default = '/workspace/project/skia/'
 log_dir_default = '/workspace/topic/skia/log/'
-
+log_suffix = '.txt'
+config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
+config_concerned = [0, 0, 1, 0, 1]
+NA = 'NA'
+ONLINE = 'online'
+OFFLINE = 'offline'
+X86 = 'x86'
+NEXUS4 = 'nexus_4'
+UNKNOWN = 'unknown'
 SMALL_NUMBER = 0.000001
 LARGE_NUMBER = 10000
 
 def info(msg):
-    print "[INFO] " + msg + "."
+    print '[INFO] ' + msg + '.'
+
+def warn(msg):
+    print '[WARNING] ' + msg + '.'
 
 def error(msg):
-    print "[ERROR] " + msg + "!"
+    print '[ERROR] ' + msg + '!'
 
 def cmd(msg):
     print '[COMMAND] ' + msg
@@ -327,9 +334,40 @@ def parse_result(dir, log_file):
 
     restore_dir()
 
-def run(args):
-    global log_dir
+def _get_device_to_target():
+    global device_to_target
+    if len(device_to_target) > 0:
+        return
 
+    command = 'adb devices -l'
+    device_lines = commands.getoutput(command).split('\n')
+    for device_line in device_lines:
+        if re.match('List of devices attached', device_line):
+            continue
+        elif re.match('^\s*$', device_line):
+            continue
+
+        device = device_line.split(' ')[0]
+        if re.search('redhookbay', device_line):
+            device_to_target[device] = (X86, ONLINE)
+        elif re.search('Medfield', device_line):
+            device_to_target[device] = (X86, ONLINE)
+        elif re.search('mako', device_line):
+            device_to_target[device] = (NEXUS4, ONLINE)
+        elif re.search('Nexus_4', device_line):
+            device_to_target[device] = (NEXUS4, ONLINE)
+        else:
+            device_to_target[device] = (UNKNOWN, ONLINE)
+
+    device_to_target_fixup = {'32300bd273508f3b': NEXUS4}
+    for device in device_to_target_fixup:
+        if device_to_target.has_key(device):
+            device_to_target[device] = (device_to_target_fixup[device], ONLINE)
+        else:
+            device_to_target[device] = (device_to_target_fixup[device], OFFLINE)
+
+# According to args.device, which have to be connected, and the corresponding target is known
+def run(args):
     if not args.run:
         return()
 
@@ -338,61 +376,84 @@ def run(args):
         quit()
 
     backup_dir(src_dir)
-    device_found = False
-    command = 'adb devices -l'
-    devices = commands.getoutput(command).split('\n')
-    for device in devices:
-        if device[:len(args.device)] == args.device:
-            device_found = True
-            break
 
-    if not device_found:
-        error('Device is not connected')
-        quit()
-
-    execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
-
-    if args.run_nonroot:
-        execute('platform_tools/android/bin/android_install_skia --release -s ' + args.device)
-        if args.run_option:
-            command = 'platform_tools/android/bin/android_run_skia --intent "bench --repeat 20 ' + args.run_option + '"'
+    run_devices = []
+    _get_device_to_target()
+    for device in args.device.split(','):
+        if not device_to_target.has_key(device) or device_to_target[device][1] == OFFLINE:
+            warn('Device ' + device + ' is not connected')
+        elif device_to_target[device][0] == UNKNOWN:
+            warn('Target for device ' + device + ' is unknown')
         else:
-            command = 'platform_tools/android/bin/android_run_skia --intent "bench --repeat 20"'
-    else:
-        execute('platform_tools/android/bin/android_install_skia --release --install-launcher -s ' + args.device)
-        execute('platform_tools/android/bin/linux/adb shell stop')
-        command = 'platform_tools/android/bin/android_run_skia bench --repeat 20'
-        if args.run_option:
-            command = command + ' ' + args.run_option
+            run_devices.append(device)
 
-    group_log_dir = log_dir
-    if args.run_times > 1:
-        group_log_dir = log_dir + get_datetime() + '-' + args.device + '-bench/'
-        os.mkdir(group_log_dir)
+    for device in run_devices:
+        target = device_to_target[device][0]
+        execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
 
-    for i in range(args.run_times):
-        log_file = get_datetime() + '-' + args.device + '-bench-origin' + log_suffix
-        command = command + ' 2>&1 |tee ' + group_log_dir + log_file
-        start = datetime.datetime.now()
-        execute(command)
-        elapsed = (datetime.datetime.now() - start)
-        info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
-        parse_result(group_log_dir, log_file)
-        time.sleep(2)
+        if args.run_nonroot:
+            execute('platform_tools/android/bin/android_install_skia --release -s ' + device)
+            command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat 20'
+            if args.run_option:
+                command = command + ' ' + args.run_option
+            command += '"'
+        else:
+            execute('platform_tools/android/bin/android_install_skia --release --install-launcher -s ' + device)
+            execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
+            command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat 20'
+            if args.run_option:
+                command = command + ' ' + args.run_option
 
-    if not args.run_nonroot:
-        execute('platform_tools/android/bin/linux/adb shell start')
+        group_log_dir = log_dir
+        if args.run_times > 1:
+            group_log_dir = log_dir + get_datetime() + '-' + device + '-bench/'
+            os.mkdir(group_log_dir)
 
-    if args.run_times > 1:
-        average(group_log_dir)
+        for i in range(args.run_times):
+            log_file = get_datetime() + '-' + args.device + '-bench-origin' + log_suffix
+            command = command + ' 2>&1 |tee ' + group_log_dir + log_file
+            start = datetime.datetime.now()
+            execute(command)
+            elapsed = (datetime.datetime.now() - start)
+            info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
+            parse_result(group_log_dir, log_file)
+            time.sleep(2)
+
+        if not args.run_nonroot:
+            execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell start')
+
+        if args.run_times > 1:
+            average(group_log_dir)
 
     restore_dir()
 
+def _ensure_in_list(item, list):
+    if not item in list:
+        list.append(item)
+
+# According to targets, which are from args.target and
+# args.device (guess the target, and no need to connect)
 def build(args):
     if not args.build:
         return()
 
-    os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
+    targets = []
+    # Set targets according to args.target
+    for target in args.target.split(','):
+        if target == 'x86':
+            _ensure_in_list(X86, targets)
+        elif target == 's3' or target == 'nexus4':
+            _ensure_in_list(NEXUS4, targets)
+
+    # Guess targets according to args.device
+    if args.device != '':
+        _get_device_to_target()
+
+        for device in args.device.split(','):
+            if device_to_target.has_key(device):
+                _ensure_in_list(device_to_target[device][0], targets)
+            else:
+                warn('Could not guess out target for device: ' + device)
 
     if args.build.upper() == 'DEBUG':
         build = 'Debug'
@@ -405,68 +466,21 @@ def build(args):
     print 'Directory of src: ' + src_dir
     print 'Build type: ' + build
     print 'System: ' + system
+    print 'Targets: ' + ','.join(targets)
     print '======================='
-
 
     backup_dir(src_dir)
 
+    os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     if build == 'Debug' or build == 'All':
-        execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Debug')
+        for target in targets:
+            execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Debug')
 
     if build == 'Release' or build == 'All':
-        execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Release')
+        for target in targets:
+            execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=Release')
 
     restore_dir()
-
-def set_target(args):
-    global target
-    if not args.build and not args.run:
-        return()
-
-    target_from_option = ''
-    if args.target == 'x86':
-        target_from_option = 'x86'
-    elif args.target == 's3':
-        target_from_option = 'nexus4'
-    elif args.target == 'nexus4':
-        target_from_option = 'nexus_4'
-
-    target_from_device = ''
-    if args.device:
-        # Guess target from 'adb devices -l'
-        command = 'adb devices -l'
-        devices = commands.getoutput(command).split('\n')
-
-        for device in devices:
-            if device[:len(args.device)] == args.device:
-                if re.search('redhookbay', device):
-                    target_from_device = 'x86'
-                elif re.search('Medfield', device):
-                    target_from_device = 'x86'
-                elif re.search('mako', device):
-                    target_from_device = 'nexus_4'
-                elif re.search('Nexus_4', device):
-                    target_from_device = 'nexus_4'
-                break
-
-    # Add some manual map here
-    if target_from_device == '':
-        if args.device == '32300bd273508f3b':
-            target_from_device = 'nexus_4'
-
-    if target_from_device != '' and target_from_option != '' and target_from_device != target_from_option:
-        error('Device could not match target. ' + 'target_from_device: ' + target_from_device + ' target_from_option: ' + target_from_option)
-        quit()
-
-    if target_from_device == '' and target_from_option == '':
-        error('Either device or target should be designated')
-        quit()
-
-    if target_from_device != '':
-        target = target_from_device
-
-    if target_from_option != '':
-        target = target_from_option
 
 def update(args):
     if not args.update:
@@ -541,7 +555,7 @@ examples:
   python %(prog)s --average DIR
 
   update & build & run
-  python %(prog)s -u sync -b release -r release -d RHBEC245400171
+  python %(prog)s -b release -r release -d RHBEC245400171,006e7e464bd64fef
 ''')
 
     groupUpdate = parser.add_argument_group('update')
@@ -569,8 +583,8 @@ examples:
     groupUpdate.add_argument('--average', dest='average', help='calculate average of results within a directory')
 
     groupUpdate = parser.add_argument_group('other')
-    groupUpdate.add_argument('-t', '--target', dest='target', help='target', choices=['x86', 's3', 'nexus4'])
-    groupUpdate.add_argument('-d', '--device', dest='device', help='device id')
+    groupUpdate.add_argument('-t', '--target', dest='target', help='target list separated by ",". Possible values are x86, s3, nexus4', default='')
+    groupUpdate.add_argument('-d', '--device', dest='device', help='device id list separated by ","', default='')
     groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')
     groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
 
@@ -581,7 +595,6 @@ examples:
 
     setup(args)
     update(args)
-    set_target(args)
     build(args)
     run(args)
 

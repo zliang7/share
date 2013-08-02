@@ -19,7 +19,7 @@ log_dir = ''
 src_dir = ''
 platform_tools_dir = ''
 android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
-saved_dir = ''
+dir_stack = []
 root_dir_default = '/workspace/project/skia/'
 log_dir_default = '/workspace/topic/skia/log/'
 log_suffix = '.txt'
@@ -31,6 +31,7 @@ OFFLINE = 'offline'
 X86 = 'x86'
 NEXUS4 = 'nexus_4'
 UNKNOWN = 'unknown'
+HOST = 'host'
 SMALL_NUMBER = 0.000001
 LARGE_NUMBER = 10000
 
@@ -47,12 +48,13 @@ def cmd(msg):
     print '[COMMAND] ' + msg
 
 def backup_dir(new_dir):
-    global saved_dir
-    saved_dir = os.getcwd()
+    global dir_stack
+    dir_stack.append(os.getcwd())
     os.chdir(new_dir)
 
 def restore_dir():
-    os.chdir(saved_dir)
+    global dir_stack
+    os.chdir(dir_stack.pop())
 
 def execute(command):
     cmd(command)
@@ -366,6 +368,8 @@ def _get_device_to_target():
         else:
             device_to_target[device] = (device_to_target_fixup[device], OFFLINE)
 
+    device_to_target[HOST] = (HOST, ONLINE)
+
 # According to args.device, which have to be connected, and the corresponding target is known
 def run(args):
     if not args.run:
@@ -380,6 +384,10 @@ def run(args):
     run_devices = []
     _get_device_to_target()
     for device in args.device.split(','):
+        if device == HOST:
+            run_devices.append(device)
+            continue
+
         if not device_to_target.has_key(device) or device_to_target[device][1] == OFFLINE:
             warn('Device ' + device + ' is not connected')
         elif device_to_target[device][0] == UNKNOWN:
@@ -388,21 +396,26 @@ def run(args):
             run_devices.append(device)
 
     for device in run_devices:
-        target = device_to_target[device][0]
-        execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
-
-        if args.run_nonroot:
-            execute('platform_tools/android/bin/android_install_skia --release -s ' + device)
-            command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat 20'
+        if device == HOST:
+            command = 'out/Release/bench --repeat 20'
             if args.run_option:
                 command = command + ' ' + args.run_option
-            command += '"'
         else:
-            execute('platform_tools/android/bin/android_install_skia --release --install-launcher -s ' + device)
-            execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
-            command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat 20'
-            if args.run_option:
-                command = command + ' ' + args.run_option
+            target = device_to_target[device][0]
+            execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
+
+            if args.run_nonroot:
+                execute('platform_tools/android/bin/android_install_skia --release -s ' + device)
+                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat 20'
+                if args.run_option:
+                    command = command + ' ' + args.run_option
+                command += '"'
+            else:
+                execute('platform_tools/android/bin/android_install_skia --release --install-launcher -s ' + device)
+                execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
+                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat 20'
+                if args.run_option:
+                    command = command + ' ' + args.run_option
 
         group_log_dir = log_dir
         if args.run_times > 1:
@@ -410,16 +423,16 @@ def run(args):
             os.mkdir(group_log_dir)
 
         for i in range(args.run_times):
-            log_file = get_datetime() + '-' + args.device + '-bench-origin' + log_suffix
-            command = command + ' 2>&1 |tee ' + group_log_dir + log_file
+            log_file = get_datetime() + '-' + device + '-bench-origin' + log_suffix
+            command_bench = command + ' 2>&1 |tee ' + group_log_dir + log_file
             start = datetime.datetime.now()
-            execute(command)
+            execute(command_bench)
             elapsed = (datetime.datetime.now() - start)
             info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
             parse_result(group_log_dir, log_file)
             time.sleep(2)
 
-        if not args.run_nonroot:
+        if not args.run_nonroot and device != HOST:
             execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell start')
 
         if args.run_times > 1:
@@ -444,6 +457,8 @@ def build(args):
             _ensure_in_list(X86, targets)
         elif target == 's3' or target == 'nexus4':
             _ensure_in_list(NEXUS4, targets)
+        elif target == 'host':
+            _ensure_in_list(HOST, targets)
 
     # Guess targets according to args.device
     if args.device != '':
@@ -471,7 +486,10 @@ def build(args):
 
     os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     for target in targets:
-        execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=' + build)
+        if target == HOST:
+            execute('make -j bench BUILDTYPE=' + build)
+        else:
+            execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=' + build)
 
     restore_dir()
 
@@ -576,8 +594,8 @@ examples:
     groupUpdate.add_argument('--average', dest='average', help='calculate average of results within a directory')
 
     groupUpdate = parser.add_argument_group('other')
-    groupUpdate.add_argument('-t', '--target', dest='target', help='target list separated by ",". Possible values are x86, s3, nexus4', default='')
-    groupUpdate.add_argument('-d', '--device', dest='device', help='device id list separated by ","', default='')
+    groupUpdate.add_argument('-t', '--target', dest='target', help='target list separated by ",". Possible values are x86, s3, nexus4, host', default='')
+    groupUpdate.add_argument('-d', '--device', dest='device', help='device id list separated by ",", "host" for running on host machine', default='')
     groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')
     groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
 

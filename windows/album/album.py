@@ -10,7 +10,7 @@ import shutil
 script_dir = sys.path[0]
 check_dirs = [u'12月']
 
-origin_dir = u'e:/picture/origin/'
+origin_dir = u'e:/storage/origin/'
 storage_dir = 'e:/storage/'
 googleplus_storage_dir = storage_dir + 'GooglePlus/'
 skydrive_storage_dir = storage_dir + u'SkyDrive/顾诗云/'

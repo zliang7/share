@@ -404,14 +404,18 @@ def run(args):
             target = device_to_target[device][0]
             execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
 
+            if args.run == 'release':
+                configuration = ' --release'
+            else:
+                configuration = ''
             if args.run_nonroot:
-                execute('platform_tools/android/bin/android_install_skia --release -s ' + device)
+                execute('platform_tools/android/bin/android_install_skia -s ' + device + configuration)
                 command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat 20'
                 if args.run_option:
                     command = command + ' ' + args.run_option
                 command += '"'
             else:
-                execute('platform_tools/android/bin/android_install_skia --release --install-launcher -s ' + device)
+                execute('platform_tools/android/bin/android_install_skia --install-launcher -s ' + device + configuration)
                 execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
                 command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat 20'
                 if args.run_option:

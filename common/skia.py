@@ -34,6 +34,7 @@ UNKNOWN = 'unknown'
 HOST = 'host'
 SMALL_NUMBER = 0.000001
 LARGE_NUMBER = 10000
+REPEAT_TIMES = '20'
 
 def info(msg):
     print '[INFO] ' + msg + '.'
@@ -56,9 +57,9 @@ def restore_dir():
     global dir_stack
     os.chdir(dir_stack.pop())
 
-def execute(command):
+def execute(command, ignore_return_value=False):
     cmd(command)
-    if os.system(command):
+    if os.system(command) and not ignore_return_value:
         error('Failed to execute')
         quit()
 
@@ -397,7 +398,10 @@ def run(args):
 
     for device in run_devices:
         if device == HOST:
-            command = 'out/Release/bench --repeat 20'
+            if args.run == 'release':
+                command = 'out/Release/bench --repeat ' + REPEAT_TIMES
+            else:
+                command = 'out/Debug/bench --repeat ' + REPEAT_TIMES
             if args.run_option:
                 command = command + ' ' + args.run_option
         else:
@@ -410,14 +414,14 @@ def run(args):
                 configuration = ''
             if args.run_nonroot:
                 execute('platform_tools/android/bin/android_install_skia -s ' + device + configuration)
-                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat 20'
+                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat ' + REPEAT_TIMES
                 if args.run_option:
                     command = command + ' ' + args.run_option
                 command += '"'
             else:
                 execute('platform_tools/android/bin/android_install_skia --install-launcher -s ' + device + configuration)
                 execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
-                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat 20'
+                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat ' + REPEAT_TIMES
                 if args.run_option:
                     command = command + ' ' + args.run_option
 
@@ -502,7 +506,9 @@ def update(args):
         return()
 
     backup_dir(root_dir)
-    execute('gclient ' + args.update)
+    execute('sudo privoxy /etc/privoxy/config', True)
+    os.chdir(src_dir)
+    execute('git checkout master && git svn fetch && git svn rebase')
     restore_dir()
 
 def setup(args):

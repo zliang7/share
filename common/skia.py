@@ -230,7 +230,6 @@ def parse_result(dir, log_file):
                     for m in re.findall(pattern, lines[line_index]):
                         matches.append(m)
 
-            print matches
             for i in range(len(config)):
                 s = s + ' ' + get_data(config[i], matches)
             fw.write(s + '\n')

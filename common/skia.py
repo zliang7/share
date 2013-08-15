@@ -82,6 +82,50 @@ def get_datetime():
     now = datetime.datetime.now()
     return now.strftime("%Y%m%d%H%M%S")
 
+def _get_device_to_target():
+    global device_to_target
+    if len(device_to_target) > 0:
+        return
+
+    command = 'adb devices -l'
+    device_lines = commands.getoutput(command).split('\n')
+    for device_line in device_lines:
+        if re.match('List of devices attached', device_line):
+            continue
+        elif re.match('^\s*$', device_line):
+            continue
+
+        device = device_line.split(' ')[0]
+        if re.search('redhookbay', device_line):
+            device_to_target[device] = (X86, ONLINE)
+        elif re.search('Medfield', device_line):
+            device_to_target[device] = (X86, ONLINE)
+        elif re.search('mako', device_line):
+            device_to_target[device] = (NEXUS4, ONLINE)
+        elif re.search('Nexus_4', device_line):
+            device_to_target[device] = (NEXUS4, ONLINE)
+        else:
+            device_to_target[device] = (UNKNOWN, ONLINE)
+
+    device_to_target_fixup = {'32300bd273508f3b': NEXUS4}
+    for device in device_to_target_fixup:
+        if device_to_target.has_key(device):
+            device_to_target[device] = (device_to_target_fixup[device], ONLINE)
+        else:
+            device_to_target[device] = (device_to_target_fixup[device], OFFLINE)
+
+    device_to_target[HOST] = (HOST, ONLINE)
+
+def recover(args):
+    if not args.recover:
+        return
+
+    _get_device_to_target()
+
+    for device in device_to_target:
+        if device_to_target[device][1] == ONLINE and device_to_target[device][0] != HOST:
+            execute('adb -s ' + device + ' shell start')
+
 def _parse_format_result(dir, log_file, results):
     backup_dir(dir)
     fr = open(log_file)
@@ -153,10 +197,52 @@ def average(average_dir):
 
     restore_dir()
 
+def parse_result(dir, log_file):
+    backup_dir(dir)
+
+    format_file = log_file.replace('origin', 'format')
+    if os.path.exists(format_file):
+        os.remove(format_file)
+
+    fr = open(log_file)
+    lines = fr.readlines()
+    fr.close()
+
+    fw = open(format_file, 'w')
+    fw.write('Name ' + ' '.join(config) + '\n')
+
+    for line_index in range(0, len(lines)):
+        if re.search('beginning of /dev/log/main', lines[line_index]):
+            break
+
+        if re.search('running bench', lines[line_index]):
+            p = re.compile('running bench \[\d+ \d+\]\s+(\S+)')
+            m = re.search(p, lines[line_index])
+            s = m.group(1)
+            pattern = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+([^ \t\n\r\f\v[a-zA-Z]*)[a-zA-Z]*\s*')
+            matches = re.findall(pattern, lines[line_index])
+            if matches[0][0] == '8888':
+                while len(matches) < 4:
+                    line_index += 1
+                    # Skip error lines
+                    while re.search(' Skia Error|^Skia Error', lines[line_index]):
+                        line_index += 1
+                    for m in re.findall(pattern, lines[line_index]):
+                        matches.append(m)
+
+            print matches
+            for i in range(len(config)):
+                s = s + ' ' + get_data(config[i], matches)
+            fw.write(s + '\n')
+    fw.close()
+
+    restore_dir()
+
 def download(args):
     if not args.download:
-        return()
+        return
 
+    backup_dir(log_dir)
 
     if args.download not in ['nexus10', 'nexus4']:
         error('Device to download is supported now')
@@ -172,18 +258,22 @@ def download(args):
     html = u.read()
     pattern = re.compile('Perf-Android-Nexus10-MaliT604-Arm7-Release&number=(\d+)')
     match = pattern.search(html)
-    build_number = match.group(1)
+    if match:
+        build_number = match.group(1)
+    else:
+        error('Could not get the build number to download')
+        quit
 
     # Get log for specific build number
     if args.download == 'nexus10':
         link = 'Nexus10-MaliT604'
     elif args.download == 'nexus4':
         link = 'Nexus4-Adreno320'
-    origin_file = log_dir + link + '-Arm7-' + str(build_number) + '-bench-origin' + log_suffix
+    origin_file = link + '-Arm7-' + str(build_number) + '-bench-origin' + log_suffix
 
     if os.path.exists(origin_file):
         info(origin_file + ' has been downloaded')
-        return()
+        return
 
     url = 'http://108.170.217.252:10117/builders/Perf-Android-' + link + '-Arm7-Release/builds/' + build_number + '/steps/RunBench/logs/stdio/text'
     try:
@@ -196,42 +286,9 @@ def download(args):
         fw.write(line)
     fw.close()
 
+    parse_result(log_dir, origin_file)
 
-    # Format origin log
-    fr = open(origin_file)
-    lines = fr.readlines()
-    fr.close()
-
-    format_file = origin_file.replace('origin', 'format')
-
-    if os.path.exists(format_file):
-        os.remove(format_file)
-
-    fw = open(format_file, 'w')
-    fw.write('Name ' + ' '.join(config) + '\n')
-    for line_index in range(0, len(lines)):
-        if re.search('beginning of /dev/log/main', lines[line_index]):
-            break
-
-        if re.search('running bench', lines[line_index]):
-            p = re.compile('running bench \[\d+ \d+\]\s+(\S+)')
-            m = re.search(p, lines[line_index])
-            s = m.group(1)
-            pattern = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+([^ \t\n\r\f\v[a-zA-Z]*)[a-zA-Z]*\s*')
-            matches = re.findall(pattern, lines[line_index])
-            if matches[0][0] == '8888':
-                while len(matches) < 4:
-                    line_index += 1
-                    # Skip error lines
-                    while re.search('\] Skia Error', lines[line_index]):
-                        line_index += 1
-                    m = re.findall(pattern, lines[line_index])
-                    matches.append(m)
-
-            for i in range(len(config)):
-                s = s + ' ' + get_data(config[i], matches)
-            fw.write(s + '\n')
-    fw.close()
+    restore_dir()
 
 def _item_in_list(item, list):
     for i in range(len(list)):
@@ -242,7 +299,7 @@ def _item_in_list(item, list):
 
 def compare(args):
     if not args.compare:
-        return()
+        return
 
     diffs = []
     for i in range(len(config)):
@@ -309,72 +366,10 @@ def compare(args):
         for j in range(len(diffs[i])):
             print diffs[i][j][0] + ' ' + ('%.2f' %(diffs[i][j][1] * 100)) + ' ' + diffs[i][j][2] + ' ' + diffs[i][j][3]
 
-def parse_result(dir, log_file):
-    backup_dir(dir)
-    format_file = log_file.replace('origin', 'format')
-
-    if os.path.exists(format_file):
-        os.remove(format_file)
-
-    fr = open(log_file)
-    lines = fr.readlines()
-    fr.close()
-
-    fw = open(format_file, 'w')
-    fw.write('Name ' + ' '.join(config) + '\n')
-    for line in lines:
-        if re.match('^running bench', line):
-            p = re.compile('^running bench \[\d+ \d+\]\s+(\S+)\s+')
-            matches = re.match(p, line)
-            s = matches.group(1)
-            p = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+(\S+)\s')
-            matches = re.findall(p, line)
-
-            for i in range(len(config)):
-                s = s + ' ' + get_data(config[i], matches)
-            fw.write(s + '\n')
-    fw.close()
-
-    restore_dir()
-
-def _get_device_to_target():
-    global device_to_target
-    if len(device_to_target) > 0:
-        return
-
-    command = 'adb devices -l'
-    device_lines = commands.getoutput(command).split('\n')
-    for device_line in device_lines:
-        if re.match('List of devices attached', device_line):
-            continue
-        elif re.match('^\s*$', device_line):
-            continue
-
-        device = device_line.split(' ')[0]
-        if re.search('redhookbay', device_line):
-            device_to_target[device] = (X86, ONLINE)
-        elif re.search('Medfield', device_line):
-            device_to_target[device] = (X86, ONLINE)
-        elif re.search('mako', device_line):
-            device_to_target[device] = (NEXUS4, ONLINE)
-        elif re.search('Nexus_4', device_line):
-            device_to_target[device] = (NEXUS4, ONLINE)
-        else:
-            device_to_target[device] = (UNKNOWN, ONLINE)
-
-    device_to_target_fixup = {'32300bd273508f3b': NEXUS4}
-    for device in device_to_target_fixup:
-        if device_to_target.has_key(device):
-            device_to_target[device] = (device_to_target_fixup[device], ONLINE)
-        else:
-            device_to_target[device] = (device_to_target_fixup[device], OFFLINE)
-
-    device_to_target[HOST] = (HOST, ONLINE)
-
 # According to args.device, which have to be connected, and the corresponding target is known
 def run(args):
     if not args.run:
-        return()
+        return
 
     if not args.device:
         error('Please designate device to run with')
@@ -456,7 +451,7 @@ def _ensure_in_list(item, list):
 # args.device (guess the target, and no need to connect)
 def build(args):
     if not args.build:
-        return()
+        return
 
     targets = []
     # Set targets according to args.target
@@ -495,15 +490,20 @@ def build(args):
     os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     for target in targets:
         if target == HOST:
-            execute('make -j bench BUILDTYPE=' + build)
+            cmd = 'make'
         else:
-            execute('platform_tools/android/bin/android_make -d ' + target + ' -j BUILDTYPE=' + build)
+            cmd = 'platform_tools/android/bin/android_make -d ' + target
+
+        cmd = cmd + ' -j bench BUILDTYPE=' + build
+        if args.build_verbose:
+            cmd = cmd + ' V=1'
+        execute(cmd)
 
     restore_dir()
 
 def update(args):
     if not args.update:
-        return()
+        return
 
     backup_dir(root_dir)
     execute('sudo privoxy /etc/privoxy/config', True)
@@ -584,13 +584,13 @@ examples:
 
     groupUpdate = parser.add_argument_group('build')
     groupUpdate.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug'])
+    groupUpdate.add_argument('--build-verbose', dest='build_verbose', help='enable verbose mode for build (V=1)', action='store_true')
 
     groupUpdate = parser.add_argument_group('run')
     groupUpdate.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
     groupUpdate.add_argument('--run-nonroot', dest='run_nonroot', help='run without root access, which would not install skia_launcher to /system', action='store_true')
     groupUpdate.add_argument("--run-option", dest="run_option", help="option to run bench test", default='')
     groupUpdate.add_argument("--run-times", dest="run_times", help="times to run test", default=1, type=int)
-
     groupUpdate = parser.add_argument_group('parse result')
     groupUpdate.add_argument('--parse-result', dest='parse_result', help='log file to be parsed')
 
@@ -608,6 +608,7 @@ examples:
     groupUpdate.add_argument('-d', '--device', dest='device', help='device id list separated by ",", "host" for running on host machine', default='')
     groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')
     groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
+    groupUpdate.add_argument('--recover', dest='recover', help='recover device from test', action='store_true')
 
     args = parser.parse_args()
 
@@ -627,3 +628,5 @@ examples:
 
     if args.average:
         average(args.average)
+
+    recover(args)

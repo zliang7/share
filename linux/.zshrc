@@ -654,7 +654,7 @@ fi
 
 # sublime
 export PATH=$PATH:/workspace/software/sublime
-alias st="bash -c 'LD_PRELOAD=/workspace/project/gyagp/share/linux/libsublime-imfix.so sublime_text &'"
+alias st="LD_PRELOAD=/workspace/project/gyagp/share/linux/libsublime-imfix.so sublime_text '$@' "
 if [ ! -L ~/.config/sublime-text-2/Packages/User/Preferences.sublime-settings ]; then
    ln -s /workspace/project/gyagp/share/common/sublime/Preferences.sublime-settings ~/.config/sublime-text-2/Packages/User/Preferences.sublime-settings
 fi

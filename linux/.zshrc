@@ -619,7 +619,7 @@ alias ggpnp='git pull origin $(current_branch) && git push origin $(current_bran
 compdef ggpnp=git
 
 # Pretty log messages
-function _git_log_prettily(){
+function _git_log_prettily() {
   if ! [ -z $1 ]; then
     git log --pretty=$1
   fi
@@ -654,7 +654,10 @@ fi
 
 # sublime
 export PATH=$PATH:/workspace/software/sublime
-alias st="LD_PRELOAD=/workspace/project/gyagp/share/linux/libsublime-imfix.so sublime_text '$@' "
+function sublime_text() {
+    bash -c "LD_PRELOAD=/workspace/project/gyagp/share/linux/libsublime-imfix.so sublime_text $1"
+}
+alias st='sublime_text'
 if [ ! -L ~/.config/sublime-text-2/Packages/User/Preferences.sublime-settings ]; then
    ln -s /workspace/project/gyagp/share/common/sublime/Preferences.sublime-settings ~/.config/sublime-text-2/Packages/User/Preferences.sublime-settings
 fi

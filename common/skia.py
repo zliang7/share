@@ -1,6 +1,10 @@
 #! N:\Python27\python.exe
 # -*- coding: utf-8 -*-
 
+# TODO
+# run tasks in parallel
+# print compilation option, times
+
 import re
 import os
 import datetime
@@ -29,6 +33,7 @@ NA = 'NA'
 ONLINE = 'online'
 OFFLINE = 'offline'
 X86 = 'x86'
+INTEL_RHB = 'intel_rhb'
 NEXUS4 = 'nexus_4'
 UNKNOWN = 'unknown'
 HOST = 'host'
@@ -396,28 +401,25 @@ def run(args):
                 command = 'out/Release/bench --repeat ' + REPEAT_TIMES
             else:
                 command = 'out/Debug/bench --repeat ' + REPEAT_TIMES
+
             if args.run_option:
                 command = command + ' ' + args.run_option
         else:
             target = device_to_target[device][0]
-            execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
 
             if args.run == 'release':
                 configuration = ' --release'
             else:
                 configuration = ''
-            if args.run_nonroot:
-                execute('platform_tools/android/bin/android_install_skia -s ' + device + configuration)
-                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat ' + REPEAT_TIMES
-                if args.run_option:
-                    command = command + ' ' + args.run_option
-                command += '"'
-            else:
-                execute('platform_tools/android/bin/android_install_skia --install-launcher -s ' + device + configuration)
-                execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
-                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat ' + REPEAT_TIMES
-                if args.run_option:
-                    command = command + ' ' + args.run_option
+
+            execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
+            command = 'platform_tools/android/bin/android_run_skia bench -d ' + target + ' -s ' + device + ' --repeat ' + REPEAT_TIMES + configuration
+            for i in range(len(config_concerned)):
+                if config_concerned[i] == 1:
+                    command += ' --config ' + config[i]
+
+            if args.run_option:
+                command = command + ' ' + args.run_option
 
         group_log_dir = log_dir
         if args.run_times > 1:
@@ -486,7 +488,6 @@ def build(args):
 
     backup_dir(src_dir)
 
-    os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     for target in targets:
         if target == HOST:
             cmd = 'make'
@@ -537,8 +538,10 @@ def setup(args):
     src_dir = root_dir + 'trunk/'
     platform_tools_dir = src_dir + 'platform_tools/'
 
+    os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     os.putenv('http_proxy', 'http://proxy-shz.intel.com:911')
     os.putenv('https_proxy', 'https://proxy-shz.intel.com:911')
+    os.putenv('PATH', platform_tools_dir + 'android/bin/linux:' + os.getenv('PATH'))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Script to update, build and run Skia for Android IA',

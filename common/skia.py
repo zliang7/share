@@ -414,12 +414,13 @@ def run(args):
 
             execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
             command = 'platform_tools/android/bin/android_run_skia bench -d ' + target + ' -s ' + device + ' --repeat ' + REPEAT_TIMES + configuration
-            for i in range(len(config_concerned)):
-                if config_concerned[i] == 1:
-                    command += ' --config ' + config[i]
 
             if args.run_option:
                 command = command + ' ' + args.run_option
+
+        for i in range(len(config_concerned)):
+            if config_concerned[i] == 1:
+                command += ' --config ' + config[i]
 
         group_log_dir = log_dir
         if args.run_times > 1:

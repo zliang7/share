@@ -91,6 +91,7 @@ commands = [
     ('network', 'netstat', '-l Show only listening sockets, -a All sockets, -p Show PID and name, -t tcp, -u udp, -x Unix sockets, -c timer', TYPE_NULL),
     ('misc', 'sudo apt-get remove flashplugin-installer', 'This package will hang all the time during update', TYPE_NULL),
     ('misc', 'watch -n1 -d prebuilts/misc/linux-x86/ccache/ccache -s', 'watch ccache usage', TYPE_NULL),
+    ('misc', 'gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=all.pdf -dBATCH *.pdf', 'merge pdf', TYPE_RUNNABLE),
     ('', '', '', TYPE_NULL),
 ]
 

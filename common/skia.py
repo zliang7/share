@@ -28,7 +28,7 @@ root_dir_default = '/workspace/project/skia/'
 log_dir_default = '/workspace/topic/skia/log/'
 log_suffix = '.txt'
 config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
-config_concerned = [0, 0, 1, 0, 0]
+config_concerned = [0, 0, 1, 0, 1]
 NA = 'NA'
 ONLINE = 'online'
 OFFLINE = 'offline'
@@ -404,10 +404,8 @@ def run(args):
     for device in run_devices:
         if device == HOST:
             if args.run == 'release':
-                command = 'out/Release/bench --repeat ' + REPEAT_TIMES
                 command = 'out/Release/bench'
             else:
-                command = 'out/Debug/bench --repeat ' + REPEAT_TIMES
                 command = 'out/Debug/bench'
 
             if args.run_option:
@@ -427,9 +425,10 @@ def run(args):
             if args.run_option:
                 command = command + ' ' + args.run_option
 
+        command += ' --config'
         for i in range(len(config_concerned)):
             if config_concerned[i] == 1:
-                command += ' --config ' + config[i]
+                command += ' ' + config[i]
 
         group_log_dir = log_dir
         if args.run_times > 1:
@@ -504,7 +503,7 @@ def build(args):
         else:
             cmd = 'platform_tools/android/bin/android_make -d ' + target
 
-        cmd = cmd + ' -j bench BUILDTYPE=' + build
+        cmd = cmd + ' -j' + ' ' + args.test_type + ' BUILDTYPE=' + build
         if args.build_verbose:
             cmd = cmd + ' V=1'
         execute(cmd)
@@ -517,8 +516,12 @@ def update(args):
 
     backup_dir(root_dir)
     execute('sudo privoxy /etc/privoxy/config', True)
-    os.chdir(src_dir)
+    execute('gclient sync')
+
+    backup_dir(src_dir)
     execute('git checkout master && git svn fetch && git svn rebase')
+    restore_dir()
+
     restore_dir()
 
 def setup(args):
@@ -572,8 +575,8 @@ examples:
   python %(prog)s -r release -d 32300bd273508f3b // s3
   python %(prog)s -r release -d 006e7e464bd64fef // nexus 4
   python %(prog)s -r release -d RHBEC245400171 // pr2
-  python %(prog)s -r release --run-nonroot -d 006e7e464bd64fef --run-option '--match region_contains_sect --match verts'
-  python %(prog)s -r release -d RHBEC245400171 --run-option '--match region_contains_sect --match verts'
+  python %(prog)s -r release --run-nonroot -d 006e7e464bd64fef --run-option '--match writer writepix_rgba_UPM'
+  python %(prog)s -r release -d RHBEC245400171 --run-option '--match writer'
 
   parse result:
   python %(prog)s --parse-result ORIGIN
@@ -621,6 +624,7 @@ examples:
     groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')
     groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
     groupUpdate.add_argument('--recover', dest='recover', help='recover device from test', action='store_true')
+    groupUpdate.add_argument('--test-type', dest='test_type', help='test type', choices=['tests', 'gm', 'bench'], default='bench')
 
     args = parser.parse_args()
 

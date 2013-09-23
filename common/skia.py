@@ -28,7 +28,7 @@ root_dir_default = '/workspace/project/skia/'
 log_dir_default = '/workspace/topic/skia/log/'
 log_suffix = '.txt'
 config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
-config_concerned = [0, 0, 1, 0, 1]
+config_concerned = [0, 0, 1, 0, 0]
 NA = 'NA'
 ONLINE = 'online'
 OFFLINE = 'offline'
@@ -101,7 +101,7 @@ def _get_device_to_target():
             continue
 
         device = device_line.split(' ')[0]
-        if re.search('redhookbay', device_line):
+        if re.search('[redhookbay|BayTrail]', device_line):
             device_to_target[device] = (X86, ONLINE)
         elif re.search('Medfield', device_line):
             device_to_target[device] = (X86, ONLINE)
@@ -216,28 +216,34 @@ def parse_result(dir, log_file):
     fw = open(format_file, 'w')
     fw.write('Name ' + ' '.join(config) + '\n')
 
-    for line_index in range(0, len(lines)):
+    line_index = 0
+    matches = []
+    while line_index < len(lines):
+        #print lines[line_index]
         if re.search('beginning of /dev/log/main', lines[line_index]):
             break
 
+        pattern = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+([^ \t\n\r\f\v[a-zA-Z]*)[a-zA-Z]*\s*')
         if re.search('running bench', lines[line_index]):
-            p = re.compile('running bench \[\d+ \d+\]\s+(\S+)')
+            if len(matches):
+                for i in range(len(config)):
+                    s = s + ' ' + get_data(config[i], matches)
+                fw.write(s + '\n')
+
+            p = re.compile('running bench \[\s*\d+\s*\d+\]\s+(\S+)')
             m = re.search(p, lines[line_index])
             s = m.group(1)
-            pattern = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+([^ \t\n\r\f\v[a-zA-Z]*)[a-zA-Z]*\s*')
-            matches = re.findall(pattern, lines[line_index])
-            if matches[0][0] == '8888':
-                while len(matches) < 4:
-                    line_index += 1
-                    # Skip error lines
-                    while re.search(' Skia Error|^Skia Error', lines[line_index]):
-                        line_index += 1
-                    for m in re.findall(pattern, lines[line_index]):
-                        matches.append(m)
+            matches = []
 
-            for i in range(len(config)):
-                s = s + ' ' + get_data(config[i], matches)
-            fw.write(s + '\n')
+        for m in re.findall(pattern, lines[line_index]):
+            matches.append(m)
+        line_index += 1
+
+    if len(matches):
+        for i in range(len(config)):
+            s = s + ' ' + get_data(config[i], matches)
+        fw.write(s + '\n')
+
     fw.close()
 
     restore_dir()
@@ -399,8 +405,10 @@ def run(args):
         if device == HOST:
             if args.run == 'release':
                 command = 'out/Release/bench --repeat ' + REPEAT_TIMES
+                command = 'out/Release/bench'
             else:
                 command = 'out/Debug/bench --repeat ' + REPEAT_TIMES
+                command = 'out/Debug/bench'
 
             if args.run_option:
                 command = command + ' ' + args.run_option
@@ -413,7 +421,8 @@ def run(args):
                 configuration = ''
 
             execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
-            command = 'platform_tools/android/bin/android_run_skia bench -d ' + target + ' -s ' + device + ' --repeat ' + REPEAT_TIMES + configuration
+            #command = 'platform_tools/android/bin/android_run_skia bench -d ' + target + ' -s ' + device + ' --repeat ' + REPEAT_TIMES + configuration
+            command = 'platform_tools/android/bin/android_run_skia bench -d ' + target + ' -s ' + device + configuration
 
             if args.run_option:
                 command = command + ' ' + args.run_option
@@ -579,7 +588,7 @@ examples:
   python %(prog)s --average DIR
 
   update & build & run
-  python %(prog)s -b release -r release -d RHBEC245400171,006e7e464bd64fef
+  python %(prog)s -b release -r release -d RHBEC245400171,006e7e464bd64fef,BayTrailTee86d4a1
 ''')
 
     groupUpdate = parser.add_argument_group('update')

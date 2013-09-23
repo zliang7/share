@@ -92,6 +92,8 @@ commands = [
     ('misc', 'sudo apt-get remove flashplugin-installer', 'This package will hang all the time during update', TYPE_NULL),
     ('misc', 'watch -n1 -d prebuilts/misc/linux-x86/ccache/ccache -s', 'watch ccache usage', TYPE_NULL),
     ('misc', 'gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=all.pdf -dBATCH *.pdf', 'merge pdf', TYPE_RUNNABLE),
+    ('perf', 'ps -e -o “%C : %p : %z : %a”|sort -k5 -nr', 'list processes sorted by memory usage', TYPE_NULL),
+    ('perf', 'ps -e -o “%C : %p : %z : %a”|sort -nr', 'list processes sorted by CPU usage', TYPE_NULL),
     ('', '', '', TYPE_NULL),
 ]
 

@@ -101,7 +101,7 @@ def _get_device_to_target():
             continue
 
         device = device_line.split(' ')[0]
-        if re.search('[redhookbay|BayTrail]', device_line):
+        if re.search('redhookbay|BayTrail', device_line):
             device_to_target[device] = (X86, ONLINE)
         elif re.search('Medfield', device_line):
             device_to_target[device] = (X86, ONLINE)
@@ -203,6 +203,9 @@ def average(average_dir):
     restore_dir()
 
 def parse_result(dir, log_file):
+    if args.test_type != 'bench':
+        return
+
     backup_dir(dir)
 
     format_file = log_file.replace('origin', 'format')
@@ -250,6 +253,9 @@ def parse_result(dir, log_file):
 
 def download(args):
     if not args.download:
+        return
+
+    if args.test_type != 'bench':
         return
 
     backup_dir(log_dir)
@@ -404,9 +410,9 @@ def run(args):
     for device in run_devices:
         if device == HOST:
             if args.run == 'release':
-                command = 'out/Release/bench'
+                command = 'out/Release/' + args.test_type
             else:
-                command = 'out/Debug/bench'
+                command = 'out/Debug/' + args.test_type
 
             if args.run_option:
                 command = command + ' ' + args.run_option
@@ -419,27 +425,27 @@ def run(args):
                 configuration = ''
 
             execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
-            #command = 'platform_tools/android/bin/android_run_skia bench -d ' + target + ' -s ' + device + ' --repeat ' + REPEAT_TIMES + configuration
-            command = 'platform_tools/android/bin/android_run_skia bench -d ' + target + ' -s ' + device + configuration
+            command = 'platform_tools/android/bin/android_run_skia' + ' ' + args.test_type + ' -d ' + target + ' -s ' + device + configuration
 
             if args.run_option:
                 command = command + ' ' + args.run_option
 
-        command += ' --config'
-        for i in range(len(config_concerned)):
-            if config_concerned[i] == 1:
-                command += ' ' + config[i]
+        if args.test_type == 'bench':
+            command += ' --config'
+            for i in range(len(config_concerned)):
+                if config_concerned[i] == 1:
+                    command += ' ' + config[i]
 
         group_log_dir = log_dir
         if args.run_times > 1:
-            group_log_dir = log_dir + get_datetime() + '-' + device + '-bench/'
+            group_log_dir = log_dir + get_datetime() + '-' + device + '-' + args.test_type + '/'
             os.mkdir(group_log_dir)
 
         for i in range(args.run_times):
-            log_file = get_datetime() + '-' + device + '-bench-origin' + log_suffix
-            command_bench = command + ' 2>&1 |tee ' + group_log_dir + log_file
+            log_file = get_datetime() + '-' + device + '-' + args.test_type + '-origin' + log_suffix
+            command = command + ' 2>&1 |tee ' + group_log_dir + log_file
             start = datetime.datetime.now()
-            execute(command_bench)
+            execute(command)
             elapsed = (datetime.datetime.now() - start)
             info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
             parse_result(group_log_dir, log_file)
@@ -510,6 +516,7 @@ def build(args):
 
     restore_dir()
 
+# https://sites.google.com/site/skiadocs/developer-documentation/contributing-code/using-git
 def update(args):
     if not args.update:
         return
@@ -604,7 +611,7 @@ examples:
     groupUpdate = parser.add_argument_group('run')
     groupUpdate.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
     groupUpdate.add_argument('--run-nonroot', dest='run_nonroot', help='run without root access, which would not install skia_launcher to /system', action='store_true')
-    groupUpdate.add_argument("--run-option", dest="run_option", help="option to run bench test", default='')
+    groupUpdate.add_argument("--run-option", dest="run_option", help="option to run test", default='')
     groupUpdate.add_argument("--run-times", dest="run_times", help="times to run test", default=1, type=int)
     groupUpdate = parser.add_argument_group('parse result')
     groupUpdate.add_argument('--parse-result', dest='parse_result', help='log file to be parsed')

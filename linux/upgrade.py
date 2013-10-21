@@ -1,23 +1,58 @@
 #/usr/bin/python
 
 import os
-from optparse import OptionParser
-    
+import argparse
+
+def info(msg):
+    print '[INFO] ' + msg + '.'
+
+def warn(msg):
+    print '[WARNING] ' + msg + '.'
+
+def error(msg):
+    print '[ERROR] ' + msg + '!'
+
+def cmd(msg):
+    print '[COMMAND] ' + msg
+
+def execute(command, ignore_return_value=False):
+    cmd(command)
+    if os.system(command) and not ignore_return_value:
+        error('Failed to execute')
+        quit()
+
+def remove(path):
+    if os.path.exists(path):
+        execute('sudo rm -f ' + path)
+
+def setup_http():
+    execute('echo \'Acquire::http::proxy "http://proxy-shz.intel.com:911";\' >apt.conf')
+    execute('sudo mv apt.conf /etc/apt/')
+    remove('/etc/apt/sources.list.d/google.list')
+
+def setup_socks():
+    remove('/etc/apt/apt.conf')
+    execute('echo \'deb https://dl.google.com/linux/chrome/deb/ stable main\' >google.list')
+    execute('sudo mv google.list /etc/apt/sources.list.d/')
+
 if __name__ == "__main__":
-    # Handle options
-    parser = OptionParser(description='Description: Script to upgrade system',
-                          epilog="""
+    parser = argparse.ArgumentParser(description = 'Script to upgrade system',
+                                     formatter_class = argparse.RawTextHelpFormatter,
+                                     epilog = '''
 Examples:
-  python chromium_build.py -p socks
-""")
-    parser.add_option("-p", "--proxy", dest="proxy", help="What kind of proxy to use", default='http')
-    (options, args) = parser.parse_args()
-    
-    if options.proxy == "http":
-        os.system('sudo cp apt.conf /etc/apt')
-        os.system('sudo rm /etc/apt/sources.list.d/google.list')
-        os.system('sudo apt-get update && sudo apt-get dist-upgrade')
-    elif options.proxy == "socks":
-        os.system('sudo rm /etc/apt/apt.conf')
-        os.system('sudo cp google.list /etc/apt/sources.list.d/google.list')
-        os.system('sudo tsocks apt-get update && sudo tsocks apt-get dist-upgrade')
+  python %(prog)s
+  python %(prog)s -t chrome
+  python %(prog)s -t system
+''')
+    parser.add_argument('-t', '--type', dest='type', help='type to upgrade', default='basic', choices=['basic', 'chrome', 'system'])
+    args = parser.parse_args()
+
+    if args.type == 'basic':
+        setup_http()
+        execute('sudo apt-get update && sudo apt-get -y dist-upgrade')
+    elif args.type == 'chrome':
+        setup_socks()
+        execute('sudo tsocks apt-get update && sudo tsocks apt-get -y dist-upgrade')
+    elif args.type == 'system':
+        setup_http()
+        execute('sudo update-manager -d')

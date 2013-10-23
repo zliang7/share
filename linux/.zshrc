@@ -651,6 +651,7 @@ fi
 if [ ! -L /workspace/project/skia/skia.py ]; then
    ln -s /workspace/project/gyagp/share/common/skia.py /workspace/project/skia/skia.py
 fi
+export ANDROID_SDK_ROOT=/workspace/topic/skia/adt-bundle-linux-x86_64/sdk
 
 # sublime
 export PATH=$PATH:/workspace/software/sublime

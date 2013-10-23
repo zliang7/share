@@ -18,14 +18,19 @@ from httplib import BadStatusLine
 
 device_to_target = {}
 system = platform.system()
+
+root_dir_default = '/workspace/project/skia/'
+log_dir_default = root_dir_default + 'log/'
 root_dir = ''
 log_dir = ''
 src_dir = ''
 platform_tools_dir = ''
+toolchain_dir = ''
+gdb_server_path = ''
+gdb_client_path = ''
+
 android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
 dir_stack = []
-root_dir_default = '/workspace/project/skia/'
-log_dir_default = '/workspace/topic/skia/log/'
 log_suffix = '.txt'
 config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
 config_concerned = [0, 0, 1, 0, 1]
@@ -101,7 +106,7 @@ def _get_device_to_target():
             continue
 
         device = device_line.split(' ')[0]
-        if re.search('redhookbay|BayTrail', device_line):
+        if re.search('redhookbay|BayTrail|Baytrail', device_line):
             device_to_target[device] = (X86, ONLINE)
         elif re.search('Medfield', device_line):
             device_to_target[device] = (X86, ONLINE)
@@ -120,6 +125,14 @@ def _get_device_to_target():
             device_to_target[device] = (device_to_target_fixup[device], OFFLINE)
 
     device_to_target[HOST] = (HOST, ONLINE)
+
+def remote_debug(args):
+    if not args.remote_debug:
+        return
+
+    backup_dir(src_dir)
+    execute('platform_tools/android/bin/android_gdb_exe ' + args.test_type + ' ' + args.run_option)
+    restore_dir()
 
 def recover(args):
     if not args.recover:
@@ -522,7 +535,6 @@ def update(args):
         return
 
     backup_dir(root_dir)
-    execute('sudo privoxy /etc/privoxy/config', True)
     execute('gclient sync')
 
     backup_dir(src_dir)
@@ -536,6 +548,9 @@ def setup(args):
     global src_dir
     global platform_tools_dir
     global log_dir
+    global toolchain_dir
+    global gdb_server_path
+    global gdb_client_path
 
     if args.root_dir:
         root_dir = args.root_dir
@@ -552,16 +567,38 @@ def setup(args):
         log_dir = log_dir_default
 
     if not os.path.exists(log_dir):
-        error('You must designate log_dir')
-        quit()
+        os.mkdir(log_dir)
 
     src_dir = root_dir + 'trunk/'
     platform_tools_dir = src_dir + 'platform_tools/'
+    toolchain_dir = platform_tools_dir + 'android/toolchains/ndk-r8e-x86-linux_v14/'
+    gdb_server_path = toolchain_dir + 'gdbserver'
+    gdb_client_path = toolchain_dir + 'bin/i686-linux-android-gdb'
 
     os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     os.putenv('http_proxy', 'http://proxy-shz.intel.com:911')
     os.putenv('https_proxy', 'https://proxy-shz.intel.com:911')
     os.putenv('PATH', platform_tools_dir + 'android/bin/linux:' + os.getenv('PATH'))
+
+def replace_gdb(args):
+    if not args.replace_gdb:
+        return
+
+    # Replace gdbserver and gdb with r9
+    execute('rm -f ' + gdb_server_path)
+    execute('ln -s /workspace/topic/android/ndk/android-ndk-r9/prebuilt/android-x86/gdbserver/gdbserver ' + gdb_server_path)
+    execute('rm -f ' + gdb_client_path)
+    execute('ln -s /workspace/topic/android/ndk/android-ndk-r9/toolchains/x86-4.8/prebuilt/linux-x86_64/bin/i686-linux-android-gdb ' + gdb_client_path)
+
+def restore_gdb(args):
+    if not args.restore_gdb:
+        return
+
+    # Restore gdbserver and gdb with r8e
+    execute('rm -f ' + gdb_server_path)
+    execute('ln -s /workspace/topic/android/ndk/skia-ndk-r8e-x86-linux_v14/gdbserver ' + gdb_server_path)
+    execute('rm -f ' + gdb_client_path)
+    execute('ln -s /workspace/topic/android/ndk/skia-ndk-r8e-x86-linux_v14/bin/i686-linux-android-gdb ' + gdb_client_path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Script to update, build and run Skia for Android IA',
@@ -599,6 +636,11 @@ examples:
 
   update & build & run
   python %(prog)s -b release -r release -d RHBEC245400171,006e7e464bd64fef,BayTrailTee86d4a1
+
+  other:
+  python %(prog)s --replace-gdb
+  python %(prog)s --restore-gdb
+  python %(prog)s --remote-debug --test-type=tests --run-option '--match WritePixels'
 ''')
 
     groupUpdate = parser.add_argument_group('update')
@@ -632,6 +674,9 @@ examples:
     groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
     groupUpdate.add_argument('--recover', dest='recover', help='recover device from test', action='store_true')
     groupUpdate.add_argument('--test-type', dest='test_type', help='test type', choices=['tests', 'gm', 'bench'], default='bench')
+    groupUpdate.add_argument('--remote-debug', dest='remote_debug', help='remote debug', action='store_true')
+    groupUpdate.add_argument('--replace-gdb', dest='replace_gdb', help='replace gdb server and client', action='store_true')
+    groupUpdate.add_argument('--restore-gdb', dest='restore_gdb', help='restore gdb server and client', action='store_true')
 
     args = parser.parse_args()
 
@@ -653,3 +698,7 @@ examples:
         average(args.average)
 
     recover(args)
+    remote_debug(args)
+
+    replace_gdb(args)
+    restore_gdb(args)

@@ -38,6 +38,7 @@ commands = [
     ('basic', r'history -r; history | awk \'{a[$2]++}END{for(i in a){print a[i] " " i}}\' | sort -rn | head', 'List 10 most used commands', TYPE_NULL),
     ('basic', r'history -r; history |grep cd', 'Test shell built-in command', TYPE_BUILTIN),
     ('basic', r'tar czf - src_dir | ssh gyagp@ubuntu-ygu5-01.sh.intel.com "cd /tmp; tar zxf -"', 'compress and copy to another machine', TYPE_NULL),
+    ('basic', 'ps -p $$', 'Know current shell', TYPE_RUNNABLE),
     ('upgrade', 'do-release-upgrade', 'Upgrade system', TYPE_NULL),
     ('info', 'cat /etc/os-release', 'List distribution info', TYPE_RUNNABLE),
     ('info', 'cat /etc/lsb-release', 'List distribution info', TYPE_RUNNABLE),

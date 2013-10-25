@@ -1,6 +1,10 @@
 #! N:\Python27\python.exe
 # -*- coding: utf-8 -*-
 
+# TODO
+# run tasks in parallel
+# print compilation option, times
+
 import re
 import os
 import datetime
@@ -14,14 +18,19 @@ from httplib import BadStatusLine
 
 device_to_target = {}
 system = platform.system()
+
+root_dir_default = '/workspace/project/skia/'
+log_dir_default = root_dir_default + 'log/'
 root_dir = ''
 log_dir = ''
 src_dir = ''
 platform_tools_dir = ''
+toolchain_dir = ''
+gdb_server_path = ''
+gdb_client_path = ''
+
 android_sdk_root = '/workspace/topic/skia/adt-bundle-linux-x86_64/sdk'
 dir_stack = []
-root_dir_default = '/workspace/project/skia/'
-log_dir_default = '/workspace/topic/skia/log/'
 log_suffix = '.txt'
 config = ['8888', '565', 'GPU', 'NULLGPU', 'NONRENDERING']
 config_concerned = [0, 0, 1, 0, 1]
@@ -29,6 +38,7 @@ NA = 'NA'
 ONLINE = 'online'
 OFFLINE = 'offline'
 X86 = 'x86'
+INTEL_RHB = 'intel_rhb'
 NEXUS4 = 'nexus_4'
 UNKNOWN = 'unknown'
 HOST = 'host'
@@ -96,7 +106,7 @@ def _get_device_to_target():
             continue
 
         device = device_line.split(' ')[0]
-        if re.search('redhookbay', device_line):
+        if re.search('redhookbay|BayTrail|Baytrail', device_line):
             device_to_target[device] = (X86, ONLINE)
         elif re.search('Medfield', device_line):
             device_to_target[device] = (X86, ONLINE)
@@ -115,6 +125,14 @@ def _get_device_to_target():
             device_to_target[device] = (device_to_target_fixup[device], OFFLINE)
 
     device_to_target[HOST] = (HOST, ONLINE)
+
+def remote_debug(args):
+    if not args.remote_debug:
+        return
+
+    backup_dir(src_dir)
+    execute('platform_tools/android/bin/android_gdb_exe ' + args.test_type + ' ' + args.run_option)
+    restore_dir()
 
 def recover(args):
     if not args.recover:
@@ -198,6 +216,9 @@ def average(average_dir):
     restore_dir()
 
 def parse_result(dir, log_file):
+    if args.test_type != 'bench':
+        return
+
     backup_dir(dir)
 
     format_file = log_file.replace('origin', 'format')
@@ -211,34 +232,43 @@ def parse_result(dir, log_file):
     fw = open(format_file, 'w')
     fw.write('Name ' + ' '.join(config) + '\n')
 
-    for line_index in range(0, len(lines)):
+    line_index = 0
+    matches = []
+    while line_index < len(lines):
+        #print lines[line_index]
         if re.search('beginning of /dev/log/main', lines[line_index]):
             break
 
+        pattern = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+([^ \t\n\r\f\v[a-zA-Z]*)[a-zA-Z]*\s*')
         if re.search('running bench', lines[line_index]):
-            p = re.compile('running bench \[\d+ \d+\]\s+(\S+)')
+            if len(matches):
+                for i in range(len(config)):
+                    s = s + ' ' + get_data(config[i], matches)
+                fw.write(s + '\n')
+
+            p = re.compile('running bench \[\s*\d+\s*\d+\]\s+(\S+)')
             m = re.search(p, lines[line_index])
             s = m.group(1)
-            pattern = re.compile('(' + '|'.join(config) + '):.+?cmsecs =\s+([^ \t\n\r\f\v[a-zA-Z]*)[a-zA-Z]*\s*')
-            matches = re.findall(pattern, lines[line_index])
-            if matches[0][0] == '8888':
-                while len(matches) < 4:
-                    line_index += 1
-                    # Skip error lines
-                    while re.search(' Skia Error|^Skia Error', lines[line_index]):
-                        line_index += 1
-                    for m in re.findall(pattern, lines[line_index]):
-                        matches.append(m)
+            matches = []
 
-            for i in range(len(config)):
-                s = s + ' ' + get_data(config[i], matches)
-            fw.write(s + '\n')
+        for m in re.findall(pattern, lines[line_index]):
+            matches.append(m)
+        line_index += 1
+
+    if len(matches):
+        for i in range(len(config)):
+            s = s + ' ' + get_data(config[i], matches)
+        fw.write(s + '\n')
+
     fw.close()
 
     restore_dir()
 
 def download(args):
     if not args.download:
+        return
+
+    if args.test_type != 'bench':
         return
 
     backup_dir(log_dir)
@@ -393,42 +423,42 @@ def run(args):
     for device in run_devices:
         if device == HOST:
             if args.run == 'release':
-                command = 'out/Release/bench --repeat ' + REPEAT_TIMES
+                command = 'out/Release/' + args.test_type
             else:
-                command = 'out/Debug/bench --repeat ' + REPEAT_TIMES
+                command = 'out/Debug/' + args.test_type
+
             if args.run_option:
                 command = command + ' ' + args.run_option
         else:
             target = device_to_target[device][0]
-            execute('echo out/config/android-' + target + ' > ' + src_dir + '.android_config')
 
             if args.run == 'release':
                 configuration = ' --release'
             else:
                 configuration = ''
-            if args.run_nonroot:
-                execute('platform_tools/android/bin/android_install_skia -s ' + device + configuration)
-                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' --intent "bench --repeat ' + REPEAT_TIMES
-                if args.run_option:
-                    command = command + ' ' + args.run_option
-                command += '"'
-            else:
-                execute('platform_tools/android/bin/android_install_skia --install-launcher -s ' + device + configuration)
-                execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
-                command = 'platform_tools/android/bin/android_run_skia -s ' + device + ' bench --repeat ' + REPEAT_TIMES
-                if args.run_option:
-                    command = command + ' ' + args.run_option
+
+            execute('platform_tools/android/bin/linux/adb -s ' + device +  ' shell stop')
+            command = 'platform_tools/android/bin/android_run_skia' + ' ' + args.test_type + ' -d ' + target + ' -s ' + device + configuration
+
+            if args.run_option:
+                command = command + ' ' + args.run_option
+
+        if args.test_type == 'bench':
+            command += ' --config'
+            for i in range(len(config_concerned)):
+                if config_concerned[i] == 1:
+                    command += ' ' + config[i]
 
         group_log_dir = log_dir
         if args.run_times > 1:
-            group_log_dir = log_dir + get_datetime() + '-' + device + '-bench/'
+            group_log_dir = log_dir + get_datetime() + '-' + device + '-' + args.test_type + '/'
             os.mkdir(group_log_dir)
 
         for i in range(args.run_times):
-            log_file = get_datetime() + '-' + device + '-bench-origin' + log_suffix
-            command_bench = command + ' 2>&1 |tee ' + group_log_dir + log_file
+            log_file = get_datetime() + '-' + device + '-' + args.test_type + '-origin' + log_suffix
+            command = command + ' 2>&1 |tee ' + group_log_dir + log_file
             start = datetime.datetime.now()
-            execute(command_bench)
+            execute(command)
             elapsed = (datetime.datetime.now() - start)
             info('Time elapsed to run: ' + str(elapsed.seconds) + 's')
             parse_result(group_log_dir, log_file)
@@ -486,28 +516,31 @@ def build(args):
 
     backup_dir(src_dir)
 
-    os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     for target in targets:
         if target == HOST:
             cmd = 'make'
         else:
             cmd = 'platform_tools/android/bin/android_make -d ' + target
 
-        cmd = cmd + ' -j bench BUILDTYPE=' + build
+        cmd = cmd + ' -j' + ' ' + args.test_type + ' BUILDTYPE=' + build
         if args.build_verbose:
             cmd = cmd + ' V=1'
         execute(cmd)
 
     restore_dir()
 
+# https://sites.google.com/site/skiadocs/developer-documentation/contributing-code/using-git
 def update(args):
     if not args.update:
         return
 
     backup_dir(root_dir)
-    execute('sudo privoxy /etc/privoxy/config', True)
-    os.chdir(src_dir)
+    execute('gclient sync')
+
+    backup_dir(src_dir)
     execute('git checkout master && git svn fetch && git svn rebase')
+    restore_dir()
+
     restore_dir()
 
 def setup(args):
@@ -515,6 +548,9 @@ def setup(args):
     global src_dir
     global platform_tools_dir
     global log_dir
+    global toolchain_dir
+    global gdb_server_path
+    global gdb_client_path
 
     if args.root_dir:
         root_dir = args.root_dir
@@ -531,14 +567,38 @@ def setup(args):
         log_dir = log_dir_default
 
     if not os.path.exists(log_dir):
-        error('You must designate log_dir')
-        quit()
+        os.mkdir(log_dir)
 
     src_dir = root_dir + 'trunk/'
     platform_tools_dir = src_dir + 'platform_tools/'
+    toolchain_dir = platform_tools_dir + 'android/toolchains/ndk-r8e-x86-linux_v14/'
+    gdb_server_path = toolchain_dir + 'gdbserver'
+    gdb_client_path = toolchain_dir + 'bin/i686-linux-android-gdb'
 
+    os.putenv('ANDROID_SDK_ROOT', android_sdk_root)
     os.putenv('http_proxy', 'http://proxy-shz.intel.com:911')
     os.putenv('https_proxy', 'https://proxy-shz.intel.com:911')
+    os.putenv('PATH', platform_tools_dir + 'android/bin/linux:' + os.getenv('PATH'))
+
+def replace_gdb(args):
+    if not args.replace_gdb:
+        return
+
+    # Replace gdbserver and gdb with r9
+    execute('rm -f ' + gdb_server_path)
+    execute('ln -s /workspace/topic/android/ndk/android-ndk-r9/prebuilt/android-x86/gdbserver/gdbserver ' + gdb_server_path)
+    execute('rm -f ' + gdb_client_path)
+    execute('ln -s /workspace/topic/android/ndk/android-ndk-r9/toolchains/x86-4.8/prebuilt/linux-x86_64/bin/i686-linux-android-gdb ' + gdb_client_path)
+
+def restore_gdb(args):
+    if not args.restore_gdb:
+        return
+
+    # Restore gdbserver and gdb with r8e
+    execute('rm -f ' + gdb_server_path)
+    execute('ln -s /workspace/topic/android/ndk/skia-ndk-r8e-x86-linux_v14/gdbserver ' + gdb_server_path)
+    execute('rm -f ' + gdb_client_path)
+    execute('ln -s /workspace/topic/android/ndk/skia-ndk-r8e-x86-linux_v14/bin/i686-linux-android-gdb ' + gdb_client_path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Script to update, build and run Skia for Android IA',
@@ -559,8 +619,8 @@ examples:
   python %(prog)s -r release -d 32300bd273508f3b // s3
   python %(prog)s -r release -d 006e7e464bd64fef // nexus 4
   python %(prog)s -r release -d RHBEC245400171 // pr2
-  python %(prog)s -r release --run-nonroot -d 006e7e464bd64fef --run-option '--match region_contains_sect --match verts'
-  python %(prog)s -r release -d RHBEC245400171 --run-option '--match region_contains_sect --match verts'
+  python %(prog)s -r release --run-nonroot -d 006e7e464bd64fef --run-option '--match writer writepix_rgba_UPM'
+  python %(prog)s -r release -d RHBEC245400171 --run-option '--match writer'
 
   parse result:
   python %(prog)s --parse-result ORIGIN
@@ -575,7 +635,12 @@ examples:
   python %(prog)s --average DIR
 
   update & build & run
-  python %(prog)s -b release -r release -d RHBEC245400171,006e7e464bd64fef
+  python %(prog)s -b release -r release -d RHBEC245400171,006e7e464bd64fef,BayTrailTee86d4a1
+
+  other:
+  python %(prog)s --replace-gdb
+  python %(prog)s --restore-gdb
+  python %(prog)s --remote-debug --test-type=tests --run-option '--match WritePixels'
 ''')
 
     groupUpdate = parser.add_argument_group('update')
@@ -588,7 +653,7 @@ examples:
     groupUpdate = parser.add_argument_group('run')
     groupUpdate.add_argument('-r', '--run', dest='run', help='type to run', choices=['release', 'debug'])
     groupUpdate.add_argument('--run-nonroot', dest='run_nonroot', help='run without root access, which would not install skia_launcher to /system', action='store_true')
-    groupUpdate.add_argument("--run-option", dest="run_option", help="option to run bench test", default='')
+    groupUpdate.add_argument("--run-option", dest="run_option", help="option to run test", default='')
     groupUpdate.add_argument("--run-times", dest="run_times", help="times to run test", default=1, type=int)
     groupUpdate = parser.add_argument_group('parse result')
     groupUpdate.add_argument('--parse-result', dest='parse_result', help='log file to be parsed')
@@ -608,6 +673,10 @@ examples:
     groupUpdate.add_argument('--root-dir', dest='root_dir', help='root dir')
     groupUpdate.add_argument('--log-dir', dest='log_dir', help='log dir')
     groupUpdate.add_argument('--recover', dest='recover', help='recover device from test', action='store_true')
+    groupUpdate.add_argument('--test-type', dest='test_type', help='test type', choices=['tests', 'gm', 'bench'], default='bench')
+    groupUpdate.add_argument('--remote-debug', dest='remote_debug', help='remote debug', action='store_true')
+    groupUpdate.add_argument('--replace-gdb', dest='replace_gdb', help='replace gdb server and client', action='store_true')
+    groupUpdate.add_argument('--restore-gdb', dest='restore_gdb', help='restore gdb server and client', action='store_true')
 
     args = parser.parse_args()
 
@@ -629,3 +698,7 @@ examples:
         average(args.average)
 
     recover(args)
+    remote_debug(args)
+
+    replace_gdb(args)
+    restore_gdb(args)

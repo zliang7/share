@@ -61,6 +61,14 @@ def has_build_dir(name):
 
     return True
 
+def layout_test(args):
+    if not args.layout_test:
+        return()
+
+    os.chdir(src_dir)
+    execute('ninja -C out/Release content_shell')
+    execute('webkit/tools/layout_tests/run_webkit_tests.sh ' + args.layout_test)
+
 def update(args):
     if not args.update:
         return()
@@ -237,6 +245,7 @@ examples:
     # Other options
     parser.add_argument('--owner', dest='owner', help='find owner for latest commit', action='store_true')
     parser.add_argument('-d', '--root-dir', dest='root_dir', help='set root directory')
+    parser.add_argument('--layout-test', dest='layout_test', help='cases to run against')
 
     args = parser.parse_args()
 
@@ -281,3 +290,4 @@ examples:
     build(args)
     run(args)
     find_owner(args)
+    layout_test(args)

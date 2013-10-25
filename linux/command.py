@@ -38,6 +38,7 @@ commands = [
     ('basic', r'history -r; history | awk \'{a[$2]++}END{for(i in a){print a[i] " " i}}\' | sort -rn | head', 'List 10 most used commands', TYPE_NULL),
     ('basic', r'history -r; history |grep cd', 'Test shell built-in command', TYPE_BUILTIN),
     ('basic', r'tar czf - src_dir | ssh gyagp@ubuntu-ygu5-01.sh.intel.com "cd /tmp; tar zxf -"', 'compress and copy to another machine', TYPE_NULL),
+    ('basic', 'ps -p $$', 'Know current shell', TYPE_RUNNABLE),
     ('upgrade', 'do-release-upgrade', 'Upgrade system', TYPE_NULL),
     ('info', 'cat /etc/os-release', 'List distribution info', TYPE_RUNNABLE),
     ('info', 'cat /etc/lsb-release', 'List distribution info', TYPE_RUNNABLE),
@@ -91,6 +92,9 @@ commands = [
     ('network', 'netstat', '-l Show only listening sockets, -a All sockets, -p Show PID and name, -t tcp, -u udp, -x Unix sockets, -c timer', TYPE_NULL),
     ('misc', 'sudo apt-get remove flashplugin-installer', 'This package will hang all the time during update', TYPE_NULL),
     ('misc', 'watch -n1 -d prebuilts/misc/linux-x86/ccache/ccache -s', 'watch ccache usage', TYPE_NULL),
+    ('misc', 'gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=all.pdf -dBATCH *.pdf', 'merge pdf', TYPE_RUNNABLE),
+    ('perf', 'ps -e -o “%C : %p : %z : %a”|sort -k5 -nr', 'list processes sorted by memory usage', TYPE_NULL),
+    ('perf', 'ps -e -o “%C : %p : %z : %a”|sort -nr', 'list processes sorted by CPU usage', TYPE_NULL),
     ('', '', '', TYPE_NULL),
 ]
 

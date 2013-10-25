@@ -3,14 +3,14 @@
 # Description:
 # This file would help to set up environment after fresh building of a new Ubuntu system.
 #
-# Pre-installation: 
+# Pre-installation:
 # Backup files in desktop, opened tab in Chrome.
 #
-# Post-installation: 
+# Post-installation:
 # sudo apt-get update && sudo apt-get dist-upgrade -y
 # Install display card driver, slickedit.
 # sudo /workspace/project/chromium/git_upstream/src/build/install-build-deps.sh. This file would help to install many development tools.
-# Run vncserver 
+# Run vncserver
 # Set keyboard shortcut: "nautilus /workspace" -> ctrl+alt+E
 # Set input method: gnome-session-properties
 
@@ -37,7 +37,7 @@ def patchSudo():
         if status == 0:
             info("Now you can sudo without password");
             # No need to run following command to take effect
-            #commands.getstatusoutput("/etc/init.d/sudo restart"); 
+            #commands.getstatusoutput("/etc/init.d/sudo restart");
     else:
         info("You were able to sudo without password");
 
@@ -54,7 +54,7 @@ def copyFile(srcFile, destDir, sudo, srcSubDir = ""):
     if os.path.exists(destDir + "/" + srcFile):
         info(destDir + "/" + srcFile + " already exists");
         return 0;
-    
+
     if not os.path.exists(destDir):
         commands.getstatusoutput("mkdir -p " + destDir);
         info(srcFile + destDir + " doesn't exist, so just create it");
@@ -63,7 +63,7 @@ def copyFile(srcFile, destDir, sudo, srcSubDir = ""):
     command = "cp " + srcPath + " " + destDir;
     if sudo:
         command = "sudo " + command;
-    
+
     (status, output) = commands.getstatusoutput(command);
     return status;
 
@@ -102,13 +102,13 @@ def installPackage(pkg):
             return 0;
 
     else:
-        info("Package " + pkg + " was already installed");    
+        info("Package " + pkg + " was already installed");
         return -1;
 
 
 def parseOption():
     global profile;
-    
+
     parser = OptionParser()
     parser.add_option("-p", "--profile", dest="profile", help="designate profile", metavar="DIRECT|PROXY", default="PROXY");
     (options, args) = parser.parse_args();
@@ -120,7 +120,7 @@ def parseOption():
     else:
         error("The profile is not correct");
         exit -1;
-    
+
 if __name__ == "__main__":
     global profile;
 
@@ -130,17 +130,17 @@ if __name__ == "__main__":
     patchSudo();
 
     # Update repo info
-    copyFile("apt.conf", "/etc/apt", 1);
-    copyFile("gyagp.list", "/etc/apt/sources.list.d", 1); 
-    (status, output) = commands.getstatusoutput("cat /etc/apt/sources.list |grep 'ubuntu.com'");
-    if status == 0: # need overwrite
-        (status, output) = commands.getstatusoutput("awk '{print $2}' /etc/issue");
-        output = output[:-1];
-        status = overwriteFile("sources.list", "/etc/apt", 1, "apt/" + output);
-        if status == 0:
-            os.system("sudo apt-get update");
-    else:
-        info("/etc/apt/sources.list was already updated"); 
+    #copyFile("apt.conf", "/etc/apt", 1);
+    #copyFile("gyagp.list", "/etc/apt/sources.list.d", 1);
+    #(status, output) = commands.getstatusoutput("cat /etc/apt/sources.list |grep 'ubuntu.com'");
+    #if status == 0:
+    #    (status, output) = commands.getstatusoutput("awk '{print $2}' /etc/issue");
+    #    output = output[:-1];
+    #    status = overwriteFile("sources.list", "/etc/apt", 1, "apt/" + output);
+    #    if status == 0:
+    #        os.system("sudo apt-get update");
+    #else:
+    #    info("/etc/apt/sources.list was already updated");
 
     status = installPackage("apt-file");
     if status == 0:
@@ -153,7 +153,7 @@ if __name__ == "__main__":
 
     # Install Chrome, which needs to use tsocks
     (status, output) = commands.getstatusoutput("sudo apt-key list | grep 7FAC5991");
-    
+
     if status:
         info("Get the key for Chrome...");
 
@@ -161,15 +161,15 @@ if __name__ == "__main__":
             command = "tsocks wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -";
         elif profile == "DIRECT":
             command = "cat " + srcDir + "/chrome_key_pub.txt | sudo apt-key add -";
-            
-        (status, output) = commands.getstatusoutput(command);   
+
+        (status, output) = commands.getstatusoutput(command);
         if status != 0:
             error("Key for Chrome hasn't been added correctly");
     else:
         info("Key for Chrome has been added");
 
     installPackage("google-chrome-unstable");
-    
+
     # zsh related
     status = installPackage("zsh");
     if status == 0:
@@ -192,7 +192,7 @@ if __name__ == "__main__":
     installPackage("vim");
     installPackage("ssh");
     installPackage("most");
-    installPackage("binutils-gold");  
+    installPackage("binutils-gold");
     installPackage("vnc4server");
     installPackage("cmake");
     installPackage("hibernate");
@@ -201,29 +201,28 @@ if __name__ == "__main__":
     copyFile(".bashrc", homeDir, 0);
     copyFile(".gdbinit", homeDir, 0);
     copyFile(".vimrc", homeDir, 0);
-    copyFile("include.gypi", homeDir + "/.gyp", 0);
 
     # ccache related
     installPackage("ccache");
     commands.getstatusoutput("ccache -M 10G");
-    
+
     # specific steps for profile == "DIRECT"
     if profile == "DIRECT":
         installPackage("openconnect");
         installPackage("python-zsi");
 
-        
 
 
 
 
-    
-    
-
-    
 
 
 
 
-    
+
+
+
+
+
+
 

@@ -1,5 +1,5 @@
 ﻿#! N:\Python27\python.exe
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 import urllib2
 import re
@@ -14,6 +14,7 @@ import sys
 import multiprocessing
 from multiprocessing import Pool
 
+import win32clipboard
 
 # define each line of history
 NAME = 0
@@ -33,16 +34,22 @@ debug_mode = 0
 mp_mode = 1
 
 def get_time():
-	return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
-        
+    return time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
+
+def copy_text_to_clipboard(text):
+    win32clipboard.OpenClipboard()
+    win32clipboard.EmptyClipboard()
+    win32clipboard.SetClipboardText(text)
+    win32clipboard.CloseClipboard()
+
 def update_line(lines, records, record_index):
     records_number = len(records)
     line_index = records[record_index]
     line = lines[line_index]
     fields = line.split(',')
-    
-    output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
-    
+
+    output_prefix = str(record_index + 1) + '/' + str(records_number) + ' ' + fields[NAME]
+
     # get the html
     if debug_mode:
         file = open(fields[ID] + '.htm')
@@ -52,18 +59,18 @@ def update_line(lines, records, record_index):
         try:
             u = urllib2.urlopen(url)
         except BadStatusLine:
-            print "Check failed"
-            lines.append("== " + fields[NAME] + ",Check failed," + get_time() + " ==\n")
+            print 'Check failed'
+            lines.append('== ' + fields[NAME] + ',Check failed,' + get_time() + ' ==\n')
             return (False, line_index, '', '')
         html = u.read()
-    
+
     # Check if it has update
-    xl_pattern = re.compile("thunderrestitle.*?迅")
+    xl_pattern = re.compile('thunderrestitle.*?迅')
     urls = xl_pattern.findall(html)
-    
+
     format_pattern = re.compile(fields[FORMAT])
-    episodePattern = re.compile("(" + fields[HISTORY][0:4] + "\d\d)")
-    thunderPattern = re.compile("(thunder\:.*)\"")
+    episodePattern = re.compile('(' + fields[HISTORY][0:4] + '\d\d)')
+    thunderPattern = re.compile('(thunder\:.*)\"')
     new = []
     for url in urls:
         # find all with relative format
@@ -76,8 +83,8 @@ def update_line(lines, records, record_index):
             historyEpisode = int(fields[HISTORY][4:6])
             if currentEpisode <= historyEpisode:
                 continue
-                
-            # get the link    
+
+            # get the link
             thunderMatch = thunderPattern.search(url)
             if not thunderMatch:
                 continue
@@ -89,19 +96,19 @@ def update_line(lines, records, record_index):
     # Handle update
     if len(new) > 0:
         print ':) ' + output_prefix + ' has an update'
-        
+
         line_new = line.replace(fields[HISTORY], new[len(new)-1][0]) + '\n'
 
-        line_added = "== " + fields[NAME] + "," + new[0][0] + "-" + new[len(new)-1][0] + "," + get_time() + " ==\n"
+        line_added_title = '== ' + fields[NAME] + ',' + new[0][0] + '-' + new[len(new)-1][0] + ',' + get_time() + ' ==\n'
+        line_added_link = ''
         for new_index in range(0, len(new)):
-            line_added = line_added + new[new_index][1] + "\n"
-        line_added = line_added + "\n"
+            line_added_link = line_added_link + new[new_index][1] + '\n'
 
-        return (True, line_index, line_new, line_added)
+        return (True, line_index, line_new, line_added_title, line_added_link)
     else:
         print output_prefix + ' has no update'
-        return (False, line_index, '', '')
-                
+        return (False, line_index, '', '', '')
+
 def update_history():
     has_update = False
 
@@ -110,7 +117,7 @@ def update_history():
 
     # Get lines
     if debug_mode:
-        lines = ["Spar,人人影视.mp4,11176,S03E01", "Homeland,rmvb,11088,S02E05"]
+        lines = ['Spar,人人影视.mp4,11176,S03E01', 'Homeland,rmvb,11088,S02E05']
     else:
         file = open('history.txt')
         lines = file.readlines()
@@ -132,77 +139,81 @@ def update_history():
                 lines[line_index] = PAUSE_STR + ' ' + get_time() + '\n'
                 continue
 
-        # Check if end meets    
+        # Check if end meets
         if re.search(END_STR, lines[line_index]):
             break
-            
+
         # Append to records
         records.append(line_index)
 
-    
+
     # Update line
     records_number = len(records)
     if mp_mode:
         process_number = min(multiprocessing.cpu_count(), records_number)
         pool = Pool(processes = process_number)
         results = []
-        
+
         for record_index in range(0, records_number):
             line_index = records[record_index]
             line = lines[line_index]
             fields = line.split(',')
-            output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
-            print output_prefix + " is processing ..."
-        
+            output_prefix = str(record_index + 1) + '/' + str(records_number) + ' ' + fields[NAME]
+            print output_prefix + ' is processing ...'
+
             results.append(pool.apply_async(update_line, (lines, records, record_index,)))
 
         print '\n'
         pool.close()
         pool.join()
-        
+
+        all_links = ''
         for i in results:
             r = i.get()
             if r[0] == True:
                 lines[r[1]] = r[2]
                 lines.append(r[3])
+                lines.append(r[4])
+                all_links += r[4]
                 has_update = True
-        
+
+        copy_text_to_clipboard(all_links)
+
     else:
         for record_index in range(0, records_number):
             line_index = records[record_index]
             line = lines[line_index]
             fields = line.split(',')
-            output_prefix = str(record_index + 1) + "/" + str(records_number) + ' ' + fields[NAME]
-            print output_prefix + " is processing ..."
-            
+            output_prefix = str(record_index + 1) + '/' + str(records_number) + ' ' + fields[NAME]
+            print output_prefix + ' is processing ...'
+
             r = update_line(lines, records, record_index)
             if r[0] == True:
                 has_update = True
-        
+
     # Handle no update
     if not has_update:
-        print "There is no update at all!"
-        lines.append("== All,No update," + get_time() + " ==\n")
+        print 'There is no update at all!'
+        lines.append('== All,No update,' + get_time() + ' ==\n')
 
     # Update history file
     if debug_mode:
         print lines
     else:
         os.chdir(sys.path[0])
-        if os.path.exists("history_old.txt"):    
-            os.remove("history_old.txt")
-            
-        os.rename("history.txt", "history_old.txt")   
+        if os.path.exists('history_old.txt'):
+            os.remove('history_old.txt')
 
-        f = open("history.txt", "w")
+        os.rename('history.txt', 'history_old.txt')
+
+        f = open('history.txt', 'w')
         for line in lines:
             f.write(line)
-        f.close()        
+        f.close()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     update_history()
-    raw_input("Press <enter>")
+    raw_input('Press <enter>')
 
-    
-    
-  
+
+

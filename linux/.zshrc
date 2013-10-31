@@ -400,7 +400,7 @@ zz () {
 
 # Aliases to use this
 # Use e.g. 'command gv' to avoid
-for i in gedit meld bcompare komodo sublime_text; do
+for i in gedit meld komodo sublime_text gigolo; do
     alias "$i=z $i"
 done
 

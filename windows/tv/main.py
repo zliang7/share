@@ -149,6 +149,7 @@ def update_history():
 
     # Update line
     records_number = len(records)
+    all_links = ''
     if mp_mode:
         process_number = min(multiprocessing.cpu_count(), records_number)
         pool = Pool(processes = process_number)
@@ -167,7 +168,6 @@ def update_history():
         pool.close()
         pool.join()
 
-        all_links = ''
         for i in results:
             r = i.get()
             if r[0] == True:
@@ -176,8 +176,6 @@ def update_history():
                 lines.append(r[4])
                 all_links += r[4]
                 has_update = True
-
-        copy_text_to_clipboard(all_links)
 
     else:
         for record_index in range(0, records_number):
@@ -211,9 +209,8 @@ def update_history():
             f.write(line)
         f.close()
 
+        raw_input('Press <enter>')
+        copy_text_to_clipboard(all_links)
+
 if __name__ == '__main__':
     update_history()
-    raw_input('Press <enter>')
-
-
-

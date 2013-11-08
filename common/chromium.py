@@ -65,6 +65,11 @@ def layout_test(args):
     if not args.layout_test:
         return()
 
+    os.chdir(src_dir + '/out/Release')
+    if os.path.isdir('content_shell'):
+        execute('rm -rf content_shell_dir')
+        execute('mv content_shell content_shell_dir')
+
     os.chdir(src_dir)
     execute('ninja -C out/Release content_shell')
     execute('webkit/tools/layout_tests/run_webkit_tests.sh ' + args.layout_test)
@@ -96,68 +101,96 @@ def update(args):
     cmd = cmd + ' ' + args.update
     execute(cmd)
 
+def shell_source(shell_cmd):
+    """Sometime you want to emulate the action of "source" in bash,
+    settings some environment variables. Here is a way to do it."""
+    import subprocess, os
+    pipe = subprocess.Popen(". %s; env" % shell_cmd, stdout=subprocess.PIPE, shell=True)
+    output = pipe.communicate()[0]
+    for line in output.splitlines():
+        (key, _, value) = line.partition("=")
+        os.environ[key] = value
+
 def build(args):
     if not args.build:
         return()
 
-    if args.build.upper() == 'DEBUG':
-        build = 'Debug'
-    elif args.build.upper() == 'RELEASE':
-        build = 'Release'
-    elif args.build.upper() == 'ALL':
-        build = 'All'
-
     build_clean = args.build_clean
-    if build == 'All':
-        if not has_build_dir('Debug') and not has_build_dir('Release'):
-            build_clean = True
-    else:
-        if not has_build_dir(build):
-            build_clean = True
+
+    if not has_build_dir(args.build.capitalize()):
+        build_clean = True
 
     print '== Build Environment =='
     print 'Directory of src: ' + src_dir
-    print 'Build type: ' + build
+    print 'Build type: ' + args.build
     print 'Build system: Ninja'
     print 'Need clean build: ' + str(build_clean)
     print 'System: ' + system
+    print 'Platform: ' + args.platform
     print '======================='
 
     os.chdir(src_dir)
 
     if build_clean:
-        cmd = 'python build/gyp_chromium'
+        if args.platform == 'android':
+            shell_source('build/android/envsetup.sh --target-arch=x86')
+        cmd = 'python build/gyp_chromium -Dwerror='
         execute(cmd)
 
     if args.build_verbose:
-        cmd = 'ninja -v chrome'
+        cmd = 'ninja -v'
     else:
-        cmd = 'ninja chrome'
+        cmd = 'ninja'
 
-    if build == 'Debug' or build == 'All':
-        execute(cmd + ' -C out/Debug')
+    if args.platform == 'desktop':
+        cmd += ' chrome'
+    else:
+        cmd += ' content_shell_apk'
 
-    if build == 'Release' or build == 'All':
-        execute(cmd + ' -C out/Release')
+    cmd += ' -C out/' + args.build.capitalize()
+
+    if args.platform == 'android':
+        os.chdir(src_dir + '/out/' + args.build.capitalize)
+        if os.path.isfile('content_shell'):
+            execute('rm -f content_shell_file')
+            execute('mv content_shell content_shell_file')
+
+    execute(cmd)
+
+def install(args):
+    if not args.install:
+        return
+
+    if not args.platform == 'android':
+        return
+
+    os.chdir(src_dir)
+    execute('python build/android/adb_install_apk.py --apk ContentShell.apk --' + args.install)
+
 
 def run(args):
     if not args.run:
         return()
 
-    option = '--disable-setuid-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + root_dir + '/user-data'
+    if args.platform == 'desktop':
+        option = ' --disable-setuid-sandbox --disable-hang-monitor --allow-file-access-from-files --user-data-dir=' + root_dir + '/user-data'
+
+        if args.run_GPU:
+            option += ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
+
+        if args.run_debug_renderer:
+            if args.run.upper() == 'RELEASE':
+                warning('Debugger should run with debug version. Switch to it automatically')
+                args.run = 'debug'
+            option = option + ' --renderer-cmd-prefix="xterm -title renderer -e gdb --args"'
+
+        cmd = root_dir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
+    else:
+        cmd = root_dir + '/src/build/android/adb_run_content_shell'
+
     if args.run_option:
-        option = option + ' ' + args.run_option
+        cmd += ' ' + args.run_option
 
-    if args.run_GPU:
-        option = option + ' ' + '--enable-accelerated-2d-canvas --ignore-gpu-blacklist'
-
-    if args.run_debug_renderer:
-        if args.run.upper() == 'RELEASE':
-            warning('Debugger should run with debug version. Switch to it automatically')
-            args.run = 'debug'
-        option = option + ' ' + '--renderer-cmd-prefix="xterm -title renderer -e gdb --args"'
-
-    cmd = root_dir + '/src/out/' + args.run.capitalize() + '/chrome ' + option
     execute(cmd)
 
 def find_owner(args):
@@ -212,6 +245,7 @@ examples:
   python %(prog)s -b release
   python %(prog)s -b all
   python %(prog)s -b release -c -v
+  python %(prog)s -p android -b release
 
   run:
   python %(prog)s -r release
@@ -221,18 +255,19 @@ examples:
   python %(prog)s -r release -o--enable-logging=stderr
   python %(prog)s -r release '-o --enable-logging=stderr'
   python %(prog)s -r release --run-debug-renderer
+  python %(prog)s -p android -r release --run-option 'http://browsermark.rightware.com'
 
   python %(prog)s --owner
 
   update & build & run
-  python chromium.py -u sync -b release -r release
+  python %(prog)s -u sync -b release -r release
 ''')
 
     groupUpdate = parser.add_argument_group('update')
     groupUpdate.add_argument('-u', '--update', dest='update', help='gclient options to update source code')
 
     groupBuild = parser.add_argument_group('build')
-    groupBuild.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug', 'all'])
+    groupBuild.add_argument('-b', '--build', dest='build', help='type to build', choices=['release', 'debug'])
     groupBuild.add_argument('-c', '--build-clean', dest='build_clean', help='regenerate gyp', action='store_true')
     groupBuild.add_argument('-v', '--build-verbose', dest='build_verbose', help='output verbose info. Find log at out/Release/.ninja_log', action='store_true')
 
@@ -246,6 +281,9 @@ examples:
     parser.add_argument('--owner', dest='owner', help='find owner for latest commit', action='store_true')
     parser.add_argument('-d', '--root-dir', dest='root_dir', help='set root directory')
     parser.add_argument('--layout-test', dest='layout_test', help='cases to run against')
+    parser.add_argument('-p', '--platform', dest='platform', help='platform', choices=['desktop', 'android'], default='desktop')
+    parser.add_argument('-i', '--install', dest='install', help='install chrome for android', choices=['release', 'debug'])
+
 
     args = parser.parse_args()
 
@@ -274,20 +312,25 @@ examples:
             os.putenv('PATH', path)
 
     os.putenv('GYP_GENERATORS', 'ninja')
-    if is_windows():
+    if is_windows() and args.platform == 'desktop':
         os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0 windows_sdk_path="d:/user/ygu5/project/chromium/win_toolchain/win8sdk"')
         os.putenv('GYP_MSVS_VERSION', '2010e')
         os.putenv('GYP_MSVS_OVERRIDE_PATH', 'd:/user/ygu5/project/chromium/win_toolchain')
         os.putenv('WDK_DIR', 'd:/user/ygu5/project/chromium/win_toolchain/WDK')
         os.putenv('DXSDK_DIR', 'd:/user/ygu5/project/chromium/win_toolchain/DXSDK')
         os.putenv('WindowsSDKDir', 'd:/user/ygu5/project/chromium/win_toolchain/win8sdk')
-    else:
+    elif is_linux() and args.platform == 'desktop':
         os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 component=shared_library enable_svg=0')
         os.putenv('CHROME_DEVEL_SANDBOX', '/usr/local/sbin/chrome-devel-sandbox')
+    elif args.platform == 'android':
+        os.chdir(src_dir)
+        shell_source('build/android/envsetup.sh --target-arch=x86')
+        os.putenv('GYP_DEFINES', 'werror= disable_nacl=1 enable_svg=0')
 
     # Real work
     update(args)
     build(args)
+    install(args)
     run(args)
     find_owner(args)
     layout_test(args)

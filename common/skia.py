@@ -274,7 +274,7 @@ def download(args):
     backup_dir(log_dir)
 
     if args.download not in ['nexus10', 'nexus4']:
-        error('Device to download is supported now')
+        error('Device to download is not supported now')
         quit()
 
     # Get latest build number
@@ -293,6 +293,8 @@ def download(args):
         error('Could not get the build number to download')
         quit
 
+    info('Latest build number is ' + build_number)
+
     # Get log for specific build number
     if args.download == 'nexus10':
         link = 'Nexus10-MaliT604'
@@ -302,18 +304,17 @@ def download(args):
 
     if os.path.exists(origin_file):
         info(origin_file + ' has been downloaded')
-        return
+    else:
+        url = 'http://108.170.217.252:10117/builders/Perf-Android-' + link + '-Arm7-Release/builds/' + build_number + '/steps/RunBench/logs/stdio/text'
+        try:
+            u = urllib2.urlopen(url)
+        except BadStatusLine:
+            error('Failed to get results of ' + args.download + ' with build number ' + build_number)
 
-    url = 'http://108.170.217.252:10117/builders/Perf-Android-' + link + '-Arm7-Release/builds/' + build_number + '/steps/RunBench/logs/stdio/text'
-    try:
-        u = urllib2.urlopen(url)
-    except BadStatusLine:
-        error('Failed to get results of ' + args.download + ' with build number ' + build_number)
-
-    fw = open(origin_file, 'w')
-    for line in u:
-        fw.write(line)
-    fw.close()
+        fw = open(origin_file, 'w')
+        for line in u:
+            fw.write(line)
+        fw.close()
 
     parse_result(log_dir, origin_file)
 
